@@ -38,6 +38,15 @@ export function App() {
   const [params, setParams] = useState<GeneratorParams>(DEFAULT_GENERATOR_PARAMS);
   const [playing, setPlaying] = useState(false);
   const [showUnderside, setShowUnderside] = useState(true);
+  const [pipOpen, setPipOpen] = useState(() => {
+    try { return localStorage.getItem('handpan.pip') !== 'closed'; } catch { return true; }
+  });
+  const togglePip = () => {
+    setPipOpen((open) => {
+      try { localStorage.setItem('handpan.pip', open ? 'closed' : 'open'); } catch { /* private mode */ }
+      return !open;
+    });
+  };
   const [view, setView] = useState<ViewKind>(() => {
     try { return localStorage.getItem('handpan.view') === '2d' ? '2d' : '3d'; } catch { return '3d'; }
   });
@@ -277,12 +286,14 @@ export function App() {
         ) : (
           <PanView layout={layout} spelling={spelling} flashes={flashes} keyHints={hints} onStrike={strike} />
         )}
-        {view === '2d' && showUnderside && (
+        {view === '2d' && showUnderside && (pipOpen ? (
           <div className="pip" aria-label="Underside">
             <UndersideView layout={layout} spelling={spelling} flashes={flashes} keyHints={hints} onStrike={strike} />
-            <span className="pip-label">underside</span>
+            <button type="button" className="pip-toggle" onClick={togglePip} title="Collapse the underside view">underside ▾</button>
           </div>
-        )}
+        ) : (
+          <button type="button" className="pip-toggle collapsed" onClick={togglePip} title="Show the underside view">underside ▸</button>
+        ))}
       </main>
 
       <aside className="column right">

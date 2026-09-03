@@ -222,6 +222,24 @@ export function PanView3D({ layout, spelling, flashes, keyHints, onStrike }: Pro
     };
     renderer.domElement.addEventListener('pointerdown', onPointerDown);
 
+    // Once the zoom is at its limit, wheel scrolling belongs to the page again.
+    const onWheelCapture = (e: WheelEvent) => {
+      const dist = camera.position.distanceTo(controls.target);
+      const atMax = dist >= controls.maxDistance - 1e-3;
+      const atMin = dist <= controls.minDistance + 1e-3;
+      if ((e.deltaY > 0 && atMax) || (e.deltaY < 0 && atMin)) e.stopPropagation();
+    };
+    host.addEventListener('wheel', onWheelCapture, { capture: true, passive: true });
+
+    // On narrow screens one finger scrolls the page (touch-action: pan-y in CSS); two fingers orbit and zoom.
+    const narrow = window.matchMedia('(max-width: 1000px)');
+    const applyTouch = () => {
+      controls.touches.ONE = narrow.matches ? THREE.TOUCH.PAN : THREE.TOUCH.ROTATE;
+      controls.touches.TWO = narrow.matches ? THREE.TOUCH.DOLLY_ROTATE : THREE.TOUCH.DOLLY_PAN;
+    };
+    applyTouch();
+    narrow.addEventListener('change', applyTouch);
+
     const clock = new THREE.Clock();
     const loop = () => {
       state.raf = requestAnimationFrame(loop);
@@ -251,6 +269,8 @@ export function PanView3D({ layout, spelling, flashes, keyHints, onStrike }: Pro
       cancelAnimationFrame(state.raf);
       ro.disconnect();
       renderer.domElement.removeEventListener('pointerdown', onPointerDown);
+      host.removeEventListener('wheel', onWheelCapture, { capture: true });
+      narrow.removeEventListener('change', applyTouch);
       controls.dispose();
       for (const f of state.fields) { f.ring.geometry.dispose(); f.ring.material.dispose(); }
       top.geometry.dispose();

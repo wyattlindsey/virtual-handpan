@@ -398,4 +398,6 @@ button.mini.danger:hover:not(:disabled) { border-color: var(--danger); color: va
   .stage { position: relative; top: auto; height: auto; }
   .pan { height: auto; width: min(100%, 80vh); }
   .pan3d { height: auto; aspect-ratio: 1; min-height: 0; }
+  /* One finger scrolls the page past the pan; two fingers orbit and zoom. */
+  .pan3d-canvas { touch-action: pan-y; }
 }

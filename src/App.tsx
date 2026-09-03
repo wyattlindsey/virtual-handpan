@@ -120,7 +120,17 @@ export function App() {
     const t = transposeLayout(base, semitones);
     return semitones === 0 ? t : { ...t, name: `${base.name} ${semitones > 0 ? '+' : ''}${semitones}` };
   }, [base, semitones]);
-  const pipOpen = pipPreference ? pipPreference === 'open' : layout.bottom.length > 0;
+  const hasBottom = layout.bottom.length > 0;
+  const pipOpen = pipPreference ? pipPreference === 'open' : hasBottom;
+  // Switching to a layout that gains or loses underside notes shows or hides the PIP again,
+  // dropping any manual toggle until the next one.
+  const prevHasBottom = useRef(hasBottom);
+  useEffect(() => {
+    if (prevHasBottom.current === hasBottom) return;
+    prevHasBottom.current = hasBottom;
+    setPipPreference(null);
+    try { localStorage.removeItem('handpan.pip'); } catch { /* private mode */ }
+  }, [hasBottom]);
   const layoutRef = useRef(layout);
   layoutRef.current = layout;
 

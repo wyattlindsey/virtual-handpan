@@ -156,7 +156,7 @@ class PercussionVoice implements VoiceHandle {
     hp.type = 'highpass';
     hp.frequency.value = tak ? 1200 : 400;
     const env = ctx.createGain();
-    const peak = (tak ? 0.55 : 0.7) * Math.pow(vel, 1.3);
+    const peak = (tak ? 0.85 : 0.8) * Math.pow(vel, 1.3);
     env.gain.setValueAtTime(0, when);
     env.gain.linearRampToValueAtTime(peak, when + 0.0008);
     env.gain.setTargetAtTime(0, when + 0.0008, tak ? 0.006 : 0.014);
@@ -167,7 +167,7 @@ class PercussionVoice implements VoiceHandle {
 
     // A metallic tink for the tak: two high partials dying in a few milliseconds.
     if (tak) {
-      for (const [freq, gain, tau] of [[2650 + 300 * vel, 0.22, 0.009], [4150, 0.12, 0.005]] as const) {
+      for (const [freq, gain, tau] of [[2650 + 300 * vel, 0.3, 0.009], [4150, 0.16, 0.005]] as const) {
         const osc = ctx.createOscillator();
         osc.type = 'sine';
         osc.frequency.value = freq;

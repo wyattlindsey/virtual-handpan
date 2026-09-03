@@ -8,6 +8,9 @@ import type { FieldSide } from '../model/layout';
 
 export type FieldRole = FieldSide;
 
+/** Unpitched strokes on the shell: the tak (fingertip click on the shoulder) and the slap (flat fingers). */
+export type PercussionKind = 'tak' | 'slap';
+
 export interface VoiceHandle {
   /** Damp the note early (a palm on the field). */
   damp(when?: number, fadeSeconds?: number): void;
@@ -23,6 +26,8 @@ export interface Instrument {
    * @param role where the field sits, for role-specific timbre
    */
   noteOn(pitch: string, velocity: number, when?: number, role?: FieldRole): VoiceHandle;
+  /** An unpitched stroke on the shoulder or shell. */
+  hit(kind: PercussionKind, velocity: number, when?: number): VoiceHandle;
   /** Fade out every sounding and scheduled note. */
   allNotesOff(fadeSeconds?: number): void;
   dispose(): void;

@@ -6,7 +6,7 @@
  */
 import { midiFromPitch } from '../model/pitch';
 import type { AudioEngine } from './engine';
-import type { FieldRole, Instrument, VoiceHandle } from './instrument';
+import type { FieldRole, Instrument, PercussionKind, VoiceHandle } from './instrument';
 import type { ZoneSource } from './lazyPack';
 import { RoundRobin, layerWeights, rateForShift, selectZone } from './samplePack';
 
@@ -120,6 +120,11 @@ export class SampledInstrument implements Instrument {
     voice.arm();
     this.voices.add(voice);
     return voice;
+  }
+
+  /** Packs carry no percussion zones yet; the synth's strokes stand in. */
+  hit(kind: PercussionKind, velocity: number, when?: number): VoiceHandle {
+    return this.fallback ? this.fallback.hit(kind, velocity, when) : SILENT;
   }
 
   allNotesOff(fadeSeconds = 0.08): void {

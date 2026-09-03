@@ -10,7 +10,7 @@
  */
 import { frequencyFromPitch, midiFromPitch } from '../model/pitch';
 import type { AudioEngine } from './engine';
-import type { FieldRole, Instrument, VoiceHandle } from './instrument';
+import type { FieldRole, Instrument, PercussionKind, VoiceHandle } from './instrument';
 
 interface Partial {
   ratio: number;
@@ -129,6 +129,85 @@ class Voice implements VoiceHandle {
   }
 }
 
+/**
+ * Unpitched strokes. A tak is a fingertip on the shoulder: a bright, dry
+ * click with a faint metallic ring and almost no body. A slap is the flat of
+ * the fingers on the interstitial steel: broader, duller, with a little
+ * shell thump. Neither sustains.
+ */
+class PercussionVoice implements VoiceHandle {
+  private sources: AudioScheduledSourceNode[] = [];
+
+  constructor(private readonly ctx: AudioContext, private readonly out: GainNode, private readonly onEnd: () => void) {}
+
+  start(kind: PercussionKind, velocity: number, when: number, noise: AudioBuffer): void {
+    const ctx = this.ctx;
+    const vel = Math.min(1, Math.max(0.05, velocity));
+    const tak = kind === 'tak';
+
+    // The click: a band of noise, bright and very short for the tak, lower and a touch longer for the slap.
+    const burst = ctx.createBufferSource();
+    burst.buffer = noise;
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = tak ? 3600 + 800 * vel : 1500 + 400 * vel;
+    bp.Q.value = tak ? 1.4 : 0.8;
+    const hp = ctx.createBiquadFilter();
+    hp.type = 'highpass';
+    hp.frequency.value = tak ? 1200 : 400;
+    const env = ctx.createGain();
+    const peak = (tak ? 0.55 : 0.7) * Math.pow(vel, 1.3);
+    env.gain.setValueAtTime(0, when);
+    env.gain.linearRampToValueAtTime(peak, when + 0.0008);
+    env.gain.setTargetAtTime(0, when + 0.0008, tak ? 0.006 : 0.014);
+    burst.connect(hp).connect(bp).connect(env).connect(this.out);
+    burst.start(when);
+    burst.stop(when + (tak ? 0.05 : 0.09));
+    this.sources.push(burst);
+
+    // A metallic tink for the tak: two high partials dying in a few milliseconds.
+    if (tak) {
+      for (const [freq, gain, tau] of [[2650 + 300 * vel, 0.22, 0.009], [4150, 0.12, 0.005]] as const) {
+        const osc = ctx.createOscillator();
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+        const g = ctx.createGain();
+        g.gain.setValueAtTime(0, when);
+        g.gain.linearRampToValueAtTime(gain * vel, when + 0.0006);
+        g.gain.setTargetAtTime(0, when + 0.0006, tau);
+        osc.connect(g).connect(this.out);
+        osc.start(when);
+        osc.stop(when + 0.08);
+        this.sources.push(osc);
+      }
+    }
+
+    // Shell thump: the steel moves a little under the hand, more for the slap.
+    const thump = ctx.createOscillator();
+    thump.type = 'sine';
+    thump.frequency.setValueAtTime(tak ? 240 : 170, when);
+    thump.frequency.exponentialRampToValueAtTime(tak ? 150 : 95, when + 0.04);
+    const tg = ctx.createGain();
+    tg.gain.setValueAtTime(0, when);
+    tg.gain.linearRampToValueAtTime((tak ? 0.08 : 0.22) * vel, when + 0.002);
+    tg.gain.setTargetAtTime(0, when + 0.002, tak ? 0.018 : 0.03);
+    thump.connect(tg).connect(this.out);
+    thump.start(when);
+    thump.stop(when + 0.16);
+    this.sources.push(thump);
+
+    burst.onended = () => {
+      for (const s of this.sources) s.disconnect();
+      this.out.disconnect();
+      this.onEnd();
+    };
+  }
+
+  damp(): void {
+    // Nothing to damp: these are over before a hand could reach them.
+  }
+}
+
 export class SynthHandpan implements Instrument {
   readonly name = 'Synth handpan';
   private readonly bus: GainNode;
@@ -164,6 +243,16 @@ export class SynthHandpan implements Instrument {
       role === 'ding' ? DING_PARTIALS : TONE_PARTIALS, decayScale, this.noise,
     );
     this.voices.add(voice);
+    return voice;
+  }
+
+  hit(kind: PercussionKind, velocity: number, when?: number): VoiceHandle {
+    const ctx = this.engine.context;
+    const t = Math.max(when ?? ctx.currentTime, ctx.currentTime);
+    const out = ctx.createGain();
+    out.connect(this.bus);
+    const voice = new PercussionVoice(ctx, out, () => {});
+    voice.start(kind, velocity, t, this.noise);
     return voice;
   }
 

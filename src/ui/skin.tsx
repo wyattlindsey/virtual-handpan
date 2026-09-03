@@ -37,6 +37,10 @@ export function SkinDefs({ prefix }: SkinProps) {
         <stop offset="94%" stopColor="#000" stopOpacity="0.35" />
         <stop offset="100%" stopColor="#000" stopOpacity="0.6" />
       </radialGradient>
+      {/* Everything drawn on the shell stays inside it. */}
+      <clipPath id={id('shell-clip')}>
+        <circle r="1" />
+      </clipPath>
       {/* Broad soft window reflection. */}
       <linearGradient id={id('sheen')} x1="0" y1="0" x2="1" y2="1">
         <stop offset="0%" stopColor="#fff" stopOpacity="0.16" />
@@ -126,7 +130,11 @@ export function Shell({ prefix, underside = false }: ShellProps) {
       <circle r="1" fill="#6a4aa0" opacity={underside ? 0.4 : 0.7} filter={id('blotch-violet')} />
       <circle r="1" fill="#3a8ab8" opacity={underside ? 0.25 : 0.5} filter={id('blotch-teal')} />
       <circle r="1" fill="#fff" opacity="0.14" filter={id('grain')} />
-      {!underside && <ellipse cx="-0.32" cy="-0.42" rx="0.62" ry="0.34" fill={id('sheen')} transform="rotate(-32)" />}
+      {!underside && (
+        <g clipPath={id('shell-clip')}>
+          <ellipse cx="-0.32" cy="-0.42" rx="0.62" ry="0.34" fill={id('sheen')} transform="rotate(-32)" />
+        </g>
+      )}
       <circle r="1" fill={id('rim-shade')} />
       {/* Rim: a bright steel edge over a dark seam. */}
       <circle r="0.992" fill="none" stroke="#04070d" strokeWidth="0.022" />

@@ -21,7 +21,9 @@ the same `Instrument` interface as the synth. For each strike it:
    dynamics, and shifts playback rate for the tuning reference (`a4`) and
    any pitch shift.
 
-Pitches the pack cannot reach fall back to the synth voice.
+Pitches the pack cannot reach fall back to the synth voice, and so do the
+unpitched strokes (tak and slap) until packs gain percussion zones; when
+recording, capture a few taks and slaps too so that can happen.
 
 ## Loading and caching
 

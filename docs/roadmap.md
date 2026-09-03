@@ -125,8 +125,17 @@ intent rather than noise.
   and pull against the grid; swing and jitter as before. All of it applies
   live while a phrase plays.
 
-Still to do: reach limits beyond hand alternation, inversion and beat
-displacement of motifs, cadence choice by scale degree.
+- **Percussive strokes.** The tak (a fingertip click on the unpitched
+  shoulder) lands on each feel's backbeat slots from whichever hand is
+  free, with a Taks slider; taks and slaps are playable from the rim and
+  the 1 and 2 keys, and are recorded like notes.
+- **Two-hand comfort.** Each hand owns its side of the ring and shares the
+  axis; reach and speed limit which notes a hand takes next; dyads are one
+  note per hand; never more than two strikes at once.
+
+Still to do: inversion and beat displacement of motifs, cadence choice by
+scale degree, ghost notes, shoulder tones (the overtones of a field played
+from its shoulder).
 
 ### 2. Learn from real playing (started)
 

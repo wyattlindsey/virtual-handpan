@@ -129,11 +129,58 @@ class Voice implements VoiceHandle {
   }
 }
 
+/** A damped resonance of the shell excited by a stroke. */
+interface Mode {
+  freq: number;
+  gain: number;
+  /** Amplitude time constant in seconds; the mode falls 20 dB in about 2.3 tau. */
+  tau: number;
+}
+
+/** Jitter a frequency by up to a fraction so no two strokes ring identically. */
+function jitter(freq: number, fraction: number): number {
+  return freq * (1 + (Math.random() * 2 - 1) * fraction);
+}
+
 /**
- * Unpitched strokes. A tak is a fingertip on the shoulder: a bright, dry
- * click with a faint metallic ring and almost no body. A slap is the flat of
- * the fingers on the interstitial steel: broader, duller, with a little
- * shell thump. Neither sustains.
+ * Shell modes rung by a tak, measured from performance recordings: a body
+ * thump near 230 Hz, a weak mode around 600 Hz, a cluster around 1.3 to
+ * 1.7 kHz, a stronger cluster around 2.2 to 3 kHz, and short bright modes
+ * above that which only harder strikes bring out.
+ */
+function takModes(vel: number): Mode[] {
+  return [
+    { freq: jitter(230, 0.15), gain: 0.35, tau: 0.012 },
+    { freq: jitter(700, 0.15), gain: 0.45, tau: 0.02 },
+    { freq: jitter(1300, 0.08), gain: 0.5, tau: 0.028 },
+    { freq: jitter(1650, 0.08), gain: 0.45, tau: 0.026 },
+    { freq: jitter(2300, 0.06), gain: 0.6, tau: 0.022 },
+    { freq: jitter(2750, 0.06), gain: 0.65, tau: 0.02 },
+    { freq: jitter(3450, 0.05), gain: 0.8 * (0.5 + vel), tau: 0.016 },
+    { freq: jitter(4200, 0.05), gain: 0.75 * (0.4 + vel), tau: 0.014 },
+    { freq: jitter(4800, 0.05), gain: 0.2 + 0.6 * vel, tau: 0.012 },
+    { freq: jitter(6200, 0.05), gain: 0.1 + 0.45 * vel, tau: 0.009 },
+  ];
+}
+
+/** Flat fingers on the interstitial steel: the same shell, but the hand stays on it, so the upper modes die fast and the thump is bigger. */
+function slapModes(vel: number): Mode[] {
+  return [
+    { freq: jitter(210, 0.15), gain: 0.55, tau: 0.018 },
+    { freq: jitter(330, 0.12), gain: 0.3, tau: 0.016 },
+    { freq: jitter(620, 0.12), gain: 0.35, tau: 0.02 },
+    { freq: jitter(1250, 0.08), gain: 0.85, tau: 0.032 },
+    { freq: jitter(1500, 0.08), gain: 0.75, tau: 0.03 },
+    { freq: jitter(1750, 0.08), gain: 0.5, tau: 0.024 },
+    { freq: jitter(2400, 0.06), gain: 0.5, tau: 0.016 },
+    { freq: jitter(3000, 0.06), gain: 0.4 * vel, tau: 0.012 },
+  ];
+}
+
+/**
+ * Unpitched strokes as modal synthesis: a burst of contact noise for the
+ * fingertip, then the shell's own resonances ringing down over roughly a
+ * tenth of a second.
  */
 class PercussionVoice implements VoiceHandle {
   private sources: AudioScheduledSourceNode[] = [];
@@ -144,63 +191,48 @@ class PercussionVoice implements VoiceHandle {
     const ctx = this.ctx;
     const vel = Math.min(1, Math.max(0.05, velocity));
     const tak = kind === 'tak';
+    const level = 0.32 * Math.pow(vel, 1.2);
+    let longest = 0;
 
-    // The click: a band of noise, bright and very short for the tak, lower and a touch longer for the slap.
+    for (const m of (tak ? takModes(vel) : slapModes(vel))) {
+      const osc = ctx.createOscillator();
+      osc.type = 'sine';
+      osc.frequency.value = m.freq;
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0, when);
+      g.gain.linearRampToValueAtTime(m.gain * level, when + 0.0007);
+      g.gain.setTargetAtTime(0, when + 0.0007, m.tau);
+      osc.connect(g).connect(this.out);
+      osc.start(when);
+      const stop = when + m.tau * 8;
+      osc.stop(stop);
+      longest = Math.max(longest, stop);
+      this.sources.push(osc);
+    }
+
+    // Contact noise: the fingertip itself, bright and over in a few milliseconds.
     const burst = ctx.createBufferSource();
     burst.buffer = noise;
     const bp = ctx.createBiquadFilter();
     bp.type = 'bandpass';
-    bp.frequency.value = tak ? 3600 + 800 * vel : 1500 + 400 * vel;
-    bp.Q.value = tak ? 1.4 : 0.8;
-    const hp = ctx.createBiquadFilter();
-    hp.type = 'highpass';
-    hp.frequency.value = tak ? 1200 : 400;
+    bp.frequency.value = tak ? 7500 : 2200;
+    bp.Q.value = tak ? 0.7 : 0.7;
     const env = ctx.createGain();
-    const peak = (tak ? 0.85 : 0.8) * Math.pow(vel, 1.3);
     env.gain.setValueAtTime(0, when);
-    env.gain.linearRampToValueAtTime(peak, when + 0.0008);
-    env.gain.setTargetAtTime(0, when + 0.0008, tak ? 0.006 : 0.014);
-    burst.connect(hp).connect(bp).connect(env).connect(this.out);
+    env.gain.linearRampToValueAtTime((tak ? 1.3 : 0.6) * level, when + 0.0006);
+    env.gain.setTargetAtTime(0, when + 0.0006, tak ? 0.004 : 0.007);
+    burst.connect(bp).connect(env).connect(this.out);
     burst.start(when);
-    burst.stop(when + (tak ? 0.05 : 0.09));
+    burst.stop(when + 0.06);
     this.sources.push(burst);
 
-    // A metallic tink for the tak: two high partials dying in a few milliseconds.
-    if (tak) {
-      for (const [freq, gain, tau] of [[2650 + 300 * vel, 0.3, 0.009], [4150, 0.16, 0.005]] as const) {
-        const osc = ctx.createOscillator();
-        osc.type = 'sine';
-        osc.frequency.value = freq;
-        const g = ctx.createGain();
-        g.gain.setValueAtTime(0, when);
-        g.gain.linearRampToValueAtTime(gain * vel, when + 0.0006);
-        g.gain.setTargetAtTime(0, when + 0.0006, tau);
-        osc.connect(g).connect(this.out);
-        osc.start(when);
-        osc.stop(when + 0.08);
-        this.sources.push(osc);
-      }
-    }
-
-    // Shell thump: the steel moves a little under the hand, more for the slap.
-    const thump = ctx.createOscillator();
-    thump.type = 'sine';
-    thump.frequency.setValueAtTime(tak ? 240 : 170, when);
-    thump.frequency.exponentialRampToValueAtTime(tak ? 150 : 95, when + 0.04);
-    const tg = ctx.createGain();
-    tg.gain.setValueAtTime(0, when);
-    tg.gain.linearRampToValueAtTime((tak ? 0.08 : 0.22) * vel, when + 0.002);
-    tg.gain.setTargetAtTime(0, when + 0.002, tak ? 0.018 : 0.03);
-    thump.connect(tg).connect(this.out);
-    thump.start(when);
-    thump.stop(when + 0.16);
-    this.sources.push(thump);
-
-    burst.onended = () => {
+    const last = this.sources[0]!;
+    last.onended = () => {
       for (const s of this.sources) s.disconnect();
       this.out.disconnect();
       this.onEnd();
     };
+    void longest;
   }
 
   damp(): void {
@@ -213,6 +245,8 @@ export class SynthHandpan implements Instrument {
   private readonly bus: GainNode;
   private readonly noise: AudioBuffer;
   private readonly voices = new Set<Voice>();
+  /** The instrument's notes, ding first, so strokes can ring the pan sympathetically. */
+  private resonant: string[] = [];
 
   constructor(private readonly engine: AudioEngine) {
     const ctx = engine.context;
@@ -246,13 +280,35 @@ export class SynthHandpan implements Instrument {
     return voice;
   }
 
+  /** Tell the synth which notes are on the pan; a stroke faintly rings the ding and a nearby field. */
+  setResonantPitches(pitches: string[]): void {
+    this.resonant = pitches;
+  }
+
   hit(kind: PercussionKind, velocity: number, when?: number): VoiceHandle {
     const ctx = this.engine.context;
     const t = Math.max(when ?? ctx.currentTime, ctx.currentTime);
     const out = ctx.createGain();
     out.connect(this.bus);
-    const voice = new PercussionVoice(ctx, out, () => {});
+    // Short strokes reveal the room more than ringing notes do; give them extra send.
+    const room = ctx.createGain();
+    room.gain.value = 0.9;
+    out.connect(room).connect(this.engine.reverbSend);
+    const voice = new PercussionVoice(ctx, out, () => room.disconnect());
     voice.start(kind, velocity, t, this.noise);
+
+    // The whole pan answers a stroke on its shoulder: the ding and one field ring faintly and are damped by the hand.
+    const vel = Math.min(1, Math.max(0.05, velocity));
+    const ding = this.resonant[0];
+    if (ding) {
+      const v = this.noteOn(ding, 0.16 * vel, t, 'ding');
+      v.damp(t + (kind === 'tak' ? 0.32 : 0.18), 0.22);
+    }
+    if (this.resonant.length > 1) {
+      const field = this.resonant[1 + Math.floor(Math.random() * (this.resonant.length - 1))]!;
+      const v = this.noteOn(field, 0.1 * vel, t, 'top');
+      v.damp(t + (kind === 'tak' ? 0.24 : 0.14), 0.18);
+    }
     return voice;
   }
 

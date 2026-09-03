@@ -64,7 +64,7 @@ export const DEFAULT_GENERATOR_PARAMS: GeneratorParams = {
   swing: 0,
   dyads: 0.12,
   groove: 0.5,
-  taks: 0.1,
+  taks: 0,
   flamMs: 18,
   lean: 0.15,
   drift: 0.2,
@@ -394,7 +394,7 @@ function melodicPhrase(layout: Layout, pitches: string[], feel: Feel, params: Ge
       if (here.length >= 2) continue;
       const busy = here[0]?.hand;
       const hand: Hand = busy === 'L' ? 'R' : busy === 'R' ? 'L' : prevHand === 'L' ? 'R' : 'L';
-      notes.push({ beat, pitch: '', kind: 'tak', accent: -0.03 + arc, duration: 0.25, hand, role: 'groove' });
+      notes.push({ beat, pitch: '', kind: 'tak', accent: -0.1 + arc, duration: 0.25, hand, role: 'groove' });
     }
   }
 

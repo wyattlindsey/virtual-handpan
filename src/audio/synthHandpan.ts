@@ -191,7 +191,7 @@ class PercussionVoice implements VoiceHandle {
     const ctx = this.ctx;
     const vel = Math.min(1, Math.max(0.05, velocity));
     const tak = kind === 'tak';
-    const level = 0.4 * Math.pow(vel, 1.2);
+    const level = 0.32 * Math.pow(vel, 1.2);
     let longest = 0;
 
     for (const m of (tak ? takModes(vel) : slapModes(vel))) {

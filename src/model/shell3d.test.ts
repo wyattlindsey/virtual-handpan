@@ -1,5 +1,7 @@
 import { layoutFromNotes } from './layout';
-import { DEFAULT_SHELL, bottomHeightAt, buildShell, bumpHeight, bumpsFromLayout, domeHeight, topHeightAt } from './shell3d';
+import {
+  DEFAULT_SHELL, bottomHeightAt, buildShell, bumpHeight, bumpsFromLayout, dimpleNormalMap, domeHeight, topHeightAt,
+} from './shell3d';
 
 const layout = layoutFromNotes('t', [
   { pitch: 'D3' }, { pitch: 'A3' }, { pitch: 'C4' }, { pitch: 'D4' }, { pitch: 'E4' }, { pitch: 'C5', bottom: true },
@@ -24,7 +26,7 @@ describe('bumps', () => {
   it('makes one bump per field with the ding at the centre', () => {
     expect(top.map((b) => b.id)).toEqual(['ding', 'top-0', 'top-1', 'top-2', 'top-3']);
     expect(bottom.map((b) => b.id)).toEqual(['bottom-0']);
-    expect(top[0]).toMatchObject({ x: 0, y: -0, height: 0.05 });
+    expect(top[0]).toMatchObject({ x: 0, y: -0, height: 0.045 });
   });
 
   it('raises the oval and sinks the dimple', () => {
@@ -95,5 +97,37 @@ describe('surfaces', () => {
     // First ring of the underside sits on the gu radius, not at the centre.
     expect(Math.hypot(shell.bottom.positions[0]!, shell.bottom.positions[2]!)).toBeCloseTo(DEFAULT_SHELL.guRadius, 5);
     expect(Math.hypot(shell.top.positions[0]!, shell.top.positions[2]!)).toBeCloseTo(0, 5);
+  });
+});
+
+describe('dimpleNormalMap', () => {
+  const { top } = bumpsFromLayout(layout);
+
+  it('is flat away from dimples and at their centres, tilted on their walls', () => {
+    const size = 128;
+    const map = dimpleNormalMap(top, size);
+    const px = (x: number, y: number) => {
+      const i = (Math.floor(((y + 1) / 2) * size) * size + Math.floor(((x + 1) / 2) * size)) * 4;
+      return [map[i]!, map[i + 1]!, map[i + 2]!];
+    };
+    expect(px(0.9, 0.9)).toEqual([128, 128, 255]);
+    const d = top[0]!; // ding, at the origin
+    expect(px(d.x, d.y)[2]).toBe(255);
+    // On the +x wall of the concave dimple the surface rises with x, so the normal leans toward -x.
+    const wall = px(d.x + d.dimpleRadius * 0.7, d.y);
+    expect(wall[0]).toBeLessThan(120);
+    expect(wall[2]).toBeLessThan(255);
+    const otherWall = px(d.x - d.dimpleRadius * 0.7, d.y);
+    expect(otherWall[0]).toBeGreaterThan(136);
+  });
+
+  it('keeps dimples out of the geometry but bulges in', () => {
+    const shell = buildShell(layout, { ...DEFAULT_SHELL, rings: 60, segments: 90 });
+    const d = shell.bumps.top[1]!;
+    const geomAtCentre = topHeightAt(d.x, d.y, shell.bumps.top, DEFAULT_SHELL, false);
+    const geomOnRing = topHeightAt(d.x + d.dimpleRadius * 0.9, d.y, shell.bumps.top, DEFAULT_SHELL, false);
+    expect(Math.abs(geomAtCentre - geomOnRing)).toBeLessThan(d.height * 0.15);
+    expect(geomAtCentre).toBeGreaterThan(topHeightAt(d.x, d.y, [], DEFAULT_SHELL));
+    expect(shell.top.positions.length).toBe(61 * 91 * 3);
   });
 });

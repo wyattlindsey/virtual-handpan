@@ -12,7 +12,9 @@ import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment
 import { CSS2DObject, CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
 import { type FieldPosition, type Layout, allFieldPositions, fieldXY } from '../model/layout';
 import { type Spelling, formatPitch } from '../model/pitch';
-import { type Bump, type ShellGeometry, type SurfaceData, bottomHeightAt, buildShell, topHeightAt } from '../model/shell3d';
+import {
+  type Bump, type ShellGeometry, type SurfaceData, bottomHeightAt, buildShell, dimpleNormalMap, topHeightAt,
+} from '../model/shell3d';
 import { makeHeatTintMaps } from './heatTint';
 import type { StrikeInfo } from './PanView';
 
@@ -40,6 +42,7 @@ interface SceneState {
   controls: OrbitControls;
   pan: THREE.Group;
   material: THREE.MeshPhysicalMaterial;
+  bottomMaterial: THREE.MeshPhysicalMaterial;
   top: THREE.Mesh;
   bottom: THREE.Mesh;
   fields: FieldNode[];
@@ -125,16 +128,19 @@ export function PanView3D({ layout, spelling, flashes, keyHints, onStrike }: Pro
       map: colorMap,
       roughnessMap,
       metalness: 0.85,
-      roughness: 0.5,
-      clearcoat: 0.2,
-      clearcoatRoughness: 0.35,
-      envMapIntensity: 0.7,
+      roughness: 0.52,
+      clearcoat: 0.12,
+      clearcoatRoughness: 0.4,
+      envMapIntensity: 0.55,
     });
+
+    // The underside gets its own material so it can carry its own dimple normal map.
+    const bottomMaterial = material.clone();
 
     const pan = new THREE.Group();
     scene.add(pan);
     const top = new THREE.Mesh(new THREE.BufferGeometry(), material);
-    const bottom = new THREE.Mesh(new THREE.BufferGeometry(), material);
+    const bottom = new THREE.Mesh(new THREE.BufferGeometry(), bottomMaterial);
     top.castShadow = bottom.castShadow = true;
     top.receiveShadow = true;
     pan.add(top, bottom);
@@ -168,7 +174,7 @@ export function PanView3D({ layout, spelling, flashes, keyHints, onStrike }: Pro
     controls.zoomSpeed = 0.6;
 
     const state: SceneState = {
-      renderer, labelRenderer, scene, camera, controls, pan, material, top, bottom, fields: [], raf: 0, flipTarget: 0,
+      renderer, labelRenderer, scene, camera, controls, pan, material, bottomMaterial, top, bottom, fields: [], raf: 0, flipTarget: 0,
       dispose: () => {},
     };
     stateRef.current = state;
@@ -277,7 +283,10 @@ export function PanView3D({ layout, spelling, flashes, keyHints, onStrike }: Pro
       bottom.geometry.dispose();
       seam.geometry.dispose();
       gu.geometry.dispose();
+      material.normalMap?.dispose();
+      bottomMaterial.normalMap?.dispose();
       material.dispose();
+      bottomMaterial.dispose();
       colorMap.dispose();
       roughnessMap.dispose();
       renderer.dispose();
@@ -296,6 +305,24 @@ export function PanView3D({ layout, spelling, flashes, keyHints, onStrike }: Pro
     state.bottom.geometry.dispose();
     state.top.geometry = toGeometry(shell.top);
     state.bottom.geometry = toGeometry(shell.bottom);
+
+    // Dimples shade per pixel from a normal map; the underside's frame is mirrored, so flip its green.
+    const applyNormalMap = (mat: THREE.MeshPhysicalMaterial, bumps: Bump[], flipY: boolean) => {
+      mat.normalMap?.dispose();
+      const size = 1024;
+      const tex = new THREE.DataTexture(dimpleNormalMap(bumps, size), size, size, THREE.RGBAFormat);
+      tex.flipY = true;
+      tex.generateMipmaps = true;
+      tex.minFilter = THREE.LinearMipmapLinearFilter;
+      tex.magFilter = THREE.LinearFilter;
+      tex.anisotropy = Math.min(8, state.renderer.capabilities.getMaxAnisotropy());
+      tex.needsUpdate = true;
+      mat.normalMap = tex;
+      mat.normalScale.set(1, flipY ? -1 : 1);
+      mat.needsUpdate = true;
+    };
+    applyNormalMap(state.material, shell.bumps.top, false);
+    applyNormalMap(state.bottomMaterial, shell.bumps.bottom, true);
 
     for (const f of state.fields) {
       state.pan.remove(f.ring, f.label);

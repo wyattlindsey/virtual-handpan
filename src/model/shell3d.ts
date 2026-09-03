@@ -27,8 +27,8 @@ export const DEFAULT_SHELL: ShellParams = {
   bottomHeight: 0.2,
   guRadius: 0.15,
   rimWidth: 0.035,
-  rings: 150,
-  segments: 240,
+  rings: 180,
+  segments: 360,
 };
 
 /** A raised oval with a concave dimple at its centre. */
@@ -48,7 +48,7 @@ export function bumpFromField(f: FieldPosition): Bump {
   const { x, y } = fieldXY(f);
   if (f.side === 'ding') {
     const r = 0.17 * f.size * 1.08;
-    return { id: f.id, x, y, rx: r, ry: r, angleDeg: 0, height: 0.05, dimpleRadius: r * 0.32, dimpleDepth: 0.028 };
+    return { id: f.id, x, y, rx: r, ry: r, angleDeg: 0, height: 0.045, dimpleRadius: r * 0.3, dimpleDepth: 0.026 };
   }
   const scale = f.side === 'bottom' ? 1.0 : 1.12;
   return {
@@ -56,9 +56,9 @@ export function bumpFromField(f: FieldPosition): Bump {
     rx: 0.135 * f.size * scale,
     ry: 0.105 * f.size * scale,
     angleDeg: f.angleDeg,
-    height: f.side === 'bottom' ? 0.022 : 0.026,
+    height: f.side === 'bottom' ? 0.014 : 0.017,
     dimpleRadius: 0.052 * f.size,
-    dimpleDepth: 0.026,
+    dimpleDepth: 0.024,
   };
 }
 
@@ -74,8 +74,8 @@ function smoothstep(a: number, b: number, t: number): number {
   return x * x * (3 - 2 * x);
 }
 
-/** Height a bump adds at a point: a plateau-edged oval minus a rounded dimple. */
-export function bumpHeight(b: Bump, x: number, y: number): number {
+/** The raised oval alone: flat over the dimple, then a long rounded shoulder. */
+export function bulgeHeight(b: Bump, x: number, y: number): number {
   const dx = x - b.x;
   const dy = y - b.y;
   const rad = (b.angleDeg * Math.PI) / 180;
@@ -85,11 +85,53 @@ export function bumpHeight(b: Bump, x: number, y: number): number {
   const u = dx * c + dy * s;
   const v = -dx * s + dy * c;
   const d = Math.sqrt((u / b.rx) ** 2 + (v / b.ry) ** 2);
-  // A gentle bulge: flat over the dimple, then a long rounded shoulder.
-  let h = b.height * (1 - smoothstep(0.3, 1.2, d));
-  const dd = Math.hypot(dx, dy) / b.dimpleRadius;
-  if (dd < 1) h -= b.dimpleDepth * (1 - dd * dd);
-  return h;
+  // A wide, low dome with a rounded shoulder rather than a plateau and moat.
+  return b.height * (1 - smoothstep(0.15, 1.15, d));
+}
+
+/** The concave dimple alone, as a negative height. */
+export function dimpleHeight(b: Bump, x: number, y: number): number {
+  const dd = Math.hypot(x - b.x, y - b.y) / b.dimpleRadius;
+  return dd < 1 ? -b.dimpleDepth * (1 - dd * dd) : 0;
+}
+
+/** Height a bump adds at a point: the bulge minus the dimple. */
+export function bumpHeight(b: Bump, x: number, y: number): number {
+  return bulgeHeight(b, x, y) + dimpleHeight(b, x, y);
+}
+
+/**
+ * Tangent-space normal map of the dimples over the unit disc, RGBA bytes in
+ * a size x size image whose pixel (0, 0) is the (-1, -1) corner, matching
+ * the planar UVs of the surfaces. Dimples are too small to tessellate
+ * cleanly, so they shade per pixel while the bulges stay in the geometry.
+ * Red is the slope along +x, green along +y (toward the player), blue up.
+ */
+export function dimpleNormalMap(bumps: readonly Bump[], size: number): Uint8ClampedArray {
+  const out = new Uint8ClampedArray(size * size * 4);
+  const step = 2 / size;
+  const eps = step * 0.5;
+  for (let py = 0; py < size; py++) {
+    const y = -1 + (py + 0.5) * step;
+    for (let px = 0; px < size; px++) {
+      const x = -1 + (px + 0.5) * step;
+      let hx = 0;
+      let hy = 0;
+      for (const b of bumps) {
+        // Skip pixels nowhere near this dimple.
+        if (Math.abs(x - b.x) > b.dimpleRadius + eps * 2 || Math.abs(y - b.y) > b.dimpleRadius + eps * 2) continue;
+        hx += (dimpleHeight(b, x + eps, y) - dimpleHeight(b, x - eps, y)) / (2 * eps);
+        hy += (dimpleHeight(b, x, y + eps) - dimpleHeight(b, x, y - eps)) / (2 * eps);
+      }
+      const len = Math.hypot(hx, hy, 1);
+      const i = (py * size + px) * 4;
+      out[i] = Math.round(((-hx / len) * 0.5 + 0.5) * 255);
+      out[i + 1] = Math.round(((-hy / len) * 0.5 + 0.5) * 255);
+      out[i + 2] = Math.round(((1 / len) * 0.5 + 0.5) * 255);
+      out[i + 3] = 255;
+    }
+  }
+  return out;
 }
 
 /** Spherical-cap dome of height h over radius 1, flattening into the rim band. */
@@ -101,19 +143,19 @@ export function domeHeight(r: number, h: number, rimWidth: number): number {
   return cap * (1 - t);
 }
 
-/** Height of the top surface at a point (positive up). */
-export function topHeightAt(x: number, y: number, bumps: readonly Bump[], p: ShellParams = DEFAULT_SHELL): number {
+/** Height of the top surface at a point (positive up). `dimples` false leaves them to the normal map. */
+export function topHeightAt(x: number, y: number, bumps: readonly Bump[], p: ShellParams = DEFAULT_SHELL, dimples = true): number {
   const r = Math.hypot(x, y);
   let h = domeHeight(r, p.topHeight, p.rimWidth);
-  for (const b of bumps) h += bumpHeight(b, x, y);
+  for (const b of bumps) h += dimples ? bumpHeight(b, x, y) : bulgeHeight(b, x, y);
   return h;
 }
 
 /** Height of the bottom surface at a point (negative, bumps protrude downward). */
-export function bottomHeightAt(x: number, y: number, bumps: readonly Bump[], p: ShellParams = DEFAULT_SHELL): number {
+export function bottomHeightAt(x: number, y: number, bumps: readonly Bump[], p: ShellParams = DEFAULT_SHELL, dimples = true): number {
   const r = Math.hypot(x, y);
   let h = domeHeight(r, p.bottomHeight, p.rimWidth);
-  for (const b of bumps) h += bumpHeight(b, x, y);
+  for (const b of bumps) h += dimples ? bumpHeight(b, x, y) : bulgeHeight(b, x, y);
   return -h;
 }
 
@@ -198,11 +240,12 @@ export interface ShellGeometry {
   bumps: { top: Bump[]; bottom: Bump[] };
 }
 
+/** Geometry carries the domes and bulges; dimples are left to dimpleNormalMap. */
 export function buildShell(layout: Layout, p: ShellParams = DEFAULT_SHELL): ShellGeometry {
   const bumps = bumpsFromLayout(layout);
   return {
-    top: buildSurface((x, y) => topHeightAt(x, y, bumps.top, p), 1, p),
-    bottom: buildSurface((x, y) => bottomHeightAt(x, y, bumps.bottom, p), -1, p, p.guRadius),
+    top: buildSurface((x, y) => topHeightAt(x, y, bumps.top, p, false), 1, p),
+    bottom: buildSurface((x, y) => bottomHeightAt(x, y, bumps.bottom, p, false), -1, p, p.guRadius),
     bumps,
   };
 }

@@ -330,21 +330,25 @@ export interface HumanizedNote {
  * from the RNG per note so results are reproducible for a seed.
  */
 export function humanizeNote(n: GeneratedNote, params: HumanizeParams, rng: Rng): HumanizedNote {
-  const bps = params.bpm / 60;
+  // Older or partial parameter objects may lack a field; treat missing as neutral.
+  const num = (v: number | undefined, fallback: number) => (Number.isFinite(v) ? (v as number) : fallback);
+  const bpm = num(params.bpm, DEFAULT_GENERATOR_PARAMS.bpm);
+  const bps = bpm / 60;
   let beat = n.beat;
   const frac = beat % 1;
-  if (Math.abs(frac - 0.5) < 1e-6) beat += params.swing * (1 / 6) + params.lean * 0.012 * bps;
-  if (n.partner) beat += (params.flamMs / 1000) * bps;
-  if (params.drift > 0) {
-    const phase = ((params.seed % 1000) / 1000) * Math.PI * 2;
-    beat += params.drift * 0.05 * bps * Math.sin((Math.PI * 2 * n.beat) / 24 + phase);
+  if (Math.abs(frac - 0.5) < 1e-6) beat += num(params.swing, 0) * (1 / 6) + num(params.lean, 0) * 0.012 * bps;
+  if (n.partner) beat += (num(params.flamMs, 0) / 1000) * bps;
+  const drift = num(params.drift, 0);
+  if (drift > 0) {
+    const phase = ((num(params.seed, 0) % 1000) / 1000) * Math.PI * 2;
+    beat += drift * 0.05 * bps * Math.sin((Math.PI * 2 * n.beat) / 24 + phase);
   }
-  const jitterBeats = (params.jitterMs / 1000) * bps;
+  const jitterBeats = (num(params.jitterMs, 0) / 1000) * bps;
   const j = clamp(rng.gaussian(), -3, 3) * jitterBeats;
-  const v = clamp(rng.gaussian(), -2.5, 2.5) * params.velocityVariation;
+  const v = clamp(rng.gaussian(), -2.5, 2.5) * num(params.velocityVariation, 0);
   return {
     beat: Math.max(0, beat + j),
-    velocity: clamp(params.velocity + n.accent + v, 0.08, 1),
+    velocity: clamp(num(params.velocity, DEFAULT_GENERATOR_PARAMS.velocity) + num(n.accent, 0) + v, 0.08, 1),
   };
 }
 

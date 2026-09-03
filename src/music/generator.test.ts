@@ -219,6 +219,18 @@ describe('humanize', () => {
     expect(humanizeNote(off, { ...flat, bpm: 60, lean: -1 }, humanizeRng(1)).beat).toBeCloseTo(2.488);
   });
 
+  it('treats missing or bad parameters as neutral', () => {
+    const n = { beat: 2.5, pitch: 'D3', accent: 0.05, duration: 0.5 };
+    const partial = { bpm: 120, velocity: 0.6 } as unknown as Parameters<typeof humanizeNote>[1];
+    const h = humanizeNote({ ...n, partner: true }, partial, humanizeRng(1));
+    expect(Number.isFinite(h.beat)).toBe(true);
+    expect(h.beat).toBeCloseTo(2.5);
+    expect(h.velocity).toBeCloseTo(0.65);
+    const nan = { ...flat, lean: Number.NaN, bpm: Number.NaN };
+    const g = humanizeNote(n, nan, humanizeRng(1));
+    expect(Number.isFinite(g.beat)).toBe(true);
+  });
+
   it('drifts slowly and stays bounded', () => {
     const p = { ...flat, bpm: 60, drift: 1 };
     let maxAbs = 0;

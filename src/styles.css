@@ -153,14 +153,30 @@ body {
   filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.5));
 }
 
-.pip-label {
+.pip-toggle {
   position: absolute;
-  top: 8px;
-  left: 12px;
+  top: 6px;
+  left: 8px;
+  padding: 2px 8px;
   font-size: 11px;
   color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.08em;
+  background: transparent;
+  border-color: transparent;
+}
+
+.pip-toggle:hover:not(:disabled) { color: var(--text); background: rgba(255, 255, 255, 0.06); }
+
+.pip-toggle.collapsed {
+  top: auto;
+  left: auto;
+  right: 0;
+  bottom: 0;
+  background: rgba(20, 22, 27, 0.75);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 6px 10px;
 }
 
 /* SVG field styling */
@@ -379,4 +395,5 @@ button.mini.danger:hover:not(:disabled) { border-color: var(--danger); color: va
   }
   .stage { position: relative; top: auto; height: auto; }
   .pan { height: auto; width: min(100%, 80vh); }
+  .pan3d { height: auto; aspect-ratio: 1; min-height: 0; }
 }

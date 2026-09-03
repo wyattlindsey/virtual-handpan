@@ -62,13 +62,27 @@ Next:
 - Optional per-note tuning offsets and sample start trimming in the
   manifest.
 
-### v0.3: realistic rendering (started)
+### v0.3: realistic rendering (in progress)
 
-- Done: an SVG skin modelled on Isthmus nitrided steel, cobalt with violet
-  heat-tint blotches, raised fields with concave dimples, a lit gu on the
-  underside.
-- Next: photo-derived textures or a WebGL shell with real lighting,
-  reflections that follow the cursor, strike animation on the dimple.
+Done:
+
+- An SVG skin modelled on Isthmus nitrided steel, cobalt with violet
+  heat-tint blotches, raised fields with concave dimples, a lit gu.
+- A WebGL view: the shell as a heightfield built from the layout (two
+  domes, bulged fields with dimples, open gu, rim seam), physically based
+  steel with procedural colour and roughness maps, environment
+  reflections, a key light with a soft shadow, an orbit limited to a tilt
+  and a modest swing, and a flip to the underside.
+
+Next:
+
+- Proportions from a real instrument (dome heights, field and dimple
+  sizes, rim profile) measured on the Isthmus pan.
+- A colour map derived from a straight-down photo of the actual pan,
+  unwrapped onto the disc, so the heat tint is the real one.
+- Strike animation on the dimple, cursor-following reflections, and a
+  photogrammetry pass if we want the exact shell (needs 40 to 80
+  overlapping photos on a turntable; single product shots are not enough).
 
 ### v0.4: builder-grade configuration
 

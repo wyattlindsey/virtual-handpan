@@ -25,22 +25,28 @@ Then open http://localhost:5173. `npm test` runs the unit tests,
 - **Custom layouts.** Add or remove notes from A2 to B5, move any note to the
   underside, transpose, and choose which side the zigzag starts on. The
   lowest top-side note is the ding.
-- **Playable pan.** Overhead SVG view with fields placed in the standard
-  zigzag and sized by pitch. Click a field (harder toward the centre) or use
-  the keyboard: home row for the ring, space for the ding, bottom row for
-  underside notes. The underside shows as a picture-in-picture.
+- **Playable pan, in 3D or 2D.** The 3D view is a WebGL shell built from
+  the layout (domes, raised fields, dimples, gu) in physically based steel
+  with a heat-tint map; tilt and swing it within limits, flip it to see the
+  underside. The 2D view is the SVG skin with a collapsible underside
+  picture-in-picture. Either way, click a field (harder toward the centre)
+  or use the keyboard: home row for the ring, space for the ding, bottom
+  row for underside notes.
 - **Two voices.** A synthesized handpan (additive partials at 1:2:3 with a
   detuned shimmer, pitch- and velocity-dependent decay, a noise strike) and
   a sample engine with velocity layers, equal-power crossfades and round
-  robin. Both sit behind one `Instrument` interface. Until real recordings
-  exist the sample engine plays a starter pack rendered from the synth;
-  [docs/sample-packs.md](docs/sample-packs.md) covers the pack format and
-  how to record a real pan.
+  robin. Both sit behind one `Instrument` interface. Packs load lazily,
+  only the zones the current notes reach, and are cached on the device.
+  Until real recordings exist the sample engine plays a starter pack
+  rendered from the synth; [docs/sample-packs.md](docs/sample-packs.md)
+  covers the pack format, loading, encodings, and how to record a real pan.
 - **Nitrided steel look.** A drawn skin modelled on Isthmus Instruments'
   heat-tinted cobalt finish, with an underside picture-in-picture.
 - **Generated phrases.** Scale up and down, uniform random draws like the
-  Isthmus tool, or melodic step-biased phrases with rests. Human feel
-  controls: timing jitter, swing, velocity and velocity spread.
+  Isthmus tool, or melodic step-biased phrases with rests and metric
+  accents. Human feel controls (timing jitter, swing, velocity, spread) and
+  tempo apply live while a phrase plays; changing the phrase itself
+  restarts it.
 
 ## Layout
 
@@ -48,7 +54,8 @@ Then open http://localhost:5173. `npm test` runs the unit tests,
 src/model    pitch names, layouts, scale library
 src/audio    engine, Instrument interface, synth voice, sample engine and pack loader
 src/music    generator, humanization, sequencer, RNG
-src/ui       React components (pan views, editors, transport)
+src/model    also shell3d.ts, the heightfield model behind the 3D view
+src/ui       React components (2D and 3D pan views, skin, editors, transport)
 data         reference sheet export and the converted scales.json
 public/packs sample packs (pack.json manifests plus audio) and index.json
 scripts      convert_scales.py regenerates data/scales.json; build_manifest.py builds a pack manifest

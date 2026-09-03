@@ -185,6 +185,10 @@ describe('generatePhrase', () => {
       for (const other of notes) if (other !== t && other.beat === t.beat) expect(other.hand).not.toBe(t.hand);
     }
     expect(generatePhrase(kurd, { ...P, taks: 0 }).some((n) => n.kind)).toBe(false);
+    // The low end of the slider still produces taks you can hear over a phrase.
+    let low = 0;
+    for (let seed = 1; seed <= 10; seed++) low += generatePhrase(kurd, { ...P, taks: 0.1, bars: 8, seed }).filter((n) => n.kind === 'tak').length;
+    expect(low / 10).toBeGreaterThan(2.5);
     expect(phraseKey({ ...P, taks: 1 })).not.toBe(phraseKey(P));
     const lilt = generatePhrase(kurd, { ...P, taks: 1, feel: 'lilt', bars: 4, seed: 2 }).filter((n) => n.kind === 'tak');
     for (const t of lilt) expect(t.beat % 3).toBe(1.5);

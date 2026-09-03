@@ -384,15 +384,17 @@ function melodicPhrase(layout: Layout, pitches: string[], feel: Feel, params: Ge
     }
 
     // Taks on the backbeat: a fingertip on the shoulder from whichever hand is free.
+    // The slider is eased so its low end still yields a tak every bar or two.
+    const takChance = Math.pow(Math.min(1, Math.max(0, params.taks)), 0.55);
     for (const slot of feel.takSlots) {
-      if (!rng.chance(params.taks)) continue;
+      if (!rng.chance(takChance)) continue;
       const beatInBar = slot / 2;
       const beat = bar * beatsPerBar + beatInBar;
       const here = notes.filter((x) => x.beat === beat);
       if (here.length >= 2) continue;
       const busy = here[0]?.hand;
       const hand: Hand = busy === 'L' ? 'R' : busy === 'R' ? 'L' : prevHand === 'L' ? 'R' : 'L';
-      notes.push({ beat, pitch: '', kind: 'tak', accent: -0.1 + arc, duration: 0.25, hand, role: 'groove' });
+      notes.push({ beat, pitch: '', kind: 'tak', accent: -0.03 + arc, duration: 0.25, hand, role: 'groove' });
     }
   }
 

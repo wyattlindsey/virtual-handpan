@@ -2,6 +2,10 @@
 """Build a sample pack manifest (pack.json) from a folder of recordings.
 
 Files are named  <pitch>[_<role>]_v<layer>_rr<take>.<ext>
+
+The same take in several encodings (A3_v1_rr1.m4a and A3_v1_rr1.flac) is
+listed as alternatives, smallest first; the browser picks the first it can
+decode.
   pitch  : note name with octave. Write sharps as "s" and flats as "b" so
            the name is filesystem and URL safe: Cs4, Db4, A3, Bb3.
   role   : optional, one of ding, top, bottom. Omit for a zone that covers any.
@@ -23,17 +27,20 @@ import argparse, json, re, sys
 from collections import defaultdict
 from pathlib import Path
 
-NAME_RE = re.compile(r'^([A-Ga-g])(s|b|#)?(-?\d)(?:_(ding|top|bottom))?_v(\d+)_rr(\d+)\.(wav|flac|ogg|mp3|m4a)$', re.I)
+NAME_RE = re.compile(r'^([A-Ga-g])(s|b|#)?(-?\d)(?:_(ding|top|bottom))?_v(\d+)_rr(\d+)\.(wav|flac|ogg|opus|webm|mp3|m4a|aac)$', re.I)
+
+# Preference when a take exists in several encodings: smallest download first.
+EXT_ORDER = ['m4a', 'aac', 'ogg', 'opus', 'webm', 'mp3', 'flac', 'wav']
 
 
 def parse_name(name):
     m = NAME_RE.match(name)
     if not m:
         return None
-    letter, acc, octave, role, layer, take, _ = m.groups()
+    letter, acc, octave, role, layer, take, ext = m.groups()
     acc = {'s': '#', '#': '#', 'b': 'b', None: ''}[acc.lower() if acc else None]
     return dict(pitch=f"{letter.upper()}{acc}{octave}", role=role.lower() if role else None,
-                layer=int(layer), take=int(take))
+                layer=int(layer), take=int(take), ext=ext.lower())
 
 
 def main():
@@ -50,7 +57,7 @@ def main():
     if not root.is_dir():
         sys.exit(f"not a directory: {root}")
 
-    zones = defaultdict(lambda: defaultdict(dict))  # (pitch, role) -> layer -> take -> file
+    zones = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))  # (pitch, role) -> layer -> take -> [files]
     skipped = []
     max_layer = 0
     for f in sorted(root.iterdir()):
@@ -60,7 +67,7 @@ def main():
         if not info:
             skipped.append(f.name)
             continue
-        zones[(info['pitch'], info['role'])][info['layer']][info['take']] = f.name
+        zones[(info['pitch'], info['role'])][info['layer']][info['take']].append(f.name)
         max_layer = max(max_layer, info['layer'])
     if not zones:
         sys.exit('no sample files matched the naming convention')
@@ -87,7 +94,11 @@ def main():
             if not takes:
                 warnings.append(f"{pitch}{'/' + role if role else ''}: no files for layer v{n}")
                 continue
-            zone['layers'].append({'lo': bounds[n - 1], 'hi': bounds[n], 'files': [takes[k] for k in sorted(takes)]})
+            files = []
+            for k in sorted(takes):
+                alts = sorted(takes[k], key=lambda f: EXT_ORDER.index(f.rsplit('.', 1)[1].lower()))
+                files.append(alts[0] if len(alts) == 1 else alts)
+            zone['layers'].append({'lo': bounds[n - 1], 'hi': bounds[n], 'files': files})
         if zone['layers']:
             manifest['zones'].append(zone)
 

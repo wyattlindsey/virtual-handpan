@@ -23,6 +23,52 @@ the same `Instrument` interface as the synth. For each strike it:
 
 Pitches the pack cannot reach fall back to the synth voice.
 
+## Loading and caching
+
+Packs load lazily. When a pack is chosen the app fetches only the manifest,
+then decodes just the zones the notes on the current pan can reach. Within
+a request, every zone's most likely velocity layer (around velocity 0.7) is
+queued before any zone's least likely one, so the pan becomes playable
+sooner; until a zone has landed, its note plays on the synth. Changing the
+layout loads what the new notes need and drops decoded audio for zones
+nothing can reach any more.
+
+Fetched files are stored in the browser's Cache API, so a pack is
+downloaded once per device even though GitHub Pages serves short cache
+lifetimes. "Clear cached samples" under Sound & view removes them.
+
+Memory is the real budget. Decoded audio is raw floats: a mono 6 s sample
+at 48 kHz costs about 1.2 MB in RAM whatever the file format, so a ten-note
+layout with four layers and five takes holds around 230 MB decoded. Keep
+recordings mono unless the stereo image matters, trim tails at the noise
+floor, and prefer fewer, better takes.
+
+## Encodings
+
+Browsers decode WAV, FLAC, MP3 and AAC everywhere; Ogg Opus is missing on
+some Safari versions. Ship AAC for size, and optionally FLAC alongside for
+lossless where supported. A take may list both:
+
+```json
+{ "lo": 0.55, "hi": 0.8, "files": [["A3_top_v3_rr1.m4a", "A3_top_v3_rr1.flac"], "A3_top_v3_rr2.m4a"] }
+```
+
+The manifest script groups files that share a name and differ only in
+extension into such alternatives automatically, smallest first.
+
+From WAV masters, mono, with ffmpeg:
+
+```bash
+for f in *.wav; do ffmpeg -loglevel error -i "$f" -ac 1 -c:a aac -b:a 160k "${f%.wav}.m4a"; done
+```
+
+```bash
+for f in *.wav; do ffmpeg -loglevel error -i "$f" -ac 1 -c:a flac "${f%.wav}.flac"; done
+```
+
+Rough sizes for a 6 s mono take: WAV 24-bit 0.9 MB, FLAC 0.35 MB, AAC at
+160 kbps 0.12 MB.
+
 ## Manifest format
 
 A pack is a folder under `public/packs/<pack-id>/` with the audio files and
@@ -56,8 +102,8 @@ a `pack.json`:
   position.
 - Layers should tile 0..1. `lo` is inclusive, `hi` exclusive except for the
   top layer.
-- `files` are relative to the manifest (or to `baseUrl` if given). Browsers
-  decode WAV, FLAC, OGG, MP3 and AAC; WAV and FLAC keep the transient intact.
+- `files` are relative to the manifest (or to `baseUrl` if given). An entry
+  may be an array of the same take in several encodings, preferred first.
 - `gainDb` trims a layer. Use it to tame a hot take, not to normalise.
 
 `public/packs/index.json` lists the packs the app offers.

@@ -92,6 +92,7 @@ export function Transport({
       <Slider label="Rests" value={params.restDensity} min={0} max={0.6} step={0.02} format={pct} disabled={!isMelodic && params.mode !== 'random'} hint="How often a slot stays silent" onChange={(v) => onChange({ restDensity: v })} />
       <Slider label="Dyads" value={params.dyads} min={0} max={1} step={0.05} format={pct} disabled={!isMelodic} hint="How often the other hand adds a second note (ding, octave, fifth, fourth, third) under a melody note" onChange={(v) => onChange({ dyads: v })} />
       <Slider label="Groove hand" value={params.groove} min={0} max={1} step={0.05} format={pct} disabled={!isMelodic} hint="How often the free hand keeps a pulse on the ding and the lowest note under the melody, on the strong beats of the feel" onChange={(v) => onChange({ groove: v })} />
+      <Slider label="Taks" value={params.taks} min={0} max={1} step={0.05} format={pct} disabled={!isMelodic} hint="How often a fingertip clicks the shoulder on the backbeat" onChange={(v) => onChange({ taks: v })} />
 
       <h3>Human feel</h3>
       <Slider label="Tempo" value={params.bpm} min={40} max={160} step={1} unit=" bpm" onChange={(v) => onChange({ bpm: v })} />

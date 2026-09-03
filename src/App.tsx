@@ -13,7 +13,7 @@ import { type LibraryScale, findScale, layoutFromScale } from './model/scales';
 import { getFeel } from './music/feels';
 import { DEFAULT_GENERATOR_PARAMS, type GeneratorParams, generatePhraseDetailed, phraseKey, phraseSeconds } from './music/generator';
 import { trainModel } from './music/learn';
-import { type Recording, Recorder, isRecording, recordingToPhrase } from './music/recorder';
+import { type Recording, Recorder, isRecording, percussionPitch, recordingToPhrase } from './music/recorder';
 import { Sequencer } from './music/sequencer';
 import { type TasteWeights, applyFeedback, emptyTaste } from './music/taste';
 import { NoteEditor } from './ui/NoteEditor';
@@ -154,10 +154,11 @@ export function App() {
 
   const strike = useCallback(
     (info: StrikeInfo) => {
-      void ensureAudio().then((inst) => inst.noteOn(info.pitch, info.velocity, undefined, info.side));
+      const kind = info.kind;
+      void ensureAudio().then((inst) => (kind ? inst.hit(kind, info.velocity) : inst.noteOn(info.pitch, info.velocity, undefined, info.side as 'ding' | 'top' | 'bottom')));
       flash([info.fieldId]);
       if (recorderRef.current.recording) {
-        recorderRef.current.add(info.pitch, info.velocity, engine.now);
+        recorderRef.current.add(kind ? percussionPitch(kind) : info.pitch, info.velocity, engine.now);
         setRecordCount(recorderRef.current.count);
       }
     },
@@ -187,7 +188,7 @@ export function App() {
   const play = useCallback(async () => {
     await ensureAudio();
     sequencer.play(phrase, () => paramsRef.current, paramsRef.current.seed, {
-      onNote: (n) => flash(fieldsByPitch.get(n.pitch) ?? []),
+      onNote: (n) => flash(n.kind ? ['rim'] : fieldsByPitch.get(n.pitch) ?? []),
       onEnd: () => setPlaying(false),
     });
     setPlaying(true);
@@ -205,7 +206,7 @@ export function App() {
     // Recorded timing and dynamics are the point, so the human layer stays out of it.
     const raw = () => ({ ...paramsRef.current, jitterMs: 0, velocityVariation: 0, swing: 0, lean: 0, drift: 0, flamMs: 0 });
     sequencer.play(recordingToPhrase(r), raw, 1, {
-      onNote: (n) => flash(fieldsByPitch.get(n.pitch) ?? []),
+      onNote: (n) => flash(n.kind ? ['rim'] : fieldsByPitch.get(n.pitch) ?? []),
       onEnd: () => setPlaying(false),
     });
     setPlaying(true);
@@ -343,7 +344,7 @@ export function App() {
       if (!hit) return;
       e.preventDefault();
       const velocity = (e.shiftKey ? 0.95 : 0.74) + (Math.random() - 0.5) * 0.08;
-      strike({ fieldId: hit.fieldId, pitch: hit.pitch, side: hit.side, velocity });
+      strike({ fieldId: hit.fieldId, pitch: hit.pitch, side: hit.side, velocity, ...(hit.kind ? { kind: hit.kind } : {}) });
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);

@@ -204,6 +204,15 @@ body {
 
 .flash-group { pointer-events: none; }
 
+.rim-hit { cursor: pointer; }
+
+.flash-rim {
+  stroke: var(--accent-2);
+  stroke-width: 0.05px;
+  pointer-events: none;
+  animation: strike 0.35s ease-out forwards;
+}
+
 .flash {
   fill: var(--accent-2);
   animation: strike 0.8s ease-out forwards;

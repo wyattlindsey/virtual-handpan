@@ -46,6 +46,8 @@ interface SceneState {
   top: THREE.Mesh;
   bottom: THREE.Mesh;
   fields: FieldNode[];
+  seam: THREE.Mesh<THREE.TorusGeometry, THREE.MeshStandardMaterial>;
+  seamFlashAt: number;
   raf: number;
   flipTarget: number;
   /** True while the camera eases back to the home view. */
@@ -151,7 +153,7 @@ export function PanView3D({ layout, spelling, flashes, keyHints, onStrike }: Pro
     // Rim seam and the gu's inner wall.
     const seam = new THREE.Mesh(
       new THREE.TorusGeometry(1.0, 0.012, 12, 200),
-      new THREE.MeshStandardMaterial({ color: 0x9fb3cc, metalness: 0.9, roughness: 0.35 }),
+      new THREE.MeshStandardMaterial({ color: 0x9fb3cc, metalness: 0.9, roughness: 0.35, emissive: 0xf0c46b, emissiveIntensity: 0 }),
     );
     seam.rotation.x = Math.PI / 2;
     seam.castShadow = true;
@@ -176,8 +178,8 @@ export function PanView3D({ layout, spelling, flashes, keyHints, onStrike }: Pro
     controls.rotateSpeed = 0.6;
 
     const state: SceneState = {
-      renderer, labelRenderer, scene, camera, controls, pan, material, bottomMaterial, top, bottom, fields: [], raf: 0, flipTarget: 0,
-      homing: false,
+      renderer, labelRenderer, scene, camera, controls, pan, material, bottomMaterial, top, bottom, fields: [], seam, seamFlashAt: -10,
+      raf: 0, flipTarget: 0, homing: false,
       dispose: () => {},
     };
     stateRef.current = state;
@@ -223,7 +225,13 @@ export function PanView3D({ layout, spelling, flashes, keyHints, onStrike }: Pro
           const d = Math.sqrt((uu / node.bump.rx) ** 2 + (vv / node.bump.ry) ** 2);
           if (d < 1.25 && (!best || d < best.d)) best = { node, d };
         }
-        if (!best) return;
+        if (!best) {
+          // The shoulder and rim: a tak, or a slap with shift held.
+          if (Math.hypot(local.x, local.z) > 0.8) {
+            propsRef.current.onStrike({ fieldId: 'rim', pitch: '', side: 'rim', kind: u.shiftKey ? 'slap' : 'tak', velocity: 0.75 });
+          }
+          return;
+        }
         const velocity = Math.min(1, Math.max(0.4, 1 - 0.45 * best.d));
         propsRef.current.onStrike({ fieldId: best.node.field.id, pitch: best.node.field.pitch, side: best.node.field.side, velocity });
       };
@@ -261,6 +269,8 @@ export function PanView3D({ layout, spelling, flashes, keyHints, onStrike }: Pro
       if (Math.abs(diff) > 1e-4) pan.rotation.x += diff * Math.min(1, dt * 7);
       else pan.rotation.x = target;
       const now = performance.now() / 1000;
+      const seamAge = now - state.seamFlashAt;
+      state.seam.material.emissiveIntensity = seamAge < 0.35 ? 1.6 * (1 - seamAge / 0.35) : 0;
       for (const f of state.fields) {
         const age = now - f.struckAt;
         f.ring.material.opacity = age < FLASH_SECONDS ? 0.85 * (1 - age / FLASH_SECONDS) : 0;
@@ -383,6 +393,7 @@ export function PanView3D({ layout, spelling, flashes, keyHints, onStrike }: Pro
       const n = flashes[f.field.id];
       if (n !== undefined && n !== prevFlashes.current[f.field.id]) f.struckAt = now;
     }
+    if (flashes['rim'] !== undefined && flashes['rim'] !== prevFlashes.current['rim']) state.seamFlashAt = now;
     prevFlashes.current = { ...flashes };
   }, [flashes]);
 

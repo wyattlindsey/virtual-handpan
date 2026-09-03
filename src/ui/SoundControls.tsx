@@ -96,7 +96,7 @@ export function SoundControls({
         <button type="button" className={`mini${showUnderside ? ' on' : ''}`} onClick={onToggleUnderside}>{showUnderside ? 'shown' : 'hidden'}</button>
       </div>
       <p className="muted small">
-        Click or tap a field to play it. Keyboard: home row plays the ring from the lowest note, space is the ding, bottom row plays underside notes. Hold shift to strike harder. Esc stops playback.
+        Click or tap a field to play it; click the shoulder for a tak (shift for a slap). Keyboard: home row plays the ring from the lowest note, space is the ding, bottom row plays underside notes, 1 is a tak and 2 a slap. Hold shift to strike harder. Esc stops playback.
       </p>
     </section>
   );

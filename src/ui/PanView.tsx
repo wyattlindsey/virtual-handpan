@@ -13,8 +13,18 @@ import { DingGraphic, FieldGraphic, Shell, SkinDefs } from './skin';
 export interface StrikeInfo {
   fieldId: string;
   pitch: string;
-  side: FieldSide;
+  side: FieldSide | 'rim';
   velocity: number;
+  /** Set for a stroke on the shoulder or shell rather than a note. */
+  kind?: 'tak' | 'slap';
+}
+
+/** A tak from the pointer, or a slap with shift held. */
+export function rimStrike(e: PointerEvent<SVGElement>): StrikeInfo {
+  return {
+    fieldId: 'rim', pitch: '', side: 'rim', kind: e.shiftKey ? 'slap' : 'tak',
+    velocity: Math.min(1, 0.6 + (e.pointerType === 'pen' && e.pressure > 0 ? e.pressure * 0.4 : 0.15)),
+  };
 }
 
 interface Props {
@@ -40,6 +50,18 @@ export function PanView({ layout, spelling, flashes, keyHints, showBottomGhosts 
     <svg className="pan" viewBox="-1.12 -1.12 2.24 2.24" role="group" aria-label="Handpan, top view">
       <SkinDefs prefix="pv" />
       <Shell prefix="pv" />
+      {/* The shoulder between the ring and the rim: a tak on click, a slap with shift. */}
+      <circle
+        className="rim-hit"
+        r="0.9"
+        fill="none"
+        stroke="transparent"
+        strokeWidth="0.2"
+        onPointerDown={(e) => onStrike(rimStrike(e))}
+        role="button"
+        aria-label="Shoulder, tak"
+      />
+      {flashes['rim'] !== undefined && <circle key={flashes['rim']} className="flash-rim" r="0.97" fill="none" />}
 
       {showBottomGhosts && bottom.map((f) => <GhostField key={f.id} field={f} spelling={spelling} />)}
 

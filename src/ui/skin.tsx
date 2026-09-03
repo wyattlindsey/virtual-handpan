@@ -19,11 +19,11 @@ export function SkinDefs({ prefix }: SkinProps) {
     <defs>
       {/* Shell body: satin steel blue, darkest toward the far rim. */}
       <radialGradient id={id('shell')} cx="38%" cy="32%" r="82%">
-        <stop offset="0%" stopColor="#4f8dc2" />
-        <stop offset="22%" stopColor="#35699d" />
-        <stop offset="50%" stopColor="#213f6b" />
-        <stop offset="78%" stopColor="#132542" />
-        <stop offset="100%" stopColor="#0a1426" />
+        <stop offset="0%" stopColor="#5a9bd0" />
+        <stop offset="22%" stopColor="#3873ab" />
+        <stop offset="50%" stopColor="#224676" />
+        <stop offset="78%" stopColor="#132848" />
+        <stop offset="100%" stopColor="#0a1528" />
       </radialGradient>
       <radialGradient id={id('shell-under')} cx="45%" cy="40%" r="80%">
         <stop offset="0%" stopColor="#2e5a86" />
@@ -45,11 +45,11 @@ export function SkinDefs({ prefix }: SkinProps) {
       </linearGradient>
       {/* Heat-tint blotches: noise turned into a violet or teal veil, clipped to the shape. */}
       <filter id={id('blotch-violet')} x="-5%" y="-5%" width="110%" height="110%" primitiveUnits="userSpaceOnUse">
-        <feTurbulence type="fractalNoise" baseFrequency="1.35" numOctaves="3" seed="7" result="noise" />
+        <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="3" seed="7" result="noise" />
         <feColorMatrix
           in="noise"
           type="matrix"
-          values="0 0 0 0 0.46  0 0 0 0 0.28  0 0 0 0 0.66  0 0 0 2.2 -0.75"
+          values="0 0 0 0 0.50  0 0 0 0 0.30  0 0 0 0 0.70  0 0 0 3.0 -1.25"
           result="tint"
         />
         <feComposite in="tint" in2="SourceGraphic" operator="in" />
@@ -123,8 +123,8 @@ export function Shell({ prefix, underside = false }: ShellProps) {
   return (
     <g className="shell">
       <circle r="1" fill={id(underside ? 'shell-under' : 'shell')} />
-      <circle r="1" fill="#6a4aa0" opacity={underside ? 0.35 : 0.6} filter={id('blotch-violet')} />
-      <circle r="1" fill="#3a8ab8" opacity={underside ? 0.25 : 0.45} filter={id('blotch-teal')} />
+      <circle r="1" fill="#6a4aa0" opacity={underside ? 0.4 : 0.7} filter={id('blotch-violet')} />
+      <circle r="1" fill="#3a8ab8" opacity={underside ? 0.25 : 0.5} filter={id('blotch-teal')} />
       <circle r="1" fill="#fff" opacity="0.14" filter={id('grain')} />
       {!underside && <ellipse cx="-0.32" cy="-0.42" rx="0.62" ry="0.34" fill={id('sheen')} transform="rotate(-32)" />}
       <circle r="1" fill={id('rim-shade')} />

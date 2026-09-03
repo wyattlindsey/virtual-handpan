@@ -1,0 +1,2 @@
+# Keep the raw spreadsheet export byte-for-byte (it has CRLF line endings).
+data/reference/* -text

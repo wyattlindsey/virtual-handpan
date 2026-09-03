@@ -129,7 +129,10 @@ describe('generatePhrase', () => {
     const bars = 8;
     const notes = generatePhrase(kurd, { ...P, groove: 1, bars, seed: 4 });
     const groove = notes.filter((n) => n.role === 'groove');
-    expect(groove.length).toBeGreaterThan(bars * 1.2);
+    expect(groove.length).toBeGreaterThan(bars * 0.5);
+    // The grooving hand mostly fills gaps rather than doubling melody notes.
+    const doubled = groove.filter((g) => notes.some((m) => m.role === 'melody' && m.beat === g.beat)).length;
+    expect(doubled / groove.length).toBeLessThan(0.5);
     for (const g of groove) {
       expect(['D3', 'A3']).toContain(g.pitch);
       expect(g.hand).toBe('L');

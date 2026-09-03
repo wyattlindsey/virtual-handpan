@@ -59,7 +59,7 @@ export const DEFAULT_GENERATOR_PARAMS: GeneratorParams = {
   velocityVariation: 0.1,
   restDensity: 0.18,
   swing: 0,
-  dyads: 0.25,
+  dyads: 0.12,
   groove: 0.5,
   flamMs: 18,
   lean: 0.15,
@@ -307,7 +307,10 @@ function melodicPhrase(layout: Layout, pitches: string[], feel: Feel, params: Ge
       const beat = bar * beatsPerBar + beatInBar;
       const idx = gi === 0 ? 0 : Math.min(1, n - 1);
       const pitch = pitches[idx]!;
-      if (notes.some((x) => x.beat === beat && x.pitch === pitch)) return;
+      const melodyHere = notes.filter((x) => x.beat === beat && x.role === 'melody');
+      if (melodyHere.some((x) => x.pitch === pitch)) return;
+      // Mostly fill the gaps the melody leaves; landing together reads as a dyad, so keep that rare.
+      if (melodyHere.length > 0 && !rng.chance(0.25)) return;
       notes.push({ beat, pitch, accent: accentAt(feel, beatInBar) - 0.12 + arc, duration: 0.5, hand: 'L', role: 'groove' });
     });
   }

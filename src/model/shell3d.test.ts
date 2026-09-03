@@ -51,12 +51,29 @@ describe('surfaces', () => {
 
   it('adds bumps onto the domes with the right sign', () => {
     const f = top[1]!;
-    const onField = topHeightAt(f.x + f.dimpleRadius * 1.6, f.y, top);
-    const offField = topHeightAt(f.x + f.rx * 2.2, f.y, top);
-    expect(onField).toBeGreaterThan(offField);
+    const x = f.x + f.dimpleRadius * 1.6;
+    expect(topHeightAt(x, f.y, top)).toBeGreaterThan(topHeightAt(x, f.y, []));
     const b = bottom[0]!;
-    expect(bottomHeightAt(b.x + b.dimpleRadius * 1.6, b.y, bottom)).toBeLessThan(bottomHeightAt(b.x + b.rx * 2.2, b.y, bottom));
+    const bx = b.x + b.dimpleRadius * 1.6;
+    expect(bottomHeightAt(bx, b.y, bottom)).toBeLessThan(bottomHeightAt(bx, b.y, []));
     expect(bottomHeightAt(0.5, 0, bottom)).toBeLessThan(0);
+  });
+
+  it('winds top faces to face up and bottom faces to face down', () => {
+    const shell = buildShell(layout, { ...DEFAULT_SHELL, rings: 4, segments: 8 });
+    const faceUp = (s: typeof shell.top) => {
+      const [a, b, c] = [s.indices[0]!, s.indices[1]!, s.indices[2]!];
+      const p = (i: number) => [s.positions[i * 3]!, s.positions[i * 3 + 1]!, s.positions[i * 3 + 2]!] as const;
+      const [ax, ay, az] = p(a), [bx, by, bz] = p(b), [cx, cy, cz] = p(c);
+      const ux = bx - ax, uy = by - ay, uz = bz - az;
+      const vx = cx - ax, vy = cy - ay, vz = cz - az;
+      // y component of the cross product: counter-clockwise faces have it positive.
+      return uz * vx - ux * vz;
+    };
+    // The first top triangle touches the degenerate centre; use one from the second ring.
+    const second = { ...shell.top, indices: shell.top.indices.slice(8 * 6) };
+    expect(faceUp(second)).toBeGreaterThan(0);
+    expect(faceUp(shell.bottom)).toBeLessThan(0);
   });
 
   it('builds indexed grids with unit normals and an open gu underneath', () => {

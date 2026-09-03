@@ -178,12 +178,13 @@ export function buildSurface(
       const b = a + 1;
       const c = a + cols;
       const d = c + 1;
+      // Angle increases clockwise seen from above, so (a, b, c) faces up.
       if (up === 1) {
-        indices[q++] = a; indices[q++] = c; indices[q++] = b;
-        indices[q++] = b; indices[q++] = c; indices[q++] = d;
-      } else {
         indices[q++] = a; indices[q++] = b; indices[q++] = c;
         indices[q++] = b; indices[q++] = d; indices[q++] = c;
+      } else {
+        indices[q++] = a; indices[q++] = c; indices[q++] = b;
+        indices[q++] = b; indices[q++] = c; indices[q++] = d;
       }
     }
   }

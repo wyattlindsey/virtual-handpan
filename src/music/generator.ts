@@ -226,8 +226,8 @@ interface BarEvent {
 }
 
 const PHRASE_BARS = 4;
-/** How strongly a bar's first melody note leans toward the bass note, the lowest field at 6 o'clock. */
-const BASS_ON_THE_ONE = 0.8;
+/** How strongly a bar's first melody note leans toward the ding, the lowest note at the centre. */
+const DING_ON_THE_ONE = 0.8;
 
 /**
  * A step-biased random walk over the scale played by two hands. Each hand
@@ -272,8 +272,8 @@ function melodicPhrase(layout: Layout, pitches: string[], feel: Feel, params: Ge
   };
 
   const chooseIndex = (beat: number, isDownbeat: boolean, resolve: boolean, leftBusy: boolean): number => {
-    // Bars start on the bass note: the lowest field, nearest the player. The groove hand's ding underneath it is welcome.
-    if (isDownbeat && rng.chance(BASS_ON_THE_ONE)) return Math.min(1, n - 1);
+    // Bars start on the ding. If the groove hand is striking it there already, that counts.
+    if (isDownbeat && !leftBusy && rng.chance(DING_ON_THE_ONE)) return 0;
     if (resolve) return rng.chance(0.6) ? 0 : Math.min(1, n - 1);
     const w: number[] = [];
     for (let i = 0; i < n; i++) {

@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { engine } from './audio/engine';
 import type { Instrument } from './audio/instrument';
+import { SampledInstrument } from './audio/sampledInstrument';
+import { renderStarterPack } from './audio/starterPack';
 import { SynthHandpan } from './audio/synthHandpan';
 import { type Layout, type NoteSpec, type Zigzag, allFieldPositions, layoutFromNotes, transposeLayout } from './model/layout';
 import type { Spelling } from './model/pitch';
@@ -10,7 +12,7 @@ import { Sequencer } from './music/sequencer';
 import { NoteEditor } from './ui/NoteEditor';
 import { PanView, type StrikeInfo } from './ui/PanView';
 import { ScalePicker } from './ui/ScalePicker';
-import { SoundControls } from './ui/SoundControls';
+import { SoundControls, type VoiceKind } from './ui/SoundControls';
 import { Transport } from './ui/Transport';
 import { UndersideView } from './ui/UndersideView';
 import { keyHints, keyMap } from './ui/keys';
@@ -34,6 +36,8 @@ export function App() {
   const [showUnderside, setShowUnderside] = useState(true);
   const [volume, setVolume] = useState(engine.getVolume());
   const [reverb, setReverb] = useState(engine.getReverb());
+  const [voice, setVoice] = useState<VoiceKind>('synth');
+  const [voiceStatus, setVoiceStatus] = useState('');
 
   const layout = useMemo(() => {
     const t = transposeLayout(base, semitones);
@@ -42,13 +46,20 @@ export function App() {
   const layoutRef = useRef(layout);
   layoutRef.current = layout;
 
+  // The synth always exists once audio starts; it is the fallback for the sampled voice too.
+  const synthRef = useRef<SynthHandpan | null>(null);
   const instrumentRef = useRef<Instrument | null>(null);
+  const ensureSynth = useCallback((): SynthHandpan => {
+    if (!synthRef.current) synthRef.current = new SynthHandpan(engine);
+    return synthRef.current;
+  }, []);
   const ensureAudio = useCallback(async (): Promise<Instrument> => {
     const resumed = engine.resume();
-    if (!instrumentRef.current) instrumentRef.current = new SynthHandpan(engine);
+    const synth = ensureSynth();
+    if (!instrumentRef.current) instrumentRef.current = synth;
     await resumed;
     return instrumentRef.current;
-  }, []);
+  }, [ensureSynth]);
 
   const sequencer = useMemo(
     () => new Sequencer(engine, () => instrumentRef.current, (pitch) => roleFor(layoutRef.current, pitch)),
@@ -96,6 +107,39 @@ export function App() {
 
   // Any change to what would be played stops the current phrase.
   useEffect(() => { stop(); }, [layout, params.mode, stop]);
+
+  // Build the active instrument for the chosen voice and the notes on the pan.
+  useEffect(() => {
+    let cancelled = false;
+    const previous = instrumentRef.current;
+    if (voice === 'synth') {
+      instrumentRef.current = ensureSynth();
+      if (previous instanceof SampledInstrument) previous.dispose();
+      setVoiceStatus('');
+      return;
+    }
+    const notes = allFieldPositions(layout).map((f) => ({ pitch: f.pitch, role: f.side }));
+    setVoiceStatus('Rendering starter samples…');
+    renderStarterPack(engine.context.sampleRate, notes, (p) => {
+      if (!cancelled) setVoiceStatus(`Rendering starter samples ${p.done}/${p.total}`);
+    })
+      .then((pack) => {
+        if (cancelled) return;
+        const sampled = new SampledInstrument(engine, pack, { fallback: ensureSynth() });
+        const old = instrumentRef.current;
+        instrumentRef.current = sampled;
+        if (old instanceof SampledInstrument) old.dispose();
+        const layers = pack.zones[0]?.layers.length ?? 0;
+        const takes = pack.zones[0]?.layers[0]?.takes.length ?? 0;
+        setVoiceStatus(`${pack.zones.length} zones · ${layers} velocity layers · ${takes} round robins`);
+      })
+      .catch((err: unknown) => {
+        if (cancelled) return;
+        instrumentRef.current = ensureSynth();
+        setVoiceStatus(`Sample render failed, using synth: ${err instanceof Error ? err.message : String(err)}`);
+      });
+    return () => { cancelled = true; };
+  }, [voice, layout, ensureSynth]);
 
   // Keyboard playing.
   useEffect(() => {
@@ -177,6 +221,9 @@ export function App() {
           seconds={phraseSeconds}
         />
         <SoundControls
+          voice={voice}
+          voiceStatus={voiceStatus}
+          onVoice={setVoice}
           volume={volume}
           reverb={reverb}
           spelling={spelling}

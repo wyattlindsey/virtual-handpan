@@ -1,21 +1,49 @@
 import type { Spelling } from '../model/pitch';
 import { Slider } from './Transport';
 
+export type VoiceKind = 'synth' | 'starter';
+
 interface Props {
+  voice: VoiceKind;
+  voiceStatus: string;
   volume: number;
   reverb: number;
   spelling: Spelling;
   showUnderside: boolean;
+  onVoice: (v: VoiceKind) => void;
   onVolume: (v: number) => void;
   onReverb: (v: number) => void;
   onSpelling: (s: Spelling) => void;
   onToggleUnderside: () => void;
 }
 
-export function SoundControls({ volume, reverb, spelling, showUnderside, onVolume, onReverb, onSpelling, onToggleUnderside }: Props) {
+const VOICES: { value: VoiceKind; label: string; hint: string }[] = [
+  { value: 'synth', label: 'Synth', hint: 'Additive model, any pitch' },
+  { value: 'starter', label: 'Sampled', hint: 'Sample engine playing a starter pack rendered from the synth: 3 velocity layers, 3 round robins' },
+];
+
+export function SoundControls({
+  voice, voiceStatus, volume, reverb, spelling, showUnderside, onVoice, onVolume, onReverb, onSpelling, onToggleUnderside,
+}: Props) {
   return (
     <section className="panel">
       <h2>Sound &amp; view</h2>
+      <div className="segmented" role="radiogroup" aria-label="Voice">
+        {VOICES.map((v) => (
+          <button
+            key={v.value}
+            type="button"
+            role="radio"
+            aria-checked={voice === v.value}
+            className={voice === v.value ? 'on' : ''}
+            title={v.hint}
+            onClick={() => onVoice(v.value)}
+          >
+            {v.label}
+          </button>
+        ))}
+      </div>
+      {voiceStatus && <div className="muted small mono">{voiceStatus}</div>}
       <Slider label="Volume" value={volume} min={0} max={1} step={0.02} format={(v) => `${Math.round(v * 100)}%`} onChange={onVolume} />
       <Slider label="Room" value={reverb} min={0} max={0.8} step={0.02} format={(v) => `${Math.round(v * 100)}%`} onChange={onReverb} />
       <div className="row space-between">

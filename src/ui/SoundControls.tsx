@@ -3,6 +3,7 @@ import type { Spelling } from '../model/pitch';
 import { Slider } from './Transport';
 
 export type VoiceKind = 'synth' | 'sampled';
+export type ViewKind = '2d' | '3d';
 
 /** Id of the pack rendered from the synth, always available. */
 export const STARTER_PACK_ID = 'starter';
@@ -17,6 +18,8 @@ interface Props {
   volume: number;
   reverb: number;
   spelling: Spelling;
+  view: ViewKind;
+  onView: (v: ViewKind) => void;
   showUnderside: boolean;
   onVoice: (v: VoiceKind) => void;
   onVolume: (v: number) => void;
@@ -31,8 +34,8 @@ const VOICES: { value: VoiceKind; label: string; hint: string }[] = [
 ];
 
 export function SoundControls({
-  voice, voiceStatus, packId, packs, onPack, onClearCache, volume, reverb, spelling, showUnderside, onVoice, onVolume, onReverb,
-  onSpelling, onToggleUnderside,
+  voice, voiceStatus, packId, packs, onPack, onClearCache, volume, reverb, spelling, view, onView, showUnderside, onVoice, onVolume,
+  onReverb, onSpelling, onToggleUnderside,
 }: Props) {
   return (
     <section className="panel">
@@ -79,9 +82,18 @@ export function SoundControls({
         </span>
       </div>
       <div className="row space-between">
-        <span>Underside view</span>
-        <button type="button" className={`mini${showUnderside ? ' on' : ''}`} onClick={onToggleUnderside}>{showUnderside ? 'shown' : 'hidden'}</button>
+        <span>View</span>
+        <span className="row">
+          <button type="button" className={`mini${view === '3d' ? ' on' : ''}`} onClick={() => onView('3d')}>3D</button>
+          <button type="button" className={`mini${view === '2d' ? ' on' : ''}`} onClick={() => onView('2d')}>2D</button>
+        </span>
       </div>
+      {view === '2d' && (
+        <div className="row space-between">
+          <span>Underside view</span>
+          <button type="button" className={`mini${showUnderside ? ' on' : ''}`} onClick={onToggleUnderside}>{showUnderside ? 'shown' : 'hidden'}</button>
+        </div>
+      )}
       <p className="muted small">
         Click or tap a field to play it. Keyboard: home row plays the ring from the lowest note, space is the ding, bottom row plays underside notes. Hold shift to strike harder. Esc stops playback.
       </p>

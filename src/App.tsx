@@ -14,8 +14,9 @@ import { DEFAULT_GENERATOR_PARAMS, type GeneratorParams, generatePhrase, phraseK
 import { Sequencer } from './music/sequencer';
 import { NoteEditor } from './ui/NoteEditor';
 import { PanView, type StrikeInfo } from './ui/PanView';
+import { PanView3D } from './ui/PanView3D';
 import { ScalePicker } from './ui/ScalePicker';
-import { STARTER_PACK_ID, SoundControls, type VoiceKind } from './ui/SoundControls';
+import { STARTER_PACK_ID, SoundControls, type ViewKind, type VoiceKind } from './ui/SoundControls';
 import { Transport } from './ui/Transport';
 import { UndersideView } from './ui/UndersideView';
 import { keyHints, keyMap } from './ui/keys';
@@ -37,6 +38,13 @@ export function App() {
   const [params, setParams] = useState<GeneratorParams>(DEFAULT_GENERATOR_PARAMS);
   const [playing, setPlaying] = useState(false);
   const [showUnderside, setShowUnderside] = useState(true);
+  const [view, setView] = useState<ViewKind>(() => {
+    try { return localStorage.getItem('handpan.view') === '2d' ? '2d' : '3d'; } catch { return '3d'; }
+  });
+  const chooseView = (v: ViewKind) => {
+    setView(v);
+    try { localStorage.setItem('handpan.view', v); } catch { /* private mode */ }
+  };
   const [volume, setVolume] = useState(engine.getVolume());
   const [reverb, setReverb] = useState(engine.getReverb());
   const [voice, setVoice] = useState<VoiceKind>('synth');
@@ -264,8 +272,12 @@ export function App() {
       </div>
 
       <main className="stage">
-        <PanView layout={layout} spelling={spelling} flashes={flashes} keyHints={hints} onStrike={strike} />
-        {showUnderside && (
+        {view === '3d' ? (
+          <PanView3D layout={layout} spelling={spelling} flashes={flashes} keyHints={hints} onStrike={strike} />
+        ) : (
+          <PanView layout={layout} spelling={spelling} flashes={flashes} keyHints={hints} onStrike={strike} />
+        )}
+        {view === '2d' && showUnderside && (
           <div className="pip" aria-label="Underside">
             <UndersideView layout={layout} spelling={spelling} flashes={flashes} keyHints={hints} onStrike={strike} />
             <span className="pip-label">underside</span>
@@ -295,6 +307,8 @@ export function App() {
           volume={volume}
           reverb={reverb}
           spelling={spelling}
+          view={view}
+          onView={chooseView}
           showUnderside={showUnderside}
           onVolume={(v) => { setVolume(v); engine.setVolume(v); }}
           onReverb={(v) => { setReverb(v); engine.setReverb(v); }}

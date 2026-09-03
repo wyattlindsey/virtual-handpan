@@ -75,7 +75,7 @@ export function PanView3D({ layout, spelling, flashes, keyHints, onStrike }: Pro
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.05;
+    renderer.toneMappingExposure = 0.95;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     host.appendChild(renderer.domElement);
@@ -87,7 +87,7 @@ export function PanView3D({ layout, spelling, flashes, keyHints, onStrike }: Pro
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 50);
-    camera.position.set(0, 3.1, 1.15);
+    camera.position.set(0, 3.6, 1.3);
     camera.lookAt(0, 0, 0);
 
     const pmrem = new THREE.PMREMGenerator(renderer);
@@ -124,11 +124,11 @@ export function PanView3D({ layout, spelling, flashes, keyHints, onStrike }: Pro
     const material = new THREE.MeshPhysicalMaterial({
       map: colorMap,
       roughnessMap,
-      metalness: 0.88,
-      roughness: 0.42,
-      clearcoat: 0.35,
-      clearcoatRoughness: 0.3,
-      envMapIntensity: 0.9,
+      metalness: 0.85,
+      roughness: 0.5,
+      clearcoat: 0.2,
+      clearcoatRoughness: 0.35,
+      envMapIntensity: 0.7,
     });
 
     const pan = new THREE.Group();
@@ -158,8 +158,8 @@ export function PanView3D({ layout, spelling, flashes, keyHints, onStrike }: Pro
     controls.enablePan = false;
     controls.enableDamping = true;
     controls.dampingFactor = 0.08;
-    controls.minDistance = 2.4;
-    controls.maxDistance = 4.2;
+    controls.minDistance = 2.6;
+    controls.maxDistance = 4.8;
     controls.minPolarAngle = 0.02;
     controls.maxPolarAngle = 1.15;
     controls.minAzimuthAngle = -0.75;

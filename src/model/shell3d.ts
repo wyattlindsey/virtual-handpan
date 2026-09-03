@@ -85,9 +85,10 @@ export function bumpHeight(b: Bump, x: number, y: number): number {
   const u = dx * c + dy * s;
   const v = -dx * s + dy * c;
   const d = Math.sqrt((u / b.rx) ** 2 + (v / b.ry) ** 2);
-  let h = b.height * (1 - smoothstep(0.62, 1.12, d));
+  // A gentle bulge: flat over the dimple, then a long rounded shoulder.
+  let h = b.height * (1 - smoothstep(0.3, 1.2, d));
   const dd = Math.hypot(dx, dy) / b.dimpleRadius;
-  if (dd < 1) h -= b.dimpleDepth * (1 - dd * dd) * (1 - smoothstep(0.85, 1, dd) * 0.0);
+  if (dd < 1) h -= b.dimpleDepth * (1 - dd * dd);
   return h;
 }
 

@@ -39,12 +39,18 @@ export function Transport({ params, onChange, playing, onPlay, onStop, onReseed,
         ))}
       </div>
 
-      <div className="row">
-        {playing ? (
-          <button type="button" className="primary" onClick={onStop}>■ Stop</button>
-        ) : (
-          <button type="button" className="primary" onClick={onPlay}>▶ Play</button>
-        )}
+      {playing ? (
+        <button type="button" className="play-button stop" onClick={onStop} aria-label="Stop">
+          <span className="play-icon">■</span>
+          <span className="play-text">Stop</span>
+        </button>
+      ) : (
+        <button type="button" className="play-button" onClick={onPlay} aria-label="Play a phrase on this pan">
+          <span className="play-icon">▶</span>
+          <span className="play-text">Play<small>hear this pan</small></span>
+        </button>
+      )}
+      <div className="row space-between">
         <button type="button" onClick={onReseed} disabled={isScale} title="Roll a new phrase">↻ New phrase</button>
         <span className="muted mono">{noteCount} notes · {seconds.toFixed(1)}s</span>
       </div>

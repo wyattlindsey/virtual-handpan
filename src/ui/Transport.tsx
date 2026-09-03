@@ -89,17 +89,17 @@ export function Transport({
 
       <h3>Phrase</h3>
       <Slider label="Length" value={params.bars} min={1} max={16} step={1} unit=" bars" disabled={isScale} onChange={(v) => onChange({ bars: v })} />
-      <Slider label="Rests" value={params.restDensity} min={0} max={0.6} step={0.02} format={pct} disabled={!isMelodic && params.mode !== 'random'} onChange={(v) => onChange({ restDensity: v })} />
-      <Slider label="Dyads" value={params.dyads} min={0} max={1} step={0.05} format={pct} disabled={!isMelodic} onChange={(v) => onChange({ dyads: v })} />
-      <Slider label="Groove hand" value={params.groove} min={0} max={1} step={0.05} format={pct} disabled={!isMelodic} onChange={(v) => onChange({ groove: v })} />
+      <Slider label="Rests" value={params.restDensity} min={0} max={0.6} step={0.02} format={pct} disabled={!isMelodic && params.mode !== 'random'} hint="How often a slot stays silent" onChange={(v) => onChange({ restDensity: v })} />
+      <Slider label="Dyads" value={params.dyads} min={0} max={1} step={0.05} format={pct} disabled={!isMelodic} hint="How often the other hand adds a second note (ding, octave, fifth, fourth, third) under a melody note" onChange={(v) => onChange({ dyads: v })} />
+      <Slider label="Groove hand" value={params.groove} min={0} max={1} step={0.05} format={pct} disabled={!isMelodic} hint="How often the free hand keeps a pulse on the ding and the lowest note under the melody, on the strong beats of the feel" onChange={(v) => onChange({ groove: v })} />
 
       <h3>Human feel</h3>
       <Slider label="Tempo" value={params.bpm} min={40} max={160} step={1} unit=" bpm" onChange={(v) => onChange({ bpm: v })} />
       <Slider label="Timing jitter" value={params.jitterMs} min={0} max={60} step={1} unit=" ms" onChange={(v) => onChange({ jitterMs: v })} />
       <Slider label="Swing" value={params.swing} min={0} max={1} step={0.05} format={pct} onChange={(v) => onChange({ swing: v })} />
-      <Slider label="Lean" value={params.lean} min={-1} max={1} step={0.05} format={lean} onChange={(v) => onChange({ lean: v })} />
-      <Slider label="Drift" value={params.drift} min={0} max={1} step={0.05} format={pct} onChange={(v) => onChange({ drift: v })} />
-      <Slider label="Flam" value={params.flamMs} min={0} max={40} step={1} unit=" ms" disabled={!isMelodic} onChange={(v) => onChange({ flamMs: v })} />
+      <Slider label="Lean" value={params.lean} min={-1} max={1} step={0.05} format={lean} hint="Offbeats a touch late (laid back) or early (pushed)" onChange={(v) => onChange({ lean: v })} />
+      <Slider label="Drift" value={params.drift} min={0} max={1} step={0.05} format={pct} hint="Slow push and pull against the grid, like breathing" onChange={(v) => onChange({ drift: v })} />
+      <Slider label="Flam" value={params.flamMs} min={0} max={40} step={1} unit=" ms" disabled={!isMelodic} hint="How far the second note of a dyad trails the first" onChange={(v) => onChange({ flamMs: v })} />
       <Slider label="Velocity" value={params.velocity} min={0.2} max={1} step={0.02} format={pct} onChange={(v) => onChange({ velocity: v })} />
       <Slider label="Velocity spread" value={params.velocityVariation} min={0} max={0.3} step={0.01} format={pct} onChange={(v) => onChange({ velocityVariation: v })} />
 
@@ -135,12 +135,14 @@ interface SliderProps {
   unit?: string;
   format?: (v: number) => string;
   disabled?: boolean;
+  /** Shown as a tooltip. */
+  hint?: string;
   onChange: (v: number) => void;
 }
 
-export function Slider({ label, value, min, max, step, unit = '', format, disabled, onChange }: SliderProps) {
+export function Slider({ label, value, min, max, step, unit = '', format, disabled, hint, onChange }: SliderProps) {
   return (
-    <label className={`slider${disabled ? ' disabled' : ''}`}>
+    <label className={`slider${disabled ? ' disabled' : ''}`} title={hint}>
       <span className="row space-between">
         <span>{label}</span>
         <span className="mono muted">{format ? format(value) : `${value}${unit}`}</span>

@@ -3,7 +3,7 @@ import { midiFromPitch } from '../model/pitch';
 import { FEELS, barBeats, getFeel } from './feels';
 import {
   DEFAULT_GENERATOR_PARAMS, type GeneratorParams, generatePhrase, generatePhraseDetailed, generatorPitches, handMap, humanize,
-  humanizeNote, humanizeRng, phraseKey, phraseSeconds, pickPartner,
+  humanizeNote, humanizeRng, phraseKey, phraseSeconds, pickPartner, positionMap, reachFactor,
 } from './generator';
 import { Rng } from './rng';
 
@@ -129,14 +129,13 @@ describe('generatePhrase', () => {
     const bars = 8;
     const notes = generatePhrase(kurd, { ...P, groove: 1, bars, seed: 4 });
     const groove = notes.filter((n) => n.role === 'groove');
-    expect(groove.length).toBeGreaterThan(bars * 0.5);
-    // The grooving hand mostly fills gaps rather than doubling melody notes.
-    const doubled = groove.filter((g) => notes.some((m) => m.role === 'melody' && m.beat === g.beat)).length;
-    expect(doubled / groove.length).toBeLessThan(0.5);
+    expect(groove.length).toBeGreaterThan(bars * 1.2);
     for (const g of groove) {
       expect(['D3', 'A3']).toContain(g.pitch);
       expect(g.hand).toBe('L');
       expect(g.beat % 1).toBe(0);
+      // Whatever the melody plays at that moment is on the other hand.
+      for (const m of notes) if (m.beat === g.beat && m !== g) expect(m.hand).toBe('R');
     }
     expect(generatePhrase(kurd, { ...P, groove: 0 }).some((n) => n.role === 'groove')).toBe(false);
   });
@@ -156,6 +155,48 @@ describe('generatePhrase', () => {
     }
     expect(pairs).toBeGreaterThan(20);
     expect(same / pairs).toBeLessThan(0.42);
+  });
+
+  it('keeps every simultaneous pair on two different hands and never asks for three', () => {
+    const notes = generatePhrase(kurd, { ...P, dyads: 1, groove: 1, bars: 16, seed: 6 });
+    const byBeat = new Map<number, typeof notes>();
+    for (const n of notes) byBeat.set(n.beat, [...(byBeat.get(n.beat) ?? []), n]);
+    const hands = handMap(kurd, generatorPitches(kurd));
+    const order = generatorPitches(kurd);
+    for (const group of byBeat.values()) {
+      expect(group.length).toBeLessThanOrEqual(2);
+      if (group.length === 2) {
+        const [a, b] = group;
+        expect(a!.hand).not.toBe(b!.hand);
+        const sideA = hands[order.indexOf(a!.pitch)];
+        const sideB = hands[order.indexOf(b!.pitch)];
+        if (sideA && sideB) expect(sideA).not.toBe(sideB);
+      }
+    }
+  });
+
+  it('keeps each hand within a comfortable speed', () => {
+    const pitches = generatorPitches(kurd);
+    const positions = positionMap(kurd, pitches);
+    const notes = generatePhrase(kurd, { ...P, dyads: 0.5, groove: 1, bars: 32, restDensity: 0, seed: 12 });
+    const lastByHand: Record<string, { pos: { x: number; y: number }; beat: number }> = {};
+    let moves = 0, rushed = 0;
+    for (const n of notes) {
+      const hand = n.hand!;
+      const pos = positions[pitches.indexOf(n.pitch)]!;
+      const prev = lastByHand[hand];
+      if (prev && n.beat > prev.beat) {
+        moves++;
+        const speed = Math.hypot(pos.x - prev.pos.x, pos.y - prev.pos.y) / Math.max(0.25, n.beat - prev.beat);
+        if (speed > 2.2) rushed++;
+      }
+      lastByHand[hand] = { pos, beat: n.beat };
+    }
+    expect(moves).toBeGreaterThan(80);
+    expect(rushed / moves).toBeLessThan(0.08);
+    expect(reachFactor(null, 0, { x: 1, y: 0 }, 0.25)).toBe(1);
+    expect(reachFactor({ x: -0.6, y: 0 }, 0, { x: 0.6, y: 0 }, 0.5)).toBeLessThan(0.2);
+    expect(reachFactor({ x: -0.6, y: 0 }, 0, { x: 0.6, y: 0 }, 2)).toBe(1);
   });
 
   it('reports the cells it used and learned mode falls back without a model', () => {
@@ -188,6 +229,19 @@ describe('pickPartner', () => {
     expect(counts.get(1)).toBeGreaterThan(40);      // A3, a fourth below
     expect(counts.get(8)).toBeGreaterThan(40);      // A4, a fifth above
     expect(pickPartner(0, [50, 51], new Rng(1))).toBeNull();
+  });
+
+  it('never offers a partner on the lead hand\'s side', () => {
+    const pitches = generatorPitches(kurd);
+    const midis = pitches.map(midiFromPitch);
+    const hands = handMap(kurd, pitches);
+    const rng = new Rng(2);
+    for (let i = 0; i < 300; i++) {
+      const lead = 1 + rng.int(pitches.length - 1);
+      const leadHand = hands[lead] ?? 'R';
+      const p = pickPartner(lead, midis, rng, hands, leadHand);
+      if (p !== null) expect(hands[p]).not.toBe(leadHand);
+    }
   });
 });
 

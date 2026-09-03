@@ -65,7 +65,8 @@ export function App() {
   const [semitones, setSemitones] = useState(0);
   const [spelling, setSpelling] = useState<Spelling>('flat');
   const [flashes, setFlashes] = useState<Record<string, number>>({});
-  const [params, setParams] = useState<GeneratorParams>(DEFAULT_GENERATOR_PARAMS);
+  // A fresh phrase on every visit; the seed only stays fixed until New phrase.
+  const [params, setParams] = useState<GeneratorParams>(() => ({ ...DEFAULT_GENERATOR_PARAMS, seed: (Date.now() ^ Math.floor(Math.random() * 0x7fffffff)) >>> 0 }));
   const [playing, setPlaying] = useState(false);
   const [showUnderside, setShowUnderside] = useState(true);
   // The underside PIP opens by itself for layouts with bottom notes unless the
@@ -189,9 +190,12 @@ export function App() {
 
   const stop = useCallback(() => sequencer.stop(), [sequencer]);
 
+  // Each Play re-humanizes: the same notes, but never quite the same timing twice.
+  const playCount = useRef(0);
   const play = useCallback(async () => {
     await ensureAudio();
-    sequencer.play(phrase, () => paramsRef.current, paramsRef.current.seed, {
+    playCount.current += 1;
+    sequencer.play(phrase, () => paramsRef.current, (paramsRef.current.seed + playCount.current * 7919) >>> 0, {
       onNote: (n) => flash(n.kind ? ['rim'] : fieldsByPitch.get(n.pitch) ?? []),
       onEnd: () => setPlaying(false),
     });

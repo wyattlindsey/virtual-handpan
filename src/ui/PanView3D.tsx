@@ -48,10 +48,13 @@ interface SceneState {
   fields: FieldNode[];
   raf: number;
   flipTarget: number;
+  /** True while the camera eases back to the home view. */
+  homing: boolean;
   dispose: () => void;
 }
 
 const FLASH_SECONDS = 0.8;
+const HOME = new THREE.Vector3(0, 3.6, 1.3);
 
 function toGeometry(s: SurfaceData): THREE.BufferGeometry {
   const g = new THREE.BufferGeometry();
@@ -90,7 +93,7 @@ export function PanView3D({ layout, spelling, flashes, keyHints, onStrike }: Pro
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 50);
-    camera.position.set(0, 3.6, 1.3);
+    camera.position.copy(HOME);
     camera.lookAt(0, 0, 0);
 
     const pmrem = new THREE.PMREMGenerator(renderer);
@@ -168,13 +171,15 @@ export function PanView3D({ layout, spelling, flashes, keyHints, onStrike }: Pro
     controls.maxDistance = 4.8;
     controls.minPolarAngle = 0.02;
     controls.maxPolarAngle = 1.15;
-    controls.minAzimuthAngle = -0.75;
-    controls.maxAzimuthAngle = 0.75;
+    // A small swing only: the lowest note stays toward the player.
+    controls.minAzimuthAngle = -0.2;
+    controls.maxAzimuthAngle = 0.2;
     controls.rotateSpeed = 0.6;
     controls.zoomSpeed = 0.6;
 
     const state: SceneState = {
       renderer, labelRenderer, scene, camera, controls, pan, material, bottomMaterial, top, bottom, fields: [], raf: 0, flipTarget: 0,
+      homing: false,
       dispose: () => {},
     };
     stateRef.current = state;
@@ -227,6 +232,8 @@ export function PanView3D({ layout, spelling, flashes, keyHints, onStrike }: Pro
       window.addEventListener('pointerup', onUp);
     };
     renderer.domElement.addEventListener('pointerdown', onPointerDown);
+    const cancelHoming = () => { state.homing = false; };
+    controls.addEventListener('start', cancelHoming);
 
     // Once the zoom is at its limit, wheel scrolling belongs to the page again.
     const onWheelCapture = (e: WheelEvent) => {
@@ -250,6 +257,13 @@ export function PanView3D({ layout, spelling, flashes, keyHints, onStrike }: Pro
     const loop = () => {
       state.raf = requestAnimationFrame(loop);
       const dt = Math.min(0.05, clock.getDelta());
+      if (state.homing) {
+        // Ease the camera home; a user drag cancels it.
+        const k = Math.min(1, dt * 9);
+        camera.position.lerp(HOME, k);
+        controls.target.lerp(new THREE.Vector3(0, 0, 0), k);
+        if (camera.position.distanceTo(HOME) < 0.004) { camera.position.copy(HOME); controls.target.set(0, 0, 0); state.homing = false; }
+      }
       controls.update();
       // Ease the flip.
       const target = state.flipTarget;
@@ -275,6 +289,7 @@ export function PanView3D({ layout, spelling, flashes, keyHints, onStrike }: Pro
       cancelAnimationFrame(state.raf);
       ro.disconnect();
       renderer.domElement.removeEventListener('pointerdown', onPointerDown);
+      controls.removeEventListener('start', cancelHoming);
       host.removeEventListener('wheel', onWheelCapture, { capture: true });
       narrow.removeEventListener('change', applyTouch);
       controls.dispose();
@@ -387,11 +402,22 @@ export function PanView3D({ layout, spelling, flashes, keyHints, onStrike }: Pro
     if (state) state.flipTarget = flipped ? Math.PI : 0;
   }, [flipped]);
 
+  const resetView = () => {
+    setFlipped(false);
+    const state = stateRef.current;
+    if (state) { state.flipTarget = 0; state.homing = true; }
+  };
+
   return (
     <div className="pan3d" ref={hostRef}>
-      <button type="button" className="mini pan3d-flip" onClick={() => setFlipped((f) => !f)}>
-        {flipped ? '↺ Show top' : '↻ Show underside'}
-      </button>
+      <div className="pan3d-buttons">
+        <button type="button" className="mini" onClick={() => setFlipped((f) => !f)}>
+          {flipped ? '↺ Show top' : '↻ Show underside'}
+        </button>
+        <button type="button" className="mini" onClick={resetView} title="Back to the overhead view">
+          ⌂ Reset view
+        </button>
+      </div>
     </div>
   );
 }

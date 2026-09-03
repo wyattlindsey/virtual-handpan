@@ -128,11 +128,13 @@ body {
 .label3d.ding { font-size: 18px; }
 .label3d small { font-size: 10px; font-weight: 500; color: #b7c3d6; }
 
-.pan3d-flip {
+.pan3d-buttons {
   position: absolute;
   left: 8px;
   bottom: 8px;
   z-index: 2;
+  display: flex;
+  gap: 6px;
 }
 
 .pip { z-index: 3; }

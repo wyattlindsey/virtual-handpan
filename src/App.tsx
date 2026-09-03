@@ -219,6 +219,17 @@ export function App() {
     setVoiceStatus(ok ? 'Cached sample files removed from this device.' : 'No sample cache to clear.');
   };
 
+  // A control clicked with the pointer gives focus back to the page, so the
+  // keys keep playing the pan; keyboard users who tabbed to it are unaffected.
+  useEffect(() => {
+    const onPointerUp = (e: PointerEvent) => {
+      const el = (e.target as HTMLElement | null)?.closest?.('button, input[type="range"]') as HTMLElement | null;
+      if (el) setTimeout(() => { if (document.activeElement === el) el.blur(); }, 0);
+    };
+    document.addEventListener('pointerup', onPointerUp);
+    return () => document.removeEventListener('pointerup', onPointerUp);
+  }, []);
+
   // Keyboard playing.
   useEffect(() => {
     const map = keyMap(layout);

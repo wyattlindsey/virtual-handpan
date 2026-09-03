@@ -23,7 +23,7 @@ interface Partial {
 
 const TONE_PARTIALS: Partial[] = [
   { ratio: 1, gain: 1.0, t60: 5.5, velExp: 1.0 },
-  { ratio: 1.0028, gain: 0.35, t60: 4.5, velExp: 1.0 },
+  { ratio: 1.0028, gain: 0.25, t60: 4.5, velExp: 1.0 },
   { ratio: 2, gain: 0.5, t60: 3.4, velExp: 1.5 },
   { ratio: 3, gain: 0.3, t60: 2.4, velExp: 1.9 },
   { ratio: 4.16, gain: 0.06, t60: 0.7, velExp: 2.6 },
@@ -32,8 +32,8 @@ const TONE_PARTIALS: Partial[] = [
 ];
 
 const DING_PARTIALS: Partial[] = [
-  { ratio: 1, gain: 1.0, t60: 8.5, velExp: 1.0 },
-  { ratio: 1.0018, gain: 0.4, t60: 7.0, velExp: 1.0 },
+  { ratio: 1, gain: 0.9, t60: 8.5, velExp: 1.0 },
+  { ratio: 1.0018, gain: 0.28, t60: 7.0, velExp: 1.0 },
   { ratio: 2, gain: 0.55, t60: 5.0, velExp: 1.4 },
   { ratio: 3, gain: 0.32, t60: 3.4, velExp: 1.8 },
   { ratio: 4.02, gain: 0.08, t60: 1.6, velExp: 2.2 },
@@ -61,13 +61,17 @@ class Voice implements VoiceHandle {
     const detune = (Math.random() * 2 - 1) * 3;
     let longest = 0;
 
+    // Low fundamentals dominate small speakers; tilt them down a little and let
+    // the upper partials carry more of a low note's identity.
+    const tilt = Math.min(1.1, Math.max(0.62, Math.pow(freq / 330, 0.3)));
+
     for (const p of partials) {
       const osc = ctx.createOscillator();
       osc.type = 'sine';
       osc.frequency.value = freq * p.ratio;
       osc.detune.value = detune;
       const env = ctx.createGain();
-      const peak = p.gain * Math.pow(vel, p.velExp);
+      const peak = p.gain * Math.pow(vel, p.velExp) * (p.ratio < 1.5 ? tilt : 1);
       const t60 = p.t60 * decayScale * (0.85 + 0.3 * vel);
       const tau = t60 / 6.91;
       env.gain.setValueAtTime(0, when);
@@ -134,7 +138,7 @@ export class SynthHandpan implements Instrument {
   constructor(private readonly engine: AudioEngine) {
     const ctx = engine.context;
     this.bus = ctx.createGain();
-    this.bus.gain.value = 0.32;
+    this.bus.gain.value = 0.3;
     this.bus.connect(engine.input);
     this.noise = makeNoise(ctx, 0.15);
   }
@@ -148,7 +152,7 @@ export class SynthHandpan implements Instrument {
       if (oldest) this.voices.delete(oldest);
     }
     const out = ctx.createGain();
-    out.gain.value = role === 'ding' ? 0.9 : 1;
+    out.gain.value = role === 'ding' ? 0.8 : 1;
     out.connect(this.bus);
     const voice = new Voice(ctx, out, (v) => this.voices.delete(v));
     const midi = midiFromPitch(pitch);

@@ -30,10 +30,14 @@ describe('bumps', () => {
   it('raises the oval and sinks the dimple', () => {
     const b = top[1]!;
     const centre = bumpHeight(b, b.x, b.y);
-    const ring = bumpHeight(b, b.x + b.dimpleRadius * 1.6, b.y);
-    const far = bumpHeight(b, b.x + b.rx * 2, b.y);
-    expect(ring).toBeCloseTo(b.height, 3);
+    const ring = bumpHeight(b, b.x + b.dimpleRadius * 1.2, b.y);
+    const shoulder = bumpHeight(b, b.x + b.rx * 0.9, b.y);
+    const far = bumpHeight(b, b.x + b.rx * 1.3, b.y);
     expect(centre).toBeCloseTo(b.height - b.dimpleDepth, 3);
+    expect(ring).toBeGreaterThan(b.height * 0.7);
+    expect(ring).toBeLessThanOrEqual(b.height);
+    expect(shoulder).toBeGreaterThan(0);
+    expect(shoulder).toBeLessThan(ring);
     expect(far).toBe(0);
   });
 

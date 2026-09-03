@@ -212,8 +212,11 @@ export function App() {
         <span className="muted">{layout.name}</span>
       </header>
 
-      <aside className="column left">
+      <div className="area-scale">
         <ScalePicker value={scaleId} spelling={spelling} onSelect={selectScale} />
+      </div>
+
+      <div className="area-notes">
         <NoteEditor
           layout={layout}
           spelling={spelling}
@@ -222,7 +225,7 @@ export function App() {
           onTranspose={(d) => setSemitones((s) => s + d)}
           onZigzag={setZigzag}
         />
-      </aside>
+      </div>
 
       <main className="stage">
         <PanView layout={layout} spelling={spelling} flashes={flashes} keyHints={hints} onStrike={strike} />

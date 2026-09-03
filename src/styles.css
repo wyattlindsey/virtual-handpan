@@ -25,10 +25,11 @@ body {
   min-height: 100vh;
   display: grid;
   grid-template-columns: 300px minmax(360px, 1fr) 320px;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto auto 1fr;
   grid-template-areas:
     'top top top'
-    'left stage right';
+    'scale stage right'
+    'notes stage right';
   gap: 16px;
   padding: 16px;
 }
@@ -54,7 +55,8 @@ body {
   min-width: 0;
 }
 
-.left { grid-area: left; }
+.area-scale { grid-area: scale; }
+.area-notes { grid-area: notes; }
 .right { grid-area: right; }
 
 .stage {
@@ -277,11 +279,13 @@ button.mini.danger:hover:not(:disabled) { border-color: var(--danger); color: va
 @media (max-width: 1000px) {
   .app {
     grid-template-columns: 1fr;
+    grid-template-rows: auto;
     grid-template-areas:
       'top'
+      'scale'
       'stage'
       'right'
-      'left';
+      'notes';
   }
   .stage { position: relative; top: auto; height: auto; }
   .pan { height: auto; width: min(100%, 80vh); }

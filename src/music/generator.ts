@@ -46,9 +46,18 @@ export interface GeneratedNote {
   /** Onset in beats from the phrase start. */
   beat: number;
   pitch: string;
-  velocity: number;
+  /** Offset from the mean velocity: positive on accents, negative on weak beats. */
+  accent: number;
   /** Nominal length in beats. */
   duration: number;
+}
+
+/** The parameters the humanize layer reads; they may change while a phrase plays. */
+export type HumanizeParams = Pick<GeneratorParams, 'bpm' | 'jitterMs' | 'velocity' | 'velocityVariation' | 'swing'>;
+
+/** Parameters that change what a phrase contains, as opposed to how it is played. */
+export function phraseKey(p: GeneratorParams): string {
+  return `${p.mode}|${p.bars}|${p.restDensity}|${p.seed}`;
 }
 
 /** Pitches available to the generator: the ding first, then everything else ascending. */
@@ -63,14 +72,14 @@ export function generatePhrase(layout: Layout, params: GeneratorParams): Generat
   const rng = new Rng(params.seed);
   const pitches = generatorPitches(layout);
   switch (params.mode) {
-    case 'scale': return scalePhrase(layout, params);
+    case 'scale': return scalePhrase(layout);
     case 'random': return randomPhrase(pitches, params, rng);
     case 'melodic': return melodicPhrase(pitches, params, rng);
   }
 }
 
 /** Ding, then up the top ring, then the bottom notes, then back down, ending on the ding. */
-function scalePhrase(layout: Layout, params: GeneratorParams): GeneratedNote[] {
+function scalePhrase(layout: Layout): GeneratedNote[] {
   const up = [layout.ding, ...layout.top, ...layout.bottom];
   const down = [...up].reverse().slice(1);
   const seq = [...up, ...down];
@@ -80,7 +89,7 @@ function scalePhrase(layout: Layout, params: GeneratorParams): GeneratedNote[] {
     notes.push({
       beat: i * 0.5,
       pitch,
-      velocity: params.velocity + (pitch === layout.ding ? 0.08 : 0),
+      accent: pitch === layout.ding ? 0.08 : 0,
       duration: last ? 2 : 0.5,
     });
   });
@@ -93,7 +102,7 @@ function randomPhrase(pitches: string[], params: GeneratorParams, rng: Rng): Gen
   const notes: GeneratedNote[] = [];
   for (let s = 0; s < slots; s++) {
     if (rng.chance(params.restDensity)) continue;
-    notes.push({ beat: s * 0.5, pitch: rng.pick(pitches), velocity: accent(params.velocity, s), duration: 0.5 });
+    notes.push({ beat: s * 0.5, pitch: rng.pick(pitches), accent: accent(s), duration: 0.5 });
   }
   return notes;
 }
@@ -160,44 +169,69 @@ function melodicPhrase(pitches: string[], params: GeneratorParams, rng: Rng): Ge
       }
       current = idx;
       const pitch = pitches[idx]!;
-      const vel = accent(params.velocity, Math.round(beat * 2)) + (idx === 0 && isDownbeat ? 0.08 : 0) + (dur >= 1 ? 0.03 : 0);
-      notes.push({ beat, pitch, velocity: vel, duration: isLast && lastBar ? 2 : dur });
+      const acc = accent(Math.round(beat * 2)) + (idx === 0 && isDownbeat ? 0.08 : 0) + (dur >= 1 ? 0.03 : 0);
+      notes.push({ beat, pitch, accent: acc, duration: isLast && lastBar ? 2 : dur });
     }
   }
   return notes;
 }
 
 /** Downbeats a little louder, offbeats a little softer. `slot` is in eighth notes. */
-function accent(base: number, slot: number): number {
+function accent(slot: number): number {
   const inBar = slot % 8;
-  if (inBar === 0) return base + 0.08;
-  if (inBar === 4) return base + 0.04;
-  if (inBar % 2 === 1) return base - 0.05;
-  return base;
+  if (inBar === 0) return 0.08;
+  if (inBar === 4) return 0.04;
+  if (inBar % 2 === 1) return -0.05;
+  return 0;
+}
+
+export interface HumanizedNote {
+  /** Onset in beats including swing and jitter. */
+  beat: number;
+  velocity: number;
 }
 
 /**
- * Convert beats to seconds and apply the human layer: swing, timing jitter
- * (gaussian, clamped to three sigma) and velocity variation.
+ * The human layer for one note: swing on offbeat eighths, gaussian timing
+ * jitter clamped to three sigma (expressed in beats at the current tempo),
+ * and velocity around the mean with gaussian variation. Draws two numbers
+ * from the RNG per note so results are reproducible for a seed.
  */
-export function humanize(notes: GeneratedNote[], params: GeneratorParams, rng: Rng = new Rng(params.seed ^ 0x9e3779b9)): ScheduledNote[] {
+export function humanizeNote(n: GeneratedNote, params: HumanizeParams, rng: Rng): HumanizedNote {
+  let beat = n.beat;
+  const frac = beat % 1;
+  if (Math.abs(frac - 0.5) < 1e-6) beat += params.swing * (1 / 6);
+  const jitterBeats = (params.jitterMs / 1000) * (params.bpm / 60);
+  const j = clamp(rng.gaussian(), -3, 3) * jitterBeats;
+  const v = clamp(rng.gaussian(), -2.5, 2.5) * params.velocityVariation;
+  return {
+    beat: Math.max(0, beat + j),
+    velocity: clamp(params.velocity + n.accent + v, 0.08, 1),
+  };
+}
+
+export function humanizeRng(seed: number): Rng {
+  return new Rng(seed ^ 0x9e3779b9);
+}
+
+/**
+ * Convert a whole phrase to seconds at a fixed tempo. The sequencer applies
+ * humanizeNote live instead; this is for tests and previews.
+ */
+export function humanize(notes: GeneratedNote[], params: GeneratorParams, rng: Rng = humanizeRng(params.seed)): ScheduledNote[] {
   const secPerBeat = 60 / params.bpm;
-  const jitter = params.jitterMs / 1000;
   const out: ScheduledNote[] = notes.map((n) => {
-    let beat = n.beat;
-    // Swing delays the offbeat eighth toward a triplet feel.
-    const frac = beat % 1;
-    if (Math.abs(frac - 0.5) < 1e-6) beat += params.swing * (1 / 6);
-    const j = jitter > 0 ? clamp(rng.gaussian(), -3, 3) * jitter : 0;
-    const v = params.velocityVariation > 0 ? clamp(rng.gaussian(), -2.5, 2.5) * params.velocityVariation : 0;
-    return {
-      time: Math.max(0, beat * secPerBeat + j),
-      pitch: n.pitch,
-      velocity: clamp(n.velocity + v, 0.08, 1),
-      duration: n.duration * secPerBeat,
-    };
+    const h = humanizeNote(n, params, rng);
+    return { time: h.beat * secPerBeat, pitch: n.pitch, velocity: h.velocity, duration: n.duration * secPerBeat };
   });
   return out.sort((a, b) => a.time - b.time);
+}
+
+/** Seconds a phrase lasts at the given tempo, with a little room for the last note. */
+export function phraseSeconds(notes: GeneratedNote[], bpm: number): number {
+  if (notes.length === 0) return 0;
+  const last = notes[notes.length - 1]!;
+  return (last.beat + Math.min(last.duration, 1)) * (60 / bpm);
 }
 
 function clamp(v: number, lo: number, hi: number): number {

@@ -1,5 +1,5 @@
 import { layoutFromNotes } from '../model/layout';
-import { DEFAULT_GENERATOR_PARAMS, generatePhrase, generatorPitches, humanize } from './generator';
+import { DEFAULT_GENERATOR_PARAMS, generatePhrase, generatorPitches, humanize, humanizeNote, humanizeRng, phraseKey, phraseSeconds } from './generator';
 import { Rng } from './rng';
 
 const kurd = layoutFromNotes('D Kurd', [
@@ -85,6 +85,22 @@ describe('humanize', () => {
     expect(out[1]!.time).toBeCloseTo(0.25);
     expect(out[2]!.time).toBeCloseTo(0.5);
     expect(out[0]!.velocity).toBeCloseTo(0.8);
+  });
+
+  it('applies the mean velocity live through accents', () => {
+    const n = { beat: 4, pitch: 'D3', accent: 0.08, duration: 1 };
+    const quiet = humanizeNote(n, { ...DEFAULT_GENERATOR_PARAMS, velocity: 0.4, jitterMs: 0, velocityVariation: 0 }, humanizeRng(1));
+    const loud = humanizeNote(n, { ...DEFAULT_GENERATOR_PARAMS, velocity: 0.9, jitterMs: 0, velocityVariation: 0 }, humanizeRng(1));
+    expect(quiet.velocity).toBeCloseTo(0.48);
+    expect(loud.velocity).toBeCloseTo(0.98);
+    expect(quiet.beat).toBe(4);
+  });
+
+  it('separates what is played from how it is played', () => {
+    const a = phraseKey(DEFAULT_GENERATOR_PARAMS);
+    expect(phraseKey({ ...DEFAULT_GENERATOR_PARAMS, bpm: 200, jitterMs: 50, swing: 1 })).toBe(a);
+    expect(phraseKey({ ...DEFAULT_GENERATOR_PARAMS, seed: 9 })).not.toBe(a);
+    expect(phraseSeconds([{ beat: 7.5, pitch: 'D3', accent: 0, duration: 2 }], 60)).toBeCloseTo(8.5);
   });
 
   it('jitters onsets within three sigma and keeps velocities in range', () => {

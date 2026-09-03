@@ -127,9 +127,13 @@ export function App() {
   const synthRef = useRef<SynthHandpan | null>(null);
   const instrumentRef = useRef<Instrument | null>(null);
   const ensureSynth = useCallback((): SynthHandpan => {
-    if (!synthRef.current) synthRef.current = new SynthHandpan(engine);
+    if (!synthRef.current) {
+      synthRef.current = new SynthHandpan(engine);
+      synthRef.current.setResonantPitches([layoutRef.current.ding, ...layoutRef.current.top]);
+    }
     return synthRef.current;
   }, []);
+  useEffect(() => { synthRef.current?.setResonantPitches([layout.ding, ...layout.top]); }, [layout]);
   const ensureAudio = useCallback(async (): Promise<Instrument> => {
     const resumed = engine.resume();
     const synth = ensureSynth();

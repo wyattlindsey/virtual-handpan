@@ -12,6 +12,7 @@
 export class AudioEngine {
   private ctx: AudioContext | null = null;
   private inputNode: GainNode | null = null;
+  private sendNode: GainNode | null = null;
   private dry!: GainNode;
   private wet!: GainNode;
   private master!: GainNode;
@@ -29,6 +30,12 @@ export class AudioEngine {
   get input(): GainNode {
     if (!this.inputNode) this.build();
     return this.inputNode!;
+  }
+
+  /** An extra, wet-only send: short strokes need more room than sustained notes to sit in the same space. */
+  get reverbSend(): GainNode {
+    if (!this.sendNode) this.build();
+    return this.sendNode!;
   }
 
   get now(): number {
@@ -109,8 +116,10 @@ export class AudioEngine {
     limiter.attack.value = 0.003;
     limiter.release.value = 0.12;
 
+    this.sendNode = ctx.createGain();
     this.inputNode.connect(this.dry);
     this.inputNode.connect(sendFilter);
+    this.sendNode.connect(sendFilter);
     sendFilter.connect(convolver);
     convolver.connect(this.wet);
     this.dry.connect(this.shelf);

@@ -1,5 +1,10 @@
 import { layoutFromNotes } from '../model/layout';
-import { DEFAULT_GENERATOR_PARAMS, generatePhrase, generatorPitches, humanize, humanizeNote, humanizeRng, phraseKey, phraseSeconds } from './generator';
+import { midiFromPitch } from '../model/pitch';
+import { FEELS, barBeats, getFeel } from './feels';
+import {
+  DEFAULT_GENERATOR_PARAMS, type GeneratorParams, generatePhrase, generatePhraseDetailed, generatorPitches, handMap, humanize,
+  humanizeNote, humanizeRng, phraseKey, phraseSeconds, pickPartner,
+} from './generator';
 import { Rng } from './rng';
 
 const kurd = layoutFromNotes('D Kurd', [
@@ -9,6 +14,8 @@ const kurd = layoutFromNotes('D Kurd', [
 const withBottom = layoutFromNotes('x', [
   { pitch: 'D3' }, { pitch: 'A3' }, { pitch: 'C4' }, { pitch: 'F5', bottom: true },
 ]);
+
+const P: GeneratorParams = { ...DEFAULT_GENERATOR_PARAMS, dyads: 0, groove: 0, drift: 0, lean: 0 };
 
 describe('Rng', () => {
   it('is deterministic for a seed and roughly uniform', () => {
@@ -29,31 +36,43 @@ describe('Rng', () => {
   });
 });
 
+describe('feels', () => {
+  it('have consistent slots, accents and cells', () => {
+    for (const f of FEELS) {
+      expect(f.accents).toHaveLength(f.slots);
+      for (const cell of f.cells) expect(cell.reduce((a, b) => a + b, 0)).toBeCloseTo(f.slots / 2, 9);
+      expect(f.grooveSlots[0]).toBe(0);
+      expect(f.accents[0]).toBeGreaterThan(0);
+    }
+  });
+});
+
 describe('generatePhrase', () => {
   it('lists the ding first then everything ascending', () => {
     expect(generatorPitches(withBottom)).toEqual(['D3', 'A3', 'C4', 'F5']);
   });
 
   it('scale mode goes up through top and bottom notes and back to the ding', () => {
-    const notes = generatePhrase(withBottom, { ...DEFAULT_GENERATOR_PARAMS, mode: 'scale' });
+    const notes = generatePhrase(withBottom, { ...P, mode: 'scale' });
     expect(notes.map((n) => n.pitch)).toEqual(['D3', 'A3', 'C4', 'F5', 'C4', 'A3', 'D3']);
     expect(notes[0]!.beat).toBe(0);
     expect(notes[1]!.beat).toBe(0.5);
   });
 
-  it('random mode fills an eighth grid from the layout, honouring rests', () => {
-    const p = { ...DEFAULT_GENERATOR_PARAMS, mode: 'random' as const, bars: 4, restDensity: 0 };
+  it('random mode fills the feel grid from the layout, honouring rests', () => {
+    const p = { ...P, mode: 'random' as const, bars: 4, restDensity: 0 };
     const notes = generatePhrase(kurd, p);
     expect(notes).toHaveLength(32);
     const pitches = new Set(generatorPitches(kurd));
     for (const n of notes) expect(pitches.has(n.pitch)).toBe(true);
+    expect(generatePhrase(kurd, { ...p, feel: 'lilt' })).toHaveLength(24);
     const sparse = generatePhrase(kurd, { ...p, restDensity: 0.5 });
     expect(sparse.length).toBeLessThan(32);
     expect(sparse.length).toBeGreaterThan(5);
   });
 
   it('melodic mode is reproducible, stays in the scale and favours small steps', () => {
-    const p = { ...DEFAULT_GENERATOR_PARAMS, mode: 'melodic' as const, bars: 16, seed: 11 };
+    const p = { ...P, mode: 'melodic' as const, bars: 16, seed: 11 };
     const a = generatePhrase(kurd, p);
     const b = generatePhrase(kurd, p);
     expect(a).toEqual(b);
@@ -66,22 +85,115 @@ describe('generatePhrase', () => {
       if (d <= 2) small++;
     }
     expect(small / (a.length - 1)).toBeGreaterThan(0.6);
-    for (let i = 1; i < a.length; i++) expect(a[i]!.beat).toBeGreaterThan(a[i - 1]!.beat);
+    for (let i = 1; i < a.length; i++) expect(a[i]!.beat).toBeGreaterThanOrEqual(a[i - 1]!.beat);
     expect(a[0]!.beat).toBe(0);
   });
 
+  it('keeps every note inside the bars of the chosen feel', () => {
+    for (const feel of FEELS) {
+      const bars = 6;
+      const notes = generatePhrase(kurd, { ...P, feel: feel.id, bars, seed: 5, dyads: 0.5, groove: 1 });
+      for (const n of notes) {
+        expect(n.beat).toBeGreaterThanOrEqual(0);
+        expect(n.beat).toBeLessThan(bars * barBeats(feel));
+      }
+    }
+  });
+
   it('a different seed gives a different phrase', () => {
-    const a = generatePhrase(kurd, { ...DEFAULT_GENERATOR_PARAMS, seed: 1 });
-    const b = generatePhrase(kurd, { ...DEFAULT_GENERATOR_PARAMS, seed: 2 });
+    const a = generatePhrase(kurd, { ...P, seed: 1 });
+    const b = generatePhrase(kurd, { ...P, seed: 2 });
     expect(a.map((n) => n.pitch).join()).not.toEqual(b.map((n) => n.pitch).join());
+  });
+
+  it('adds dyads with a partner from the scale at the same beat', () => {
+    const none = generatePhraseDetailed(kurd, { ...P, dyads: 0 });
+    expect(none.notes.some((n) => n.partner)).toBe(false);
+    expect(none.hadDyads).toBe(false);
+    const all = generatePhraseDetailed(kurd, { ...P, dyads: 1, bars: 8, seed: 3 });
+    const partners = all.notes.filter((n) => n.partner);
+    const melody = all.notes.filter((n) => n.role === 'melody' && !n.partner);
+    expect(all.hadDyads).toBe(true);
+    expect(partners.length).toBeGreaterThan(melody.length * 0.5);
+    const scale = new Set(generatorPitches(kurd));
+    for (const p of partners) {
+      expect(scale.has(p.pitch)).toBe(true);
+      const lead = melody.find((m) => m.beat === p.beat);
+      expect(lead).toBeDefined();
+      expect(lead!.pitch).not.toBe(p.pitch);
+      expect(p.accent).toBeLessThan(lead!.accent);
+    }
+  });
+
+  it('puts the grooving hand on the ding and low field at the feel slots', () => {
+    const bars = 8;
+    const notes = generatePhrase(kurd, { ...P, groove: 1, bars, seed: 4 });
+    const groove = notes.filter((n) => n.role === 'groove');
+    expect(groove.length).toBeGreaterThan(bars * 1.2);
+    for (const g of groove) {
+      expect(['D3', 'A3']).toContain(g.pitch);
+      expect(g.hand).toBe('L');
+      expect(g.beat % 1).toBe(0);
+    }
+    expect(generatePhrase(kurd, { ...P, groove: 0 }).some((n) => n.role === 'groove')).toBe(false);
+  });
+
+  it('alternates hands on fast runs more than chance', () => {
+    const hands = handMap(kurd, generatorPitches(kurd));
+    expect(hands[0]).toBeNull();
+    expect(hands.filter((h) => h === 'L').length).toBeGreaterThan(2);
+    expect(hands.filter((h) => h === 'R').length).toBeGreaterThan(2);
+    const notes = generatePhrase(kurd, { ...P, bars: 32, restDensity: 0, seed: 8 }).filter((n) => n.role === 'melody');
+    let same = 0, pairs = 0;
+    for (let i = 1; i < notes.length; i++) {
+      const a = notes[i - 1]!, b = notes[i]!;
+      if (a.duration > 0.5 || !a.hand || !b.hand) continue;
+      pairs++;
+      if (a.hand === b.hand) same++;
+    }
+    expect(pairs).toBeGreaterThan(20);
+    expect(same / pairs).toBeLessThan(0.42);
+  });
+
+  it('reports the cells it used and learned mode falls back without a model', () => {
+    const d = generatePhraseDetailed(kurd, { ...P, bars: 8, seed: 2 });
+    expect(d.cellsUsed.length).toBeGreaterThan(0);
+    for (const i of d.cellsUsed) expect(i).toBeLessThan(getFeel('straight').cells.length);
+    const learned = generatePhrase(kurd, { ...P, mode: 'learned', seed: 2 });
+    expect(learned).toEqual(generatePhrase(kurd, { ...P, mode: 'melodic', seed: 2 }));
+  });
+
+  it('honours taste weights for cells', () => {
+    const feel = getFeel('straight');
+    const only = feel.cells.map((_, i) => (i === 3 ? 5 : 0.2));
+    const d = generatePhraseDetailed(kurd, { ...P, bars: 16, seed: 9 }, { taste: { cells: { straight: only }, dyadBias: 0 } });
+    const share = d.cellsUsed.filter((i) => i === 3).length / d.cellsUsed.length;
+    expect(share).toBeGreaterThan(0.5);
+  });
+});
+
+describe('pickPartner', () => {
+  it('prefers the ding, octaves and fifths and returns null with nothing consonant', () => {
+    const midis = generatorPitches(kurd).map(midiFromPitch);
+    const rng = new Rng(1);
+    const counts = new Map<number, number>();
+    for (let i = 0; i < 400; i++) {
+      const p = pickPartner(4, midis, rng); // D4
+      counts.set(p!, (counts.get(p!) ?? 0) + 1);
+    }
+    expect(counts.get(0)).toBeGreaterThan(60);      // ding
+    expect(counts.get(1)).toBeGreaterThan(40);      // A3, a fourth below
+    expect(counts.get(8)).toBeGreaterThan(40);      // A4, a fifth above
+    expect(pickPartner(0, [50, 51], new Rng(1))).toBeNull();
   });
 });
 
 describe('humanize', () => {
-  const notes = generatePhrase(kurd, { ...DEFAULT_GENERATOR_PARAMS, mode: 'scale' });
+  const notes = generatePhrase(kurd, { ...P, mode: 'scale' });
+  const flat = { ...P, bpm: 120, jitterMs: 0, velocityVariation: 0, swing: 0, lean: 0, drift: 0, flamMs: 0 };
 
-  it('maps beats to seconds exactly when jitter and variation are zero', () => {
-    const out = humanize(notes, { ...DEFAULT_GENERATOR_PARAMS, bpm: 120, jitterMs: 0, velocityVariation: 0 });
+  it('maps beats to seconds exactly when everything human is off', () => {
+    const out = humanize(notes, flat);
     expect(out[1]!.time).toBeCloseTo(0.25);
     expect(out[2]!.time).toBeCloseTo(0.5);
     expect(out[0]!.velocity).toBeCloseTo(0.8);
@@ -89,24 +201,38 @@ describe('humanize', () => {
 
   it('applies the mean velocity live through accents', () => {
     const n = { beat: 4, pitch: 'D3', accent: 0.08, duration: 1 };
-    const quiet = humanizeNote(n, { ...DEFAULT_GENERATOR_PARAMS, velocity: 0.4, jitterMs: 0, velocityVariation: 0 }, humanizeRng(1));
-    const loud = humanizeNote(n, { ...DEFAULT_GENERATOR_PARAMS, velocity: 0.9, jitterMs: 0, velocityVariation: 0 }, humanizeRng(1));
+    const quiet = humanizeNote(n, { ...flat, velocity: 0.4 }, humanizeRng(1));
+    const loud = humanizeNote(n, { ...flat, velocity: 0.9 }, humanizeRng(1));
     expect(quiet.velocity).toBeCloseTo(0.48);
     expect(loud.velocity).toBeCloseTo(0.98);
     expect(quiet.beat).toBe(4);
   });
 
-  it('separates what is played from how it is played', () => {
-    const a = phraseKey(DEFAULT_GENERATOR_PARAMS);
-    expect(phraseKey({ ...DEFAULT_GENERATOR_PARAMS, bpm: 200, jitterMs: 50, swing: 1 })).toBe(a);
-    expect(phraseKey({ ...DEFAULT_GENERATOR_PARAMS, seed: 9 })).not.toBe(a);
-    expect(phraseSeconds([{ beat: 7.5, pitch: 'D3', accent: 0, duration: 2 }], 60)).toBeCloseTo(8.5);
+  it('delays a dyad partner by the flam and leans offbeats', () => {
+    const lead = { beat: 2, pitch: 'D3', accent: 0, duration: 1 };
+    const trail = { ...lead, pitch: 'A3', partner: true };
+    const p = { ...flat, bpm: 60, flamMs: 20 };
+    expect(humanizeNote(lead, p, humanizeRng(1)).beat).toBe(2);
+    expect(humanizeNote(trail, p, humanizeRng(1)).beat).toBeCloseTo(2.02);
+    const off = { beat: 2.5, pitch: 'D3', accent: 0, duration: 0.5 };
+    expect(humanizeNote(off, { ...flat, bpm: 60, lean: 1 }, humanizeRng(1)).beat).toBeCloseTo(2.512);
+    expect(humanizeNote(off, { ...flat, bpm: 60, lean: -1 }, humanizeRng(1)).beat).toBeCloseTo(2.488);
+  });
+
+  it('drifts slowly and stays bounded', () => {
+    const p = { ...flat, bpm: 60, drift: 1 };
+    let maxAbs = 0;
+    for (let b = 0; b < 48; b++) {
+      const h = humanizeNote({ beat: b, pitch: 'D3', accent: 0, duration: 1 }, p, humanizeRng(1));
+      maxAbs = Math.max(maxAbs, Math.abs(h.beat - b));
+    }
+    expect(maxAbs).toBeGreaterThan(0.02);
+    expect(maxAbs).toBeLessThanOrEqual(0.05 + 1e-9);
   });
 
   it('jitters onsets within three sigma and keeps velocities in range', () => {
-    const p = { ...DEFAULT_GENERATOR_PARAMS, bpm: 120, jitterMs: 20, velocityVariation: 0.3 };
+    const p = { ...P, bpm: 120, jitterMs: 20, velocityVariation: 0.3 };
     const out = humanize(notes, p, new Rng(5));
-    const straight = humanize(notes, { ...p, jitterMs: 0, velocityVariation: 0 });
     let moved = 0;
     for (let i = 0; i < out.length; i++) {
       const target = notes[i]!.beat * 0.5;
@@ -117,13 +243,20 @@ describe('humanize', () => {
       expect(actual!.velocity).toBeLessThanOrEqual(1);
     }
     expect(moved).toBeGreaterThan(0);
-    expect(straight.every((n, i) => Math.abs(n.time - notes[i]!.beat * 0.5) < 1e-9)).toBe(true);
   });
 
   it('applies swing to offbeat eighths only', () => {
-    const out = humanize(notes, { ...DEFAULT_GENERATOR_PARAMS, bpm: 60, jitterMs: 0, velocityVariation: 0, swing: 1 });
+    const out = humanize(notes, { ...flat, bpm: 60, swing: 1 });
     expect(out[0]!.time).toBeCloseTo(0);
     expect(out[1]!.time).toBeCloseTo(0.5 + 1 / 6);
     expect(out[2]!.time).toBeCloseTo(1);
+  });
+
+  it('separates what is played from how it is played', () => {
+    const a = phraseKey(DEFAULT_GENERATOR_PARAMS);
+    expect(phraseKey({ ...DEFAULT_GENERATOR_PARAMS, bpm: 200, jitterMs: 50, swing: 1, lean: 1, drift: 1, flamMs: 40 })).toBe(a);
+    expect(phraseKey({ ...DEFAULT_GENERATOR_PARAMS, seed: 9 })).not.toBe(a);
+    expect(phraseKey({ ...DEFAULT_GENERATOR_PARAMS, feel: 'lilt' })).not.toBe(a);
+    expect(phraseSeconds([{ beat: 7.5, pitch: 'D3', accent: 0, duration: 2 }], 60)).toBeCloseTo(8.5);
   });
 });

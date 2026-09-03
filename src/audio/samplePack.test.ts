@@ -1,6 +1,6 @@
 import {
-  type Layer, type Zone, ManifestError, RoundRobin, layerWeights, parseManifest, rateForShift, resolveSampleUrl,
-  selectZone,
+  type Layer, type Zone, ManifestError, RoundRobin, chooseTakeFile, extensionOf, layerFiles, layerWeights,
+  neededManifestZones, parseManifest, rateForShift, resolveSampleUrl, selectZone,
 } from './samplePack';
 
 const good = {
@@ -18,6 +18,13 @@ describe('parseManifest', () => {
     expect(m.crossfade).toBe(0.1);
     expect(m.zones[0]!.role).toBe('ding');
     expect(m.zones[0]!.layers[1]!.gainDb).toBe(-1.5);
+  });
+
+  it('accepts alternative encodings per take', () => {
+    const m = parseManifest({ ...good, zones: [{ pitch: 'A3', layers: [{ lo: 0, hi: 1, files: [['a.m4a', 'a.flac'], 'b.wav'] }] }] });
+    expect(m.zones[0]!.layers[0]!.files).toEqual([['a.m4a', 'a.flac'], 'b.wav']);
+    expect(() => parseManifest({ ...good, zones: [{ pitch: 'A3', layers: [{ lo: 0, hi: 1, files: [[]] }] }] })).toThrow(/files/);
+    expect(() => parseManifest({ ...good, zones: [{ pitch: 'A3', layers: [{ lo: 0, hi: 1, files: [['a.m4a', 3]] }] }] })).toThrow(/files/);
   });
 
   it('rejects structural problems with a path', () => {
@@ -147,5 +154,42 @@ describe('rateForShift', () => {
     expect(rateForShift(12)).toBeCloseTo(2);
     expect(rateForShift(-12)).toBeCloseTo(0.5);
     expect(rateForShift(0)).toBe(1);
+  });
+});
+
+describe('encodings', () => {
+  const supports = (ext: string) => ext === 'm4a' || ext === 'wav';
+
+  it('reads extensions ignoring query strings and case', () => {
+    expect(extensionOf('x/y/A3.FLAC')).toBe('flac');
+    expect(extensionOf('a.m4a?v=2')).toBe('m4a');
+    expect(extensionOf('noext')).toBe('');
+  });
+
+  it('chooses the first decodable alternative, else the first', () => {
+    expect(chooseTakeFile(['a.ogg', 'a.m4a', 'a.wav'], supports)).toBe('a.m4a');
+    expect(chooseTakeFile('a.flac', supports)).toBe('a.flac');
+    expect(chooseTakeFile(['a.ogg', 'a.flac'], supports)).toBe('a.ogg');
+    expect(layerFiles({ lo: 0, hi: 1, files: [['t1.ogg', 't1.wav'], 't2.wav'] }, supports)).toEqual(['t1.wav', 't2.wav']);
+  });
+});
+
+describe('neededManifestZones', () => {
+  const zones = [
+    { pitch: 'D3', role: 'ding' as const, layers: [{ lo: 0, hi: 1, files: ['d3'] }] },
+    { pitch: 'A3', layers: [{ lo: 0, hi: 1, files: ['a3'] }] },
+    { pitch: 'C4', layers: [{ lo: 0, hi: 1, files: ['c4'] }] },
+    { pitch: 'G4', layers: [{ lo: 0, hi: 1, files: ['g4'] }] },
+  ];
+
+  it('returns only zones the notes can reach, in manifest order, without duplicates', () => {
+    const needed = neededManifestZones(zones, [
+      { pitch: 'D3', role: 'ding' }, { pitch: 'A#3', role: 'top' }, { pitch: 'A3', role: 'top' }, { pitch: 'E4', role: 'top' },
+    ], 2);
+    expect(needed.map((z) => z.pitch)).toEqual(['D3', 'A3']);
+  });
+
+  it('is empty when nothing is reachable', () => {
+    expect(neededManifestZones(zones, [{ pitch: 'B5', role: 'top' }], 2)).toEqual([]);
   });
 });

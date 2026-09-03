@@ -34,12 +34,15 @@ export interface ZoneManifest {
   layers: LayerManifest[];
 }
 
+/** One round-robin take: a path, or the same take in several encodings, in order of preference. */
+export type TakeFiles = string | string[];
+
 export interface LayerManifest {
   /** Inclusive velocity range, 0..1. Layers of a zone should tile the range. */
   lo: number;
   hi: number;
   /** Round-robin takes, as paths relative to baseUrl. */
-  files: string[];
+  files: TakeFiles[];
   /** Level trim in dB. */
   gainDb?: number;
 }
@@ -108,10 +111,12 @@ function parseLayer(input: unknown, path: string): LayerManifest {
   const hi = expectNumber(l['hi'], `${path}.hi`, 0, 1);
   if (hi <= lo) throw new ManifestError(`${path}: hi must be greater than lo`);
   const files = l['files'];
-  if (!Array.isArray(files) || files.length === 0 || !files.every((f) => typeof f === 'string' && f)) {
-    throw new ManifestError(`${path}.files must be a non-empty array of paths`);
+  const isPath = (f: unknown): f is string => typeof f === 'string' && f.length > 0;
+  const isTake = (f: unknown): f is TakeFiles => isPath(f) || (Array.isArray(f) && f.length > 0 && f.every(isPath));
+  if (!Array.isArray(files) || files.length === 0 || !files.every(isTake)) {
+    throw new ManifestError(`${path}.files must be a non-empty array of paths or arrays of alternative paths`);
   }
-  const out: LayerManifest = { lo, hi, files: files as string[] };
+  const out: LayerManifest = { lo, hi, files };
   if (l['gainDb'] !== undefined) out.gainDb = expectNumber(l['gainDb'], `${path}.gainDb`, -60, 24);
   return out;
 }
@@ -135,6 +140,50 @@ function expectNumber(v: unknown, path: string, lo: number, hi: number): number 
 
 export function dbToGain(db: number): number {
   return Math.pow(10, db / 20);
+}
+
+export function extensionOf(path: string): string {
+  const m = /\.([a-z0-9]+)(?:[?#].*)?$/i.exec(path);
+  return m ? m[1]!.toLowerCase() : '';
+}
+
+/**
+ * Pick the encoding of a take the browser can decode: the first alternative
+ * whose extension is supported, else the first alternative so the failure
+ * is loud rather than silent.
+ */
+export function chooseTakeFile(take: TakeFiles, canDecode: (extension: string) => boolean): string {
+  const alternatives = typeof take === 'string' ? [take] : take;
+  return alternatives.find((f) => canDecode(extensionOf(f))) ?? alternatives[0]!;
+}
+
+/** Every file a layer would use, one per take, after choosing encodings. */
+export function layerFiles(layer: LayerManifest, canDecode: (extension: string) => boolean): string[] {
+  return layer.files.map((take) => chooseTakeFile(take, canDecode));
+}
+
+export interface NoteRequest {
+  pitch: string;
+  role?: FieldRole;
+}
+
+/**
+ * The manifest zones that would be selected for a set of notes, so a lazy
+ * loader can fetch only what the current layout can reach.
+ */
+export function neededManifestZones(zones: readonly ZoneManifest[], notes: readonly NoteRequest[], maxShift: number): ZoneManifest[] {
+  const stubs: Zone<ZoneManifest>[] = zones.map((z) => ({
+    midi: midiFromPitch(z.pitch),
+    pitch: z.pitch,
+    ...(z.role ? { role: z.role } : {}),
+    layers: [{ lo: 0, hi: 1, gain: 1, takes: [z] }],
+  }));
+  const out = new Set<ZoneManifest>();
+  for (const n of notes) {
+    const match = selectZone(stubs, midiFromPitch(n.pitch), n.role, maxShift);
+    if (match) out.add(match.zone.layers[0]!.takes[0]!);
+  }
+  return zones.filter((z) => out.has(z));
 }
 
 /** Resolve a sample path against the manifest location. */

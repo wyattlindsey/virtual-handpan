@@ -51,7 +51,7 @@ export function App() {
   }, []);
 
   const sequencer = useMemo(
-    () => new Sequencer(engine, () => instrumentRef.current!, (pitch) => roleFor(layoutRef.current, pitch)),
+    () => new Sequencer(engine, () => instrumentRef.current, (pitch) => roleFor(layoutRef.current, pitch)),
     [],
   );
 

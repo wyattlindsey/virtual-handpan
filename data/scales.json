@@ -1,0 +1,5215 @@
+[
+  {
+    "maker": "Aciel",
+    "name": "AmaRa (variation 1)",
+    "generic": null,
+    "feel": null,
+    "ding": "C#3",
+    "notes": [
+      {
+        "pitch": "C#3",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#3",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "D#",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": true
+      },
+      {
+        "pitch": "C#5",
+        "spelled": "C#",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "Aciel",
+    "name": "Aube",
+    "generic": null,
+    "feel": null,
+    "ding": "E3",
+    "notes": [
+      {
+        "pitch": "E3",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "D5",
+        "spelled": "D",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "Aciel",
+    "name": "Mellifluence",
+    "generic": null,
+    "feel": null,
+    "ding": "E3",
+    "notes": [
+      {
+        "pitch": "E3",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": true
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C5",
+        "spelled": "C",
+        "bottom": true
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "AsaChan",
+    "name": "AmaRa",
+    "generic": null,
+    "feel": "Minor",
+    "ding": "C#3",
+    "notes": [
+      {
+        "pitch": "C#3",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#3",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "D#",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=Rb2OzqG1J70",
+    "artists": null
+  },
+  {
+    "maker": "AsaChan",
+    "name": "AnnaZiska",
+    "generic": null,
+    "feel": "Minor",
+    "ding": "C#3",
+    "notes": [
+      {
+        "pitch": "C#3",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#3",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "D#",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "G#",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=eRoVAnlzCBQ",
+    "artists": null
+  },
+  {
+    "maker": "AsaChan",
+    "name": "Chandhra",
+    "generic": null,
+    "feel": "Minor",
+    "ding": "D3",
+    "notes": [
+      {
+        "pitch": "D3",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "A#3",
+        "spelled": "Bb",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "Eb",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "AsaChan",
+    "name": "FahSai",
+    "generic": null,
+    "feel": "Major",
+    "ding": "D3",
+    "notes": [
+      {
+        "pitch": "D3",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "F#3",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "A4",
+        "spelled": "A",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "AsaChan",
+    "name": "LalaBye",
+    "generic": null,
+    "feel": null,
+    "ding": "D3",
+    "notes": [
+      {
+        "pitch": "D3",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "A4",
+        "spelled": "A",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=n3_f8Pzcozs",
+    "artists": null
+  },
+  {
+    "maker": "AsaChan",
+    "name": "LalanTa",
+    "generic": null,
+    "feel": null,
+    "ding": "D3",
+    "notes": [
+      {
+        "pitch": "D3",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=_nPCMklvKt8",
+    "artists": null
+  },
+  {
+    "maker": "AsaChan",
+    "name": "MataHari",
+    "generic": null,
+    "feel": null,
+    "ding": "D3",
+    "notes": [
+      {
+        "pitch": "D3",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "A4",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "C#5",
+        "spelled": "C#",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "AsaChan",
+    "name": "SaBye",
+    "generic": null,
+    "feel": "Minor",
+    "ding": "E3",
+    "notes": [
+      {
+        "pitch": "E3",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=tjeG5n20sPQ",
+    "artists": null
+  },
+  {
+    "maker": "AsaChan",
+    "name": "SaByeD",
+    "generic": null,
+    "feel": "Major",
+    "ding": "D3",
+    "notes": [
+      {
+        "pitch": "D3",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "A4",
+        "spelled": "A",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=XkcrIFPSYFA",
+    "artists": null
+  },
+  {
+    "maker": "AsaChan",
+    "name": "SahaRian",
+    "generic": null,
+    "feel": "Arabic / Eastern",
+    "ding": "E3",
+    "notes": [
+      {
+        "pitch": "E3",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "D#",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      }
+    ],
+    "video": "http://youtu.be/J8EKncfVy1s",
+    "artists": null
+  },
+  {
+    "maker": "AsaChan",
+    "name": "Sairon",
+    "generic": null,
+    "feel": "Arabic / Eastern",
+    "ding": "E3",
+    "notes": [
+      {
+        "pitch": "E3",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "D#",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "AsaChan",
+    "name": "SalaDin (with bottom notes)",
+    "generic": "SalaDin",
+    "feel": "Oriental",
+    "ding": "D3",
+    "notes": [
+      {
+        "pitch": "D3",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "Eb",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "A4",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "C5",
+        "spelled": "C",
+        "bottom": true
+      },
+      {
+        "pitch": "D5",
+        "spelled": "D",
+        "bottom": true
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=LoYLCWZULvQ",
+    "artists": null
+  },
+  {
+    "maker": "AsaChan",
+    "name": "TalaySai",
+    "generic": null,
+    "feel": "Minor",
+    "ding": "D3",
+    "notes": [
+      {
+        "pitch": "D3",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "A#3",
+        "spelled": "Bb",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "AsaChan",
+    "name": "YshaSavita",
+    "generic": null,
+    "feel": "Major",
+    "ding": "C#3",
+    "notes": [
+      {
+        "pitch": "C#3",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#3",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "D#",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "C#5",
+        "spelled": "C#",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=MkVcSCtt_ho",
+    "artists": null
+  },
+  {
+    "maker": "AsaChan",
+    "name": "No Name (E Major / RDT)",
+    "generic": null,
+    "feel": "Major",
+    "ding": "E3",
+    "notes": [
+      {
+        "pitch": "E3",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "G#3",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "D#",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=MkVcSCtt_ho",
+    "artists": null
+  },
+  {
+    "maker": "Ayasa",
+    "name": "Anahata",
+    "generic": null,
+    "feel": "Major",
+    "ding": "C#3",
+    "notes": [
+      {
+        "pitch": "C#3",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#3",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "A#3",
+        "spelled": "Bb",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "D#",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "C#5",
+        "spelled": "C#",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "Ayasa",
+    "name": "Romanian Hijaz",
+    "generic": null,
+    "feel": "Arabic / Eastern",
+    "ding": "E3",
+    "notes": [
+      {
+        "pitch": "E3",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "D#",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      }
+    ],
+    "video": "http://youtu.be/HHgMPELdb3U",
+    "artists": null
+  },
+  {
+    "maker": "Ayasa",
+    "name": "E Amara 9",
+    "generic": null,
+    "feel": null,
+    "ding": "E3",
+    "notes": [
+      {
+        "pitch": "E3",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "A4",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "D5",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E5",
+        "spelled": "E",
+        "bottom": false
+      }
+    ],
+    "video": "http://youtu.be/HHgMPELdb3U",
+    "artists": null
+  },
+  {
+    "maker": "Ayasa",
+    "name": "Spring Lake",
+    "generic": null,
+    "feel": null,
+    "ding": "F3",
+    "notes": [
+      {
+        "pitch": "F3",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "A#3",
+        "spelled": "Bb",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "Db",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "Eb",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "Ab",
+        "bottom": false
+      },
+      {
+        "pitch": "C5",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "C#5",
+        "spelled": "Db",
+        "bottom": false
+      },
+      {
+        "pitch": "D#5",
+        "spelled": "Eb",
+        "bottom": false
+      }
+    ],
+    "video": "http://youtu.be/HHgMPELdb3U",
+    "artists": null
+  },
+  {
+    "maker": "Bells",
+    "name": "Jibuk",
+    "generic": null,
+    "feel": "Major",
+    "ding": "F3",
+    "notes": [
+      {
+        "pitch": "F3",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "A#3",
+        "spelled": "Bb",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "Eb",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "Ab",
+        "bottom": false
+      },
+      {
+        "pitch": "A#4",
+        "spelled": "Bb",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "Bells",
+    "name": "Magic Hour",
+    "generic": null,
+    "feel": null,
+    "ding": "D3",
+    "notes": [
+      {
+        "pitch": "D3",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "F3",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "A4",
+        "spelled": "A",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=lORHkvqXCFU",
+    "artists": null
+  },
+  {
+    "maker": "CFoulke",
+    "name": "XXD (Xiao Xiong Diao)",
+    "generic": null,
+    "feel": null,
+    "ding": "D3",
+    "notes": [
+      {
+        "pitch": "D3",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "A#3",
+        "spelled": "Bb",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "A4",
+        "spelled": "A",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=dJv1ws4wSCw",
+    "artists": null
+  },
+  {
+    "maker": "CFoulke",
+    "name": "Celtic8 C#",
+    "generic": null,
+    "feel": null,
+    "ding": "C#3",
+    "notes": [
+      {
+        "pitch": "C#3",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#3",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "D#",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=MkAeq39HpT4",
+    "artists": null
+  },
+  {
+    "maker": "CFoulke",
+    "name": "Celtic9 C#",
+    "generic": null,
+    "feel": null,
+    "ding": "C#3",
+    "notes": [
+      {
+        "pitch": "C#3",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#3",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "D#",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#5",
+        "spelled": "C#",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=HK3ZNdPLxdA",
+    "artists": null
+  },
+  {
+    "maker": "CFoulke",
+    "name": "Celtic8 G",
+    "generic": null,
+    "feel": null,
+    "ding": "G3",
+    "notes": [
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "A4",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "A#4",
+        "spelled": "Bb",
+        "bottom": false
+      },
+      {
+        "pitch": "C5",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D5",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "F5",
+        "spelled": "F",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=eGIyTtk7iWw",
+    "artists": null
+  },
+  {
+    "maker": "CFoulke",
+    "name": "D minor (Dante's scale)",
+    "generic": null,
+    "feel": null,
+    "ding": "D3",
+    "notes": [
+      {
+        "pitch": "D3",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "A4",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "C5",
+        "spelled": "C",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=fssbnURSLag",
+    "artists": null
+  },
+  {
+    "maker": "CFoulke",
+    "name": "Magic Voyage C#",
+    "generic": null,
+    "feel": null,
+    "ding": "C#3",
+    "notes": [
+      {
+        "pitch": "C#3",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "E3",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "G#3",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "D#",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "G#",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=1Ks2VHuA7k4",
+    "artists": null
+  },
+  {
+    "maker": "CFoulke",
+    "name": "Magic Voyage D",
+    "generic": null,
+    "feel": null,
+    "ding": "D3",
+    "notes": [
+      {
+        "pitch": "D3",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "F3",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "A4",
+        "spelled": "A",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=P1dexl3tvwY",
+    "artists": null
+  },
+  {
+    "maker": "CFoulke",
+    "name": "Magic Voyage F",
+    "generic": null,
+    "feel": null,
+    "ding": "F3",
+    "notes": [
+      {
+        "pitch": "F3",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G#3",
+        "spelled": "Ab",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "Eb",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "Ab",
+        "bottom": false
+      },
+      {
+        "pitch": "C5",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D#5",
+        "spelled": "Eb",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=ho7wFbOsi9g",
+    "artists": null
+  },
+  {
+    "maker": "CFoulke",
+    "name": "Orion C#",
+    "generic": null,
+    "feel": null,
+    "ding": "C#3",
+    "notes": [
+      {
+        "pitch": "C#3",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#3",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=ZR3xZyiosiA",
+    "artists": null
+  },
+  {
+    "maker": "CFoulke",
+    "name": "Polaris",
+    "generic": null,
+    "feel": null,
+    "ding": "C#3",
+    "notes": [
+      {
+        "pitch": "C#3",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "F#3",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#3",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "D#",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "C#5",
+        "spelled": "C#",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=AVUodbRLeBE",
+    "artists": null
+  },
+  {
+    "maker": "CFoulke",
+    "name": "SabyE (=SaByeD transp. to E)",
+    "generic": null,
+    "feel": "Major",
+    "ding": "E3",
+    "notes": [
+      {
+        "pitch": "E3",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "D#",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=3zrTNqh-2C0",
+    "artists": null
+  },
+  {
+    "maker": "CFoulke",
+    "name": "Raga Desh",
+    "generic": "Raga Desh",
+    "feel": null,
+    "ding": "C#3",
+    "notes": [
+      {
+        "pitch": "C#3",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#3",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#5",
+        "spelled": "C#",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=__HXSCjBVtc",
+    "artists": null
+  },
+  {
+    "maker": "CFoulke",
+    "name": "Raga Desya Todi E",
+    "generic": "Raga Desya Todi",
+    "feel": "Major",
+    "ding": "E3",
+    "notes": [
+      {
+        "pitch": "E3",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "G#3",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "D#",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=e2L8FwSh8PQ",
+    "artists": null
+  },
+  {
+    "maker": "CFoulke",
+    "name": "Zenith",
+    "generic": null,
+    "feel": "Arabic / Eastern",
+    "ding": "F#3",
+    "notes": [
+      {
+        "pitch": "F#3",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#5",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D5",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E5",
+        "spelled": "E",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=ELeltjhFTtQ",
+    "artists": null
+  },
+  {
+    "maker": "Halo",
+    "name": "Arboreal (high Db) (Cirrus)",
+    "generic": null,
+    "feel": null,
+    "ding": "D#3",
+    "notes": [
+      {
+        "pitch": "D#3",
+        "spelled": "Eb",
+        "bottom": false
+      },
+      {
+        "pitch": "A#3",
+        "spelled": "Bb",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "Db",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "Eb",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "Gb",
+        "bottom": false
+      },
+      {
+        "pitch": "A#4",
+        "spelled": "Bb",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "Cb",
+        "bottom": false
+      },
+      {
+        "pitch": "C#5",
+        "spelled": "Db",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "Halo",
+    "name": "Arboreal (high Eb) (Cirrus)",
+    "generic": null,
+    "feel": null,
+    "ding": "D#3",
+    "notes": [
+      {
+        "pitch": "D#3",
+        "spelled": "Eb",
+        "bottom": false
+      },
+      {
+        "pitch": "A#3",
+        "spelled": "Bb",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "Db",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "Eb",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "Gb",
+        "bottom": false
+      },
+      {
+        "pitch": "A#4",
+        "spelled": "Bb",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "Cb",
+        "bottom": false
+      },
+      {
+        "pitch": "D#5",
+        "spelled": "Eb",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "Halo",
+    "name": "Big Bear",
+    "generic": null,
+    "feel": null,
+    "ding": "C3",
+    "notes": [
+      {
+        "pitch": "C3",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "F3",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "A#3",
+        "spelled": "Bb",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "Eb",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=rhARnaT0NMI",
+    "artists": null
+  },
+  {
+    "maker": "Halo",
+    "name": "El Dorado",
+    "generic": null,
+    "feel": "Major",
+    "ding": "B2",
+    "notes": [
+      {
+        "pitch": "B2",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "F#3",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "A#3",
+        "spelled": "A#",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "D#",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "Halo",
+    "name": "Equinox 7 (Cirrus)",
+    "generic": "Equinox",
+    "feel": null,
+    "ding": "E3",
+    "notes": [
+      {
+        "pitch": "E3",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "Halo",
+    "name": "Equinox 8 (Cirrus)",
+    "generic": "Equinox",
+    "feel": null,
+    "ding": "E3",
+    "notes": [
+      {
+        "pitch": "E3",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "Halo",
+    "name": "Klezmara (Genesis)",
+    "generic": null,
+    "feel": null,
+    "ding": "B2",
+    "notes": [
+      {
+        "pitch": "B2",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "F#3",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "D#",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=AecBQxRbJ80",
+    "artists": null
+  },
+  {
+    "maker": "Halo",
+    "name": "La Sirena 9",
+    "generic": "La Sirena",
+    "feel": null,
+    "ding": "E3",
+    "notes": [
+      {
+        "pitch": "E3",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#5",
+        "spelled": "C#",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=J4jntmoqe24",
+    "artists": null
+  },
+  {
+    "maker": "Halo",
+    "name": "La Sirena 9 (w/ high E)",
+    "generic": "La Sirena",
+    "feel": null,
+    "ding": "E3",
+    "notes": [
+      {
+        "pitch": "E3",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "E5",
+        "spelled": "E",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=nyMusptUbn0",
+    "artists": null
+  },
+  {
+    "maker": "Halo",
+    "name": "Onoleo (Genesis )",
+    "generic": "Onoleo",
+    "feel": null,
+    "ding": "B2",
+    "notes": [
+      {
+        "pitch": "B2",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "F#3",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "D#",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=diB0SH3oxA4",
+    "artists": null
+  },
+  {
+    "maker": "Halo",
+    "name": "Prodigal (Genesis)",
+    "generic": null,
+    "feel": null,
+    "ding": "C3",
+    "notes": [
+      {
+        "pitch": "C3",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "G#3",
+        "spelled": "Ab",
+        "bottom": false
+      },
+      {
+        "pitch": "A#3",
+        "spelled": "Bb",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "Eb",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=3GUsBl85YBc",
+    "artists": null
+  },
+  {
+    "maker": "Halo",
+    "name": "Pygmy (Stratus )",
+    "generic": null,
+    "feel": null,
+    "ding": "G3",
+    "notes": [
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "Eb",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "A#4",
+        "spelled": "Bb",
+        "bottom": false
+      },
+      {
+        "pitch": "C5",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D5",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "D#5",
+        "spelled": "Eb",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=L2Y-vIkoFtY",
+    "artists": null
+  },
+  {
+    "maker": "Halo",
+    "name": "Russian Major (Stratus )",
+    "generic": null,
+    "feel": "Major",
+    "ding": "G3",
+    "notes": [
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C5",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D5",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E5",
+        "spelled": "E",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=ow63XiFIeno",
+    "artists": null
+  },
+  {
+    "maker": "Halo",
+    "name": "Ursa Minor (Genesis)",
+    "generic": null,
+    "feel": null,
+    "ding": "B2",
+    "notes": [
+      {
+        "pitch": "B2",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "F#3",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=JzfV1WI4rgA",
+    "artists": null
+  },
+  {
+    "maker": "Halo",
+    "name": "Voyager 8 (Cirrus)",
+    "generic": "Voyager",
+    "feel": null,
+    "ding": "E3",
+    "notes": [
+      {
+        "pitch": "E3",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "D5",
+        "spelled": "D",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=MYQ8xIB6Ius",
+    "artists": null
+  },
+  {
+    "maker": "Halo",
+    "name": "Raga Desya Todi",
+    "generic": "Raga Desya Todi",
+    "feel": "Major",
+    "ding": "D#3",
+    "notes": [
+      {
+        "pitch": "D#3",
+        "spelled": "Eb",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "A#3",
+        "spelled": "Bb",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "Eb",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "A#4",
+        "spelled": "Bb",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "Innersound",
+    "name": "Pandora",
+    "generic": null,
+    "feel": "Minor",
+    "ding": "D3",
+    "notes": [
+      {
+        "pitch": "D3",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "A#3",
+        "spelled": "Bb",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "A4",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "C5",
+        "spelled": "C",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=QlNWCF6ZyB4",
+    "artists": null
+  },
+  {
+    "maker": "Live Metal Art",
+    "name": "D minor",
+    "generic": null,
+    "feel": "Minor",
+    "ding": "D3",
+    "notes": [
+      {
+        "pitch": "D3",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "A#3",
+        "spelled": "A#",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "A4",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "C5",
+        "spelled": "C",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "Mana Steel",
+    "name": "Sahara",
+    "generic": null,
+    "feel": "Arabic / Eastern",
+    "ding": "G#3",
+    "notes": [
+      {
+        "pitch": "G#3",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "A4",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "C5",
+        "spelled": "C",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "Meraki",
+    "name": "D major",
+    "generic": null,
+    "feel": "Major",
+    "ding": "D3",
+    "notes": [
+      {
+        "pitch": "D3",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "F#3",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": true
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "A4",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "C#5",
+        "spelled": "C#",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=aV4XwyQum_A",
+    "artists": null
+  },
+  {
+    "maker": "Meraki",
+    "name": "C# Mystic7",
+    "generic": null,
+    "feel": "Minor",
+    "ding": "C#3",
+    "notes": [
+      {
+        "pitch": "C#3",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#3",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "D#",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=pkPjehfUvkM",
+    "artists": null
+  },
+  {
+    "maker": "Meraki",
+    "name": "C# Mystic8",
+    "generic": null,
+    "feel": "Minor",
+    "ding": "C#3",
+    "notes": [
+      {
+        "pitch": "C#3",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#3",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "D#",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#5",
+        "spelled": "C#",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=gLWWqsaBimE",
+    "artists": null
+  },
+  {
+    "maker": "Meraki",
+    "name": "E Voyager",
+    "generic": null,
+    "feel": null,
+    "ding": "E3",
+    "notes": [
+      {
+        "pitch": "E3",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "D5",
+        "spelled": "D",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=CC5npEGBIwY",
+    "artists": null
+  },
+  {
+    "maker": "Meraki",
+    "name": "Deep Voyager",
+    "generic": null,
+    "feel": null,
+    "ding": "D3",
+    "notes": [
+      {
+        "pitch": "D3",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "F3",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "A4",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "C5",
+        "spelled": "C",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=l7ciG6qkHfQ",
+    "artists": null
+  },
+  {
+    "maker": "Meraki",
+    "name": "Dune",
+    "generic": null,
+    "feel": null,
+    "ding": "D3",
+    "notes": [
+      {
+        "pitch": "D3",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "Eb",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "A4",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "C5",
+        "spelled": "C",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=2vUIYCI9UWM",
+    "artists": null
+  },
+  {
+    "maker": "Meraki",
+    "name": "F Dorian",
+    "generic": null,
+    "feel": null,
+    "ding": "F3",
+    "notes": [
+      {
+        "pitch": "F3",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G#3",
+        "spelled": "Ab",
+        "bottom": false
+      },
+      {
+        "pitch": "A#3",
+        "spelled": "Bb",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "Eb",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "Ab",
+        "bottom": false
+      },
+      {
+        "pitch": "C5",
+        "spelled": "C",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=t_CgxVltI1s",
+    "artists": null
+  },
+  {
+    "maker": "Meraki",
+    "name": "F InteGraal",
+    "generic": "F Integral10",
+    "feel": null,
+    "ding": "F3",
+    "notes": [
+      {
+        "pitch": "F3",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G#3",
+        "spelled": "Ab",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "Db",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "Eb",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "Ab",
+        "bottom": false
+      },
+      {
+        "pitch": "C5",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "C#5",
+        "spelled": "Db",
+        "bottom": false
+      },
+      {
+        "pitch": "D#5",
+        "spelled": "Eb",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=RMi3SFF5cAc",
+    "artists": null
+  },
+  {
+    "maker": "Meraki",
+    "name": "F Integral10",
+    "generic": "F Integral10",
+    "feel": null,
+    "ding": "F3",
+    "notes": [
+      {
+        "pitch": "F3",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "Db",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "Eb",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "Ab",
+        "bottom": false
+      },
+      {
+        "pitch": "C5",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "C#5",
+        "spelled": "Db",
+        "bottom": false
+      },
+      {
+        "pitch": "D#5",
+        "spelled": "Eb",
+        "bottom": false
+      },
+      {
+        "pitch": "F5",
+        "spelled": "F",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=JxfWKoVbJPQ",
+    "artists": null
+  },
+  {
+    "maker": "Meraki",
+    "name": "F La Sirena",
+    "generic": "La Sirena",
+    "feel": null,
+    "ding": "F3",
+    "notes": [
+      {
+        "pitch": "F3",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G#3",
+        "spelled": "Ab",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "Eb",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "Ab",
+        "bottom": false
+      },
+      {
+        "pitch": "C5",
+        "spelled": "C",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=DJBuizKm2yY&feature=em-uploademail",
+    "artists": null
+  },
+  {
+    "maker": "Meraki",
+    "name": "F minor9",
+    "generic": null,
+    "feel": "Minor",
+    "ding": "F3",
+    "notes": [
+      {
+        "pitch": "F3",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "A#3",
+        "spelled": "Bb",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "Db",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "Eb",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "Ab",
+        "bottom": false
+      },
+      {
+        "pitch": "C5",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D#5",
+        "spelled": "Eb",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=G1-LojJ0GZw",
+    "artists": null
+  },
+  {
+    "maker": "Meraki",
+    "name": "Low F Pygmy",
+    "generic": null,
+    "feel": "Minor",
+    "ding": "F3",
+    "notes": [
+      {
+        "pitch": "F3",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "G#3",
+        "spelled": "Ab",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "Eb",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "Ab",
+        "bottom": false
+      },
+      {
+        "pitch": "C5",
+        "spelled": "C",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=DmVddX3oI1k",
+    "artists": null
+  },
+  {
+    "maker": "Meraki",
+    "name": "Dune",
+    "generic": "SalaDin",
+    "feel": "Oriental",
+    "ding": "D3",
+    "notes": [
+      {
+        "pitch": "D3",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "Eb",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "A4",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "C5",
+        "spelled": "C",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=2cZI13IAV94",
+    "artists": null
+  },
+  {
+    "maker": "PanArt Hang",
+    "name": "Integral",
+    "generic": null,
+    "feel": "Minor",
+    "ding": "D3",
+    "notes": [
+      {
+        "pitch": "D3",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "A#3",
+        "spelled": "Bb",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "A4",
+        "spelled": "A",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "PanArt Hang",
+    "name": "Waples scale",
+    "generic": null,
+    "feel": null,
+    "ding": "D3",
+    "notes": [
+      {
+        "pitch": "D3",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "A4",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "A#4",
+        "spelled": "Bb",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "Saraz",
+    "name": "C# Dorian 10",
+    "generic": null,
+    "feel": null,
+    "ding": "C#3",
+    "notes": [
+      {
+        "pitch": "C#3",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "F#3",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#3",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": true
+      },
+      {
+        "pitch": "C#5",
+        "spelled": "C#",
+        "bottom": true
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=hw_5TNMUNSQ",
+    "artists": null
+  },
+  {
+    "maker": "Saraz",
+    "name": "F# minor",
+    "generic": null,
+    "feel": "Minor",
+    "ding": "F#3",
+    "notes": [
+      {
+        "pitch": "F#3",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "Db",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "A4",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#5",
+        "spelled": "C#",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "Spacedrum",
+    "name": "A minor",
+    "generic": null,
+    "feel": "Minor",
+    "ding": "A3",
+    "notes": [
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "A4",
+        "spelled": "A",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "SpB",
+    "name": "C# Dominant 7th",
+    "generic": "Db Dominant 7th",
+    "feel": "Minor",
+    "ding": "C#3",
+    "notes": [
+      {
+        "pitch": "C#3",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#3",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "D#",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=1rCh2JwKDoI",
+    "artists": "David Kuckhermann"
+  },
+  {
+    "maker": "SpB",
+    "name": "F Integral9",
+    "generic": "F Integral9",
+    "feel": "Minor",
+    "ding": "F3",
+    "notes": [
+      {
+        "pitch": "F3",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "Db",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "Eb",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "Ab",
+        "bottom": false
+      },
+      {
+        "pitch": "C5",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "C#5",
+        "spelled": "Db",
+        "bottom": false
+      },
+      {
+        "pitch": "D#5",
+        "spelled": "Eb",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": "David Kuckhermann"
+  },
+  {
+    "maker": "SpB",
+    "name": "Kurd9",
+    "generic": "Kurd9",
+    "feel": "Minor",
+    "ding": "D3",
+    "notes": [
+      {
+        "pitch": "D3",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "A#3",
+        "spelled": "Bb",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "A4",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "C5",
+        "spelled": "C",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "SpB",
+    "name": "Mystic7",
+    "generic": "Mystic7",
+    "feel": "Minor",
+    "ding": "C#3",
+    "notes": [
+      {
+        "pitch": "C#3",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#3",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "D#",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "SpB",
+    "name": "Mystic8",
+    "generic": "Mystic8",
+    "feel": "Minor",
+    "ding": "C#3",
+    "notes": [
+      {
+        "pitch": "C#3",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#3",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "D#",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "Sunpan",
+    "name": "F# minor",
+    "generic": null,
+    "feel": null,
+    "ding": "F#3",
+    "notes": [
+      {
+        "pitch": "F#3",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "Db",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "A4",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "C#5",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "E5",
+        "spelled": "E",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "Sunpan",
+    "name": "Happy Spring Garden",
+    "generic": null,
+    "feel": "Major",
+    "ding": "G3",
+    "notes": [
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C5",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D5",
+        "spelled": "D",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "Symphonic Steel",
+    "name": "Celtic minor",
+    "generic": "Celtic minor",
+    "feel": "Minor",
+    "ding": "B2",
+    "notes": [
+      {
+        "pitch": "B2",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "F#3",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      }
+    ],
+    "video": "http://www.symphonicsteel.com/SoundModels/Celtic_Minor.mp3",
+    "artists": null
+  },
+  {
+    "maker": "Symphonic Steel",
+    "name": "Equinox8",
+    "generic": "Equinox",
+    "feel": null,
+    "ding": "E3",
+    "notes": [
+      {
+        "pitch": "E3",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      }
+    ],
+    "video": "http://www.symphonicsteel.com/SoundModels/Equinox.mp3",
+    "artists": null
+  },
+  {
+    "maker": "Symphonic Steel",
+    "name": "Equinox9",
+    "generic": "Equinox",
+    "feel": null,
+    "ding": "E3",
+    "notes": [
+      {
+        "pitch": "E3",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "E5",
+        "spelled": "E",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=OI8Iredvc_0",
+    "artists": null
+  },
+  {
+    "maker": "Symphonic Steel",
+    "name": "Onoleo",
+    "generic": "Onoleo",
+    "feel": null,
+    "ding": "B2",
+    "notes": [
+      {
+        "pitch": "B2",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "F#3",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "Eb",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      }
+    ],
+    "video": "http://www.symphonicsteel.com/SoundModels/Onoleo(41).mp3",
+    "artists": null
+  },
+  {
+    "maker": "Symphonic Steel",
+    "name": "Oxalis",
+    "generic": "Oxalis",
+    "feel": null,
+    "ding": "G3",
+    "notes": [
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C5",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D5",
+        "spelled": "D",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=W_S0EGACQ6Q",
+    "artists": null
+  },
+  {
+    "maker": "Symphonic Steel",
+    "name": "Voyager",
+    "generic": "Voyager",
+    "feel": null,
+    "ding": "E3",
+    "notes": [
+      {
+        "pitch": "E3",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B4",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "D5",
+        "spelled": "D",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "Zen",
+    "name": "Celtic minor",
+    "generic": "Celtic minor",
+    "feel": "Minor",
+    "ding": "B2",
+    "notes": [
+      {
+        "pitch": "B2",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "F#3",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      }
+    ],
+    "video": "https://www.youtube.com/watch?v=sDr3fJgYbBQ",
+    "artists": null
+  },
+  {
+    "maker": "Zen",
+    "name": "Equator",
+    "generic": null,
+    "feel": null,
+    "ding": "C#3",
+    "notes": [
+      {
+        "pitch": "C#3",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#3",
+        "spelled": "G#",
+        "bottom": false
+      },
+      {
+        "pitch": "A3",
+        "spelled": "A",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C#4",
+        "spelled": "C#",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "G#",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "Zen",
+    "name": "Equinox7",
+    "generic": "Equinox",
+    "feel": null,
+    "ding": "E3",
+    "notes": [
+      {
+        "pitch": "E3",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "E4",
+        "spelled": "E",
+        "bottom": false
+      },
+      {
+        "pitch": "F#4",
+        "spelled": "F#",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "Zen",
+    "name": "Shiraz",
+    "generic": null,
+    "feel": null,
+    "ding": "C3",
+    "notes": [
+      {
+        "pitch": "C3",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "G3",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "G#3",
+        "spelled": "Ab",
+        "bottom": false
+      },
+      {
+        "pitch": "B3",
+        "spelled": "B",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "Eb",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  },
+  {
+    "maker": "Zen",
+    "name": "Spirit",
+    "generic": null,
+    "feel": "Major",
+    "ding": "F3",
+    "notes": [
+      {
+        "pitch": "F3",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "A#3",
+        "spelled": "Bb",
+        "bottom": false
+      },
+      {
+        "pitch": "C4",
+        "spelled": "C",
+        "bottom": false
+      },
+      {
+        "pitch": "D4",
+        "spelled": "D",
+        "bottom": false
+      },
+      {
+        "pitch": "D#4",
+        "spelled": "D#",
+        "bottom": false
+      },
+      {
+        "pitch": "F4",
+        "spelled": "F",
+        "bottom": false
+      },
+      {
+        "pitch": "G4",
+        "spelled": "G",
+        "bottom": false
+      },
+      {
+        "pitch": "G#4",
+        "spelled": "G#",
+        "bottom": false
+      }
+    ],
+    "video": null,
+    "artists": null
+  }
+]

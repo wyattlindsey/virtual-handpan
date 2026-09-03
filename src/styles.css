@@ -9,9 +9,9 @@
   --accent: #d9a441;
   --accent-2: #f0c46b;
   --danger: #d9534f;
-  --play: #2fd47a;
-  --play-2: #6ff0a6;
-  --play-ink: #06281a;
+  --play: #1f9aa0;
+  --play-2: #2bb5bb;
+  --play-ink: #f2fbfb;
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   font-size: 14px;
 }
@@ -222,44 +222,42 @@ button.primary {
 
 button.primary:hover { background: var(--accent-2); }
 
-/* The one control a first-time visitor should see: big, green, glowing. */
+/* The one control a first-time visitor should see: big and its own colour. */
 .play-button {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 14px;
-  padding: 14px 18px;
-  border: 0;
+  gap: 16px;
+  padding: 14px 18px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 14px;
   background: linear-gradient(180deg, var(--play-2), var(--play));
   color: var(--play-ink);
-  box-shadow: 0 0 0 0 rgba(47, 212, 122, 0.5), 0 8px 24px rgba(47, 212, 122, 0.35);
-  animation: play-pulse 2.4s ease-in-out infinite;
-  transition: transform 0.12s ease, box-shadow 0.2s ease;
+  box-shadow: 0 6px 18px rgba(31, 154, 160, 0.3);
+  transition: transform 0.12s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 
-.play-button:hover { transform: translateY(-1px); box-shadow: 0 0 0 4px rgba(47, 212, 122, 0.25), 0 12px 28px rgba(47, 212, 122, 0.45); }
+.play-button:hover { filter: brightness(1.08); box-shadow: 0 8px 22px rgba(31, 154, 160, 0.4); }
 .play-button:active { transform: translateY(1px); }
 
-.play-button .play-icon { font-size: 26px; line-height: 1; }
-.play-button .play-text { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.05; font-size: 22px; font-weight: 700; letter-spacing: 0.01em; }
-.play-button .play-text small { font-size: 12px; font-weight: 500; opacity: 0.8; letter-spacing: 0.02em; }
+.play-button .play-icon { font-size: 24px; line-height: 1; }
+.play-button .play-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  line-height: 1;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+.play-button .play-text small { font-size: 12px; font-weight: 500; opacity: 0.85; letter-spacing: 0.03em; }
 
 .play-button.stop {
-  background: linear-gradient(180deg, #ff8a80, #e5534b);
-  color: #2b0a08;
-  box-shadow: 0 8px 24px rgba(229, 83, 75, 0.35);
-  animation: none;
-}
-
-@keyframes play-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(47, 212, 122, 0.45), 0 8px 24px rgba(47, 212, 122, 0.35); }
-  50% { box-shadow: 0 0 0 8px rgba(47, 212, 122, 0), 0 8px 28px rgba(47, 212, 122, 0.5); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .play-button { animation: none; }
+  background: linear-gradient(180deg, #d8665e, #b8463f);
+  color: #fff4f2;
+  box-shadow: 0 6px 18px rgba(184, 70, 63, 0.3);
 }
 
 button.mini {

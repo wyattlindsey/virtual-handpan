@@ -347,6 +347,32 @@ button.mini.danger:hover:not(:disabled) { border-color: var(--danger); color: va
 .slider.disabled { opacity: 0.45; }
 .slider input { width: 100%; accent-color: var(--accent); margin: 0; }
 
+.record-button { border-color: #5a3a3a; }
+.record-button.on { background: #b8463f; border-color: #b8463f; color: #fff4f2; }
+
+.recording-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 30vh;
+  overflow: auto;
+}
+
+.recording-list li {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 6px;
+  border-radius: 6px;
+  background: var(--panel-2);
+}
+
+.recording-list .name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
 .note-list {
   list-style: none;
   margin: 0;

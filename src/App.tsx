@@ -7,11 +7,15 @@ import { clearSampleCache, openLazyPack } from './audio/packLoader';
 import { SampledInstrument } from './audio/sampledInstrument';
 import { renderStarterPack } from './audio/starterPack';
 import { SynthHandpan } from './audio/synthHandpan';
-import { type Layout, type NoteSpec, type Zigzag, allFieldPositions, layoutFromNotes, transposeLayout } from './model/layout';
+import { type Layout, type NoteSpec, type Zigzag, allFieldPositions, layoutFromNotes, layoutPitches, transposeLayout } from './model/layout';
 import type { Spelling } from './model/pitch';
 import { type LibraryScale, findScale, layoutFromScale } from './model/scales';
-import { DEFAULT_GENERATOR_PARAMS, type GeneratorParams, generatePhrase, phraseKey, phraseSeconds } from './music/generator';
+import { getFeel } from './music/feels';
+import { DEFAULT_GENERATOR_PARAMS, type GeneratorParams, generatePhraseDetailed, phraseKey, phraseSeconds } from './music/generator';
+import { trainModel } from './music/learn';
+import { type Recording, Recorder, isRecording, recordingToPhrase } from './music/recorder';
 import { Sequencer } from './music/sequencer';
+import { type TasteWeights, applyFeedback, emptyTaste } from './music/taste';
 import { NoteEditor } from './ui/NoteEditor';
 import { PanView, type StrikeInfo } from './ui/PanView';
 import { PanView3D } from './ui/PanView3D';
@@ -22,6 +26,32 @@ import { UndersideView } from './ui/UndersideView';
 import { keyHints, keyMap } from './ui/keys';
 
 const DEFAULT_SCALE_ID = 'SpB/Kurd9';
+
+function loadJson<T>(key: string, fallback: T, check: (v: unknown) => v is T): T {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return fallback;
+    const v: unknown = JSON.parse(raw);
+    return check(v) ? v : fallback;
+  } catch { return fallback; }
+}
+
+function saveJson(key: string, value: unknown): void {
+  try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* private mode or full */ }
+}
+
+interface SoundSettings { volume: number; reverb: number; bass: number }
+const isSound = (v: unknown): v is SoundSettings =>
+  typeof v === 'object' && v !== null && ['volume', 'reverb', 'bass'].every((k) => typeof (v as Record<string, unknown>)[k] === 'number');
+const isTaste = (v: unknown): v is TasteWeights =>
+  typeof v === 'object' && v !== null && typeof (v as TasteWeights).cells === 'object' && typeof (v as TasteWeights).dyadBias === 'number';
+const isRecordingList = (v: unknown): v is Recording[] => Array.isArray(v) && v.every(isRecording);
+
+// Sound settings depend on the speakers, so they live on the device.
+const initialSound = loadJson<SoundSettings>('handpan.sound', { volume: engine.getVolume(), reverb: engine.getReverb(), bass: engine.getBass() }, isSound);
+engine.setVolume(initialSound.volume);
+engine.setReverb(initialSound.reverb);
+engine.setBass(initialSound.bass);
 
 function roleFor(layout: Layout, pitch: string): 'ding' | 'top' | 'bottom' {
   if (pitch === layout.ding) return 'ding';
@@ -58,9 +88,20 @@ export function App() {
     setView(v);
     try { localStorage.setItem('handpan.view', v); } catch { /* private mode */ }
   };
-  const [volume, setVolume] = useState(engine.getVolume());
-  const [reverb, setReverb] = useState(engine.getReverb());
-  const [bass, setBass] = useState(engine.getBass());
+  const [volume, setVolume] = useState(initialSound.volume);
+  const [reverb, setReverb] = useState(initialSound.reverb);
+  const [bass, setBass] = useState(initialSound.bass);
+  useEffect(() => { saveJson('handpan.sound', { volume, reverb, bass }); }, [volume, reverb, bass]);
+
+  // Taste, recordings and the model learned from them.
+  const [taste, setTaste] = useState<TasteWeights>(() => loadJson('handpan.taste', emptyTaste(), isTaste));
+  const tasteRef = useRef(taste);
+  tasteRef.current = taste;
+  const [recordings, setRecordings] = useState<Recording[]>(() => loadJson('handpan.recordings', [], isRecordingList));
+  const model = useMemo(() => (recordings.length ? trainModel(recordings) : null), [recordings]);
+  const recorderRef = useRef(new Recorder());
+  const [recording, setRecording] = useState(false);
+  const [recordCount, setRecordCount] = useState(0);
   const [voice, setVoice] = useState<VoiceKind>('synth');
   const [voiceStatus, setVoiceStatus] = useState('');
   const [packId, setPackId] = useState(STARTER_PACK_ID);
@@ -115,6 +156,10 @@ export function App() {
     (info: StrikeInfo) => {
       void ensureAudio().then((inst) => inst.noteOn(info.pitch, info.velocity, undefined, info.side));
       flash([info.fieldId]);
+      if (recorderRef.current.recording) {
+        recorderRef.current.add(info.pitch, info.velocity, engine.now);
+        setRecordCount(recorderRef.current.count);
+      }
     },
     [ensureAudio, flash],
   );
@@ -124,7 +169,11 @@ export function App() {
   const paramsRef = useRef(params);
   paramsRef.current = params;
   const key = phraseKey(params);
-  const phrase = useMemo(() => generatePhrase(layout, paramsRef.current), [layout, key]);
+  const detailed = useMemo(
+    () => generatePhraseDetailed(layout, paramsRef.current, { taste: tasteRef.current, model }),
+    [layout, key, model],
+  );
+  const phrase = detailed.notes;
   const seconds = phraseSeconds(phrase, params.bpm);
 
   const fieldsByPitch = useMemo(() => {
@@ -150,6 +199,48 @@ export function App() {
   useEffect(() => {
     if (playingRef.current) void play();
   }, [phrase, play]);
+
+  const playRecording = useCallback(async (r: Recording) => {
+    await ensureAudio();
+    // Recorded timing and dynamics are the point, so the human layer stays out of it.
+    const raw = () => ({ ...paramsRef.current, jitterMs: 0, velocityVariation: 0, swing: 0, lean: 0, drift: 0, flamMs: 0 });
+    sequencer.play(recordingToPhrase(r), raw, 1, {
+      onNote: (n) => flash(fieldsByPitch.get(n.pitch) ?? []),
+      onEnd: () => setPlaying(false),
+    });
+    setPlaying(true);
+  }, [ensureAudio, sequencer, fieldsByPitch, flash]);
+
+  const toggleRecord = () => {
+    const rec = recorderRef.current;
+    if (rec.recording) {
+      const take = rec.stop(params.bpm, layoutPitches(layout), `Take ${recordings.length + 1}`);
+      setRecording(false);
+      if (take) {
+        const next = [take, ...recordings].slice(0, 50);
+        setRecordings(next);
+        saveJson('handpan.recordings', next);
+      }
+    } else {
+      rec.start();
+      setRecordCount(0);
+      setRecording(true);
+    }
+  };
+
+  const deleteRecording = (id: string) => {
+    const next = recordings.filter((r) => r.id !== id);
+    setRecordings(next);
+    saveJson('handpan.recordings', next);
+  };
+
+  const feedback = (up: boolean) => {
+    const next = applyFeedback(taste, getFeel(params.feel), detailed.cellsUsed, detailed.hadDyads, up);
+    setTaste(next);
+    saveJson('handpan.taste', next);
+    // A liked phrase stays as it is; a disliked one is replaced.
+    if (!up) setParams((p) => ({ ...p, tasteVersion: p.tasteVersion + 1, seed: (p.seed * 1103515245 + 12345) >>> 0 }));
+  };
 
   // Build the active instrument for the chosen voice and the notes on the pan.
   useEffect(() => {
@@ -321,8 +412,16 @@ export function App() {
           onPlay={() => { void play(); }}
           onStop={stop}
           onReseed={() => setParams((p) => ({ ...p, seed: (p.seed * 1103515245 + 12345) >>> 0 }))}
+          onFeedback={feedback}
           noteCount={phrase.length}
           seconds={seconds}
+          recording={recording}
+          recordCount={recordCount}
+          onToggleRecord={toggleRecord}
+          recordings={recordings}
+          onPlayRecording={(r) => { void playRecording(r); }}
+          onDeleteRecording={deleteRecording}
+          learnedAvailable={model !== null}
         />
         <SoundControls
           voice={voice}

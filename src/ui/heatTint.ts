@@ -29,10 +29,10 @@ export function makeHeatTintMaps(size = 1024, seed = 11): HeatTintMaps {
 
   // Base: cobalt, darker toward the rim.
   const base = ctx.createRadialGradient(c * 0.85, c * 0.8, size * 0.05, c, c, c);
-  base.addColorStop(0, '#3d76ad');
-  base.addColorStop(0.45, '#2a5388');
-  base.addColorStop(0.85, '#182f57');
-  base.addColorStop(1, '#101f3a');
+  base.addColorStop(0, '#3b73aa');
+  base.addColorStop(0.45, '#264d82');
+  base.addColorStop(0.85, '#162b50');
+  base.addColorStop(1, '#0f1d36');
   ctx.fillStyle = base;
   ctx.fillRect(0, 0, size, size);
 
@@ -54,10 +54,10 @@ export function makeHeatTintMaps(size = 1024, seed = 11): HeatTintMaps {
       ctx.fill();
     }
   };
-  blotch(70, '122, 86, 168', 0.05, 0.16, 0.34);
-  blotch(24, '58, 140, 190', 0.06, 0.2, 0.22);
-  blotch(10, '150, 110, 90', 0.03, 0.09, 0.12);
-  blotch(40, '90, 60, 140', 0.02, 0.07, 0.3);
+  blotch(26, '108, 82, 160', 0.08, 0.2, 0.2);
+  blotch(18, '64, 138, 196', 0.08, 0.22, 0.18);
+  blotch(8, '150, 115, 95', 0.03, 0.08, 0.08);
+  blotch(22, '84, 62, 138', 0.03, 0.08, 0.16);
 
   // Fine grain.
   const img = ctx.getImageData(0, 0, size, size);

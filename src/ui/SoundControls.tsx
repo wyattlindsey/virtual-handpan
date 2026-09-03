@@ -88,12 +88,10 @@ export function SoundControls({
           <button type="button" className={`mini${view === '2d' ? ' on' : ''}`} onClick={() => onView('2d')}>2D</button>
         </span>
       </div>
-      {view === '2d' && (
-        <div className="row space-between">
-          <span>Underside view</span>
-          <button type="button" className={`mini${showUnderside ? ' on' : ''}`} onClick={onToggleUnderside}>{showUnderside ? 'shown' : 'hidden'}</button>
-        </div>
-      )}
+      <div className="row space-between">
+        <span>Underside view</span>
+        <button type="button" className={`mini${showUnderside ? ' on' : ''}`} onClick={onToggleUnderside}>{showUnderside ? 'shown' : 'hidden'}</button>
+      </div>
       <p className="muted small">
         Click or tap a field to play it. Keyboard: home row plays the ring from the lowest note, space is the ding, bottom row plays underside notes. Hold shift to strike harder. Esc stops playback.
       </p>

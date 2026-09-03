@@ -135,6 +135,8 @@ body {
   z-index: 2;
 }
 
+.pip { z-index: 3; }
+
 .pip {
   position: absolute;
   right: 0;

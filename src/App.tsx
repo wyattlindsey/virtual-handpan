@@ -38,14 +38,18 @@ export function App() {
   const [params, setParams] = useState<GeneratorParams>(DEFAULT_GENERATOR_PARAMS);
   const [playing, setPlaying] = useState(false);
   const [showUnderside, setShowUnderside] = useState(true);
-  const [pipOpen, setPipOpen] = useState(() => {
-    try { return localStorage.getItem('handpan.pip') !== 'closed'; } catch { return true; }
+  // The underside PIP opens by itself for layouts with bottom notes unless the
+  // user has collapsed or opened it explicitly; that choice is remembered.
+  const [pipPreference, setPipPreference] = useState<'open' | 'closed' | null>(() => {
+    try {
+      const v = localStorage.getItem('handpan.pip');
+      return v === 'open' || v === 'closed' ? v : null;
+    } catch { return null; }
   });
   const togglePip = () => {
-    setPipOpen((open) => {
-      try { localStorage.setItem('handpan.pip', open ? 'closed' : 'open'); } catch { /* private mode */ }
-      return !open;
-    });
+    const next = pipOpen ? 'closed' : 'open';
+    setPipPreference(next);
+    try { localStorage.setItem('handpan.pip', next); } catch { /* private mode */ }
   };
   const [view, setView] = useState<ViewKind>(() => {
     try { return localStorage.getItem('handpan.view') === '2d' ? '2d' : '3d'; } catch { return '3d'; }
@@ -73,6 +77,7 @@ export function App() {
     const t = transposeLayout(base, semitones);
     return semitones === 0 ? t : { ...t, name: `${base.name} ${semitones > 0 ? '+' : ''}${semitones}` };
   }, [base, semitones]);
+  const pipOpen = pipPreference ? pipPreference === 'open' : layout.bottom.length > 0;
   const layoutRef = useRef(layout);
   layoutRef.current = layout;
 
@@ -297,7 +302,7 @@ export function App() {
         ) : (
           <PanView layout={layout} spelling={spelling} flashes={flashes} keyHints={hints} onStrike={strike} />
         )}
-        {view === '2d' && showUnderside && (pipOpen ? (
+        {showUnderside && (pipOpen ? (
           <div className="pip" aria-label="Underside">
             <UndersideView layout={layout} spelling={spelling} flashes={flashes} keyHints={hints} onStrike={strike} />
             <button type="button" className="pip-toggle" onClick={togglePip} title="Collapse the underside view">underside ▾</button>

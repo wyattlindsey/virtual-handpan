@@ -21,6 +21,8 @@ export function ScalePicker({ value, spelling, onSelect }: Props) {
           onChange={(e) => {
             const s = SCALES.find((x) => x.id === e.target.value);
             if (s) onSelect(s);
+            // Hand focus back so the keyboard plays the pan straight away.
+            e.target.blur();
           }}
         >
           {!value && <option value="">Custom layout</option>}

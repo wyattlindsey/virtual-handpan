@@ -102,7 +102,11 @@ export function App() {
     const map = keyMap(layout);
     const onKey = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null;
-      if (target && /^(INPUT|SELECT|TEXTAREA|BUTTON)$/.test(target.tagName)) return;
+      const tag = target?.tagName;
+      // Leave selects and text fields alone; sliders and buttons only need space and arrows.
+      if (tag === 'SELECT' || tag === 'TEXTAREA') return;
+      if (tag === 'INPUT' && (target as HTMLInputElement).type !== 'range') return;
+      if ((tag === 'BUTTON' || tag === 'INPUT') && e.key === ' ') return;
       if (e.key === 'Escape') { stop(); return; }
       if (e.repeat || e.metaKey || e.ctrlKey || e.altKey) return;
       const hit = map.get(e.key.toLowerCase()) ?? (e.key === ' ' ? map.get(' ') : undefined);

@@ -101,6 +101,22 @@ describe('generatePhrase', () => {
     }
   });
 
+  it('starts most bars on the ding', () => {
+    const bars = 32;
+    const notes = generatePhrase(kurd, { ...P, bars, restDensity: 0, seed: 21 });
+    let onDing = 0;
+    for (let bar = 0; bar < bars; bar++) {
+      const first = notes.find((n) => n.beat === bar * 4 && n.role === 'melody' && !n.partner);
+      if (first?.pitch === 'D3') onDing++;
+    }
+    expect(onDing / bars).toBeGreaterThan(0.65);
+    // With the groove hand on, the bar still opens on the ding one way or the other.
+    const grooved = generatePhrase(kurd, { ...P, bars, groove: 1, restDensity: 0, seed: 22 });
+    let opens = 0;
+    for (let bar = 0; bar < bars; bar++) if (grooved.some((n) => n.beat === bar * 4 && n.pitch === 'D3')) opens++;
+    expect(opens / bars).toBeGreaterThan(0.85);
+  });
+
   it('a different seed gives a different phrase', () => {
     const a = generatePhrase(kurd, { ...P, seed: 1 });
     const b = generatePhrase(kurd, { ...P, seed: 2 });

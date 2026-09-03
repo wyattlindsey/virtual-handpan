@@ -60,6 +60,7 @@ export function App() {
   };
   const [volume, setVolume] = useState(engine.getVolume());
   const [reverb, setReverb] = useState(engine.getReverb());
+  const [bass, setBass] = useState(engine.getBass());
   const [voice, setVoice] = useState<VoiceKind>('synth');
   const [voiceStatus, setVoiceStatus] = useState('');
   const [packId, setPackId] = useState(STARTER_PACK_ID);
@@ -339,6 +340,8 @@ export function App() {
           showUnderside={showUnderside}
           onVolume={(v) => { setVolume(v); engine.setVolume(v); }}
           onReverb={(v) => { setReverb(v); engine.setReverb(v); }}
+          bass={bass}
+          onBass={(v) => { setBass(v); engine.setBass(v); }}
           onSpelling={setSpelling}
           onToggleUnderside={() => setShowUnderside((s) => !s)}
         />

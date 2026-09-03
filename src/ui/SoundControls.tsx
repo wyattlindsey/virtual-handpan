@@ -17,6 +17,8 @@ interface Props {
   onClearCache: () => void;
   volume: number;
   reverb: number;
+  bass: number;
+  onBass: (db: number) => void;
   spelling: Spelling;
   view: ViewKind;
   onView: (v: ViewKind) => void;
@@ -34,8 +36,8 @@ const VOICES: { value: VoiceKind; label: string; hint: string }[] = [
 ];
 
 export function SoundControls({
-  voice, voiceStatus, packId, packs, onPack, onClearCache, volume, reverb, spelling, view, onView, showUnderside, onVoice, onVolume,
-  onReverb, onSpelling, onToggleUnderside,
+  voice, voiceStatus, packId, packs, onPack, onClearCache, volume, reverb, bass, onBass, spelling, view, onView, showUnderside,
+  onVoice, onVolume, onReverb, onSpelling, onToggleUnderside,
 }: Props) {
   return (
     <section className="panel">
@@ -74,6 +76,7 @@ export function SoundControls({
       )}
       <Slider label="Volume" value={volume} min={0} max={1} step={0.02} format={(v) => `${Math.round(v * 100)}%`} onChange={onVolume} />
       <Slider label="Room" value={reverb} min={0} max={0.8} step={0.02} format={(v) => `${Math.round(v * 100)}%`} onChange={onReverb} />
+      <Slider label="Bass" value={bass} min={-18} max={6} step={1} format={(v) => `${v > 0 ? '+' : ''}${v} dB`} onChange={onBass} />
       <div className="row space-between">
         <span>Accidentals</span>
         <span className="row">

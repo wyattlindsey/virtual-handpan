@@ -10,7 +10,7 @@ import { SynthHandpan } from './audio/synthHandpan';
 import { type Layout, type NoteSpec, type Zigzag, allFieldPositions, layoutFromNotes, transposeLayout } from './model/layout';
 import type { Spelling } from './model/pitch';
 import { type LibraryScale, findScale, layoutFromScale } from './model/scales';
-import { DEFAULT_GENERATOR_PARAMS, type GeneratorParams, generatePhrase, humanize } from './music/generator';
+import { DEFAULT_GENERATOR_PARAMS, type GeneratorParams, generatePhrase, phraseKey, phraseSeconds } from './music/generator';
 import { Sequencer } from './music/sequencer';
 import { NoteEditor } from './ui/NoteEditor';
 import { PanView, type StrikeInfo } from './ui/PanView';
@@ -96,10 +96,13 @@ export function App() {
     [ensureAudio, flash],
   );
 
-  // Phrase for the current layout and settings.
-  const phrase = useMemo(() => generatePhrase(layout, params), [layout, params]);
-  const scheduled = useMemo(() => humanize(phrase, params), [phrase, params]);
-  const phraseSeconds = scheduled.length ? scheduled[scheduled.length - 1]!.time + 0.3 : 0;
+  // What is played depends on the layout and the phrase settings; how it is
+  // played (tempo, jitter, swing, velocity) is read live by the sequencer.
+  const paramsRef = useRef(params);
+  paramsRef.current = params;
+  const key = phraseKey(params);
+  const phrase = useMemo(() => generatePhrase(layout, paramsRef.current), [layout, key]);
+  const seconds = phraseSeconds(phrase, params.bpm);
 
   const fieldsByPitch = useMemo(() => {
     const m = new Map<string, string[]>();
@@ -111,15 +114,19 @@ export function App() {
 
   const play = useCallback(async () => {
     await ensureAudio();
-    sequencer.play(scheduled, {
+    sequencer.play(phrase, () => paramsRef.current, paramsRef.current.seed, {
       onNote: (n) => flash(fieldsByPitch.get(n.pitch) ?? []),
       onEnd: () => setPlaying(false),
     });
     setPlaying(true);
-  }, [ensureAudio, sequencer, scheduled, fieldsByPitch, flash]);
+  }, [ensureAudio, sequencer, phrase, fieldsByPitch, flash]);
 
-  // Any change to what would be played stops the current phrase.
-  useEffect(() => { stop(); }, [layout, params.mode, stop]);
+  // A new phrase while one is playing starts the new one straight away.
+  const playingRef = useRef(false);
+  playingRef.current = playing;
+  useEffect(() => {
+    if (playingRef.current) void play();
+  }, [phrase, play]);
 
   // Build the active instrument for the chosen voice and the notes on the pan.
   useEffect(() => {
@@ -274,8 +281,8 @@ export function App() {
           onPlay={() => { void play(); }}
           onStop={stop}
           onReseed={() => setParams((p) => ({ ...p, seed: (p.seed * 1103515245 + 12345) >>> 0 }))}
-          noteCount={scheduled.length}
-          seconds={phraseSeconds}
+          noteCount={phrase.length}
+          seconds={seconds}
         />
         <SoundControls
           voice={voice}

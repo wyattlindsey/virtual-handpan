@@ -1,11 +1,18 @@
+import type { PackEntry } from '../audio/packIndex';
 import type { Spelling } from '../model/pitch';
 import { Slider } from './Transport';
 
-export type VoiceKind = 'synth' | 'starter';
+export type VoiceKind = 'synth' | 'sampled';
+
+/** Id of the pack rendered from the synth, always available. */
+export const STARTER_PACK_ID = 'starter';
 
 interface Props {
   voice: VoiceKind;
   voiceStatus: string;
+  packId: string;
+  packs: PackEntry[];
+  onPack: (id: string) => void;
   volume: number;
   reverb: number;
   spelling: Spelling;
@@ -19,11 +26,11 @@ interface Props {
 
 const VOICES: { value: VoiceKind; label: string; hint: string }[] = [
   { value: 'synth', label: 'Synth', hint: 'Additive model, any pitch' },
-  { value: 'starter', label: 'Sampled', hint: 'Sample engine playing a starter pack rendered from the synth: 3 velocity layers, 3 round robins' },
+  { value: 'sampled', label: 'Sampled', hint: 'Sample engine: velocity layers, round robin, synth fallback for uncovered notes' },
 ];
 
 export function SoundControls({
-  voice, voiceStatus, volume, reverb, spelling, showUnderside, onVoice, onVolume, onReverb, onSpelling, onToggleUnderside,
+  voice, voiceStatus, packId, packs, onPack, volume, reverb, spelling, showUnderside, onVoice, onVolume, onReverb, onSpelling, onToggleUnderside,
 }: Props) {
   return (
     <section className="panel">
@@ -43,6 +50,17 @@ export function SoundControls({
           </button>
         ))}
       </div>
+      {voice === 'sampled' && (
+        <label className="stack">
+          <span className="muted">Sample pack</span>
+          <select value={packId} onChange={(e) => { onPack(e.target.value); e.target.blur(); }}>
+            <option value={STARTER_PACK_ID}>Starter pack (rendered from the synth)</option>
+            {packs.map((p) => (
+              <option key={p.id} value={p.id}>{p.name}</option>
+            ))}
+          </select>
+        </label>
+      )}
       {voiceStatus && <div className="muted small mono">{voiceStatus}</div>}
       <Slider label="Volume" value={volume} min={0} max={1} step={0.02} format={(v) => `${Math.round(v * 100)}%`} onChange={onVolume} />
       <Slider label="Room" value={reverb} min={0} max={0.8} step={0.02} format={(v) => `${Math.round(v * 100)}%`} onChange={onReverb} />

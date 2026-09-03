@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { engine } from './audio/engine';
 import type { Instrument } from './audio/instrument';
+import { type PackEntry, fetchPackIndex, manifestUrl } from './audio/packIndex';
+import { loadSamplePack } from './audio/packLoader';
 import { SampledInstrument } from './audio/sampledInstrument';
 import { renderStarterPack } from './audio/starterPack';
 import { SynthHandpan } from './audio/synthHandpan';
@@ -12,7 +14,7 @@ import { Sequencer } from './music/sequencer';
 import { NoteEditor } from './ui/NoteEditor';
 import { PanView, type StrikeInfo } from './ui/PanView';
 import { ScalePicker } from './ui/ScalePicker';
-import { SoundControls, type VoiceKind } from './ui/SoundControls';
+import { STARTER_PACK_ID, SoundControls, type VoiceKind } from './ui/SoundControls';
 import { Transport } from './ui/Transport';
 import { UndersideView } from './ui/UndersideView';
 import { keyHints, keyMap } from './ui/keys';
@@ -38,6 +40,14 @@ export function App() {
   const [reverb, setReverb] = useState(engine.getReverb());
   const [voice, setVoice] = useState<VoiceKind>('synth');
   const [voiceStatus, setVoiceStatus] = useState('');
+  const [packId, setPackId] = useState(STARTER_PACK_ID);
+  const [packs, setPacks] = useState<PackEntry[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    void fetchPackIndex(import.meta.env.BASE_URL).then((list) => { if (!cancelled) setPacks(list); });
+    return () => { cancelled = true; };
+  }, []);
 
   const layout = useMemo(() => {
     const t = transposeLayout(base, semitones);
@@ -118,28 +128,43 @@ export function App() {
       setVoiceStatus('');
       return;
     }
-    const notes = allFieldPositions(layout).map((f) => ({ pitch: f.pitch, role: f.side }));
-    setVoiceStatus('Rendering starter samples…');
-    renderStarterPack(engine.context.sampleRate, notes, (p) => {
-      if (!cancelled) setVoiceStatus(`Rendering starter samples ${p.done}/${p.total}`);
-    })
+    const entry = packs.find((p) => p.id === packId);
+    const loading = packId === STARTER_PACK_ID || !entry
+      ? (() => {
+          const notes = allFieldPositions(layout).map((f) => ({ pitch: f.pitch, role: f.side }));
+          setVoiceStatus('Rendering starter samples…');
+          return renderStarterPack(engine.context.sampleRate, notes, (p) => {
+            if (!cancelled) setVoiceStatus(`Rendering starter samples ${p.done}/${p.total}`);
+          });
+        })()
+      : (() => {
+          setVoiceStatus(`Loading ${entry.name}…`);
+          return loadSamplePack(engine.context, manifestUrl(import.meta.env.BASE_URL, entry), (p) => {
+            if (!cancelled) setVoiceStatus(`Loading ${entry.name} ${p.loaded}/${p.total}`);
+          });
+        })();
+    loading
       .then((pack) => {
         if (cancelled) return;
         const sampled = new SampledInstrument(engine, pack, { fallback: ensureSynth() });
         const old = instrumentRef.current;
         instrumentRef.current = sampled;
         if (old instanceof SampledInstrument) old.dispose();
-        const layers = pack.zones[0]?.layers.length ?? 0;
-        const takes = pack.zones[0]?.layers[0]?.takes.length ?? 0;
-        setVoiceStatus(`${pack.zones.length} zones · ${layers} velocity layers · ${takes} round robins`);
+        const layers = Math.max(...pack.zones.map((z) => z.layers.length));
+        const takes = Math.max(...pack.zones.flatMap((z) => z.layers.map((l) => l.takes.length)));
+        const uncovered = allFieldPositions(layout).filter((f) => !sampled.covers(f.pitch, f.side)).length;
+        setVoiceStatus(
+          `${pack.name}: ${pack.zones.length} zones · ${layers} velocity layers · ${takes} round robins` +
+          (uncovered ? ` · ${uncovered} notes on synth` : ''),
+        );
       })
       .catch((err: unknown) => {
         if (cancelled) return;
         instrumentRef.current = ensureSynth();
-        setVoiceStatus(`Sample render failed, using synth: ${err instanceof Error ? err.message : String(err)}`);
+        setVoiceStatus(`Could not load samples, using synth: ${err instanceof Error ? err.message : String(err)}`);
       });
     return () => { cancelled = true; };
-  }, [voice, layout, ensureSynth]);
+  }, [voice, packId, packs, layout, ensureSynth]);
 
   // Keyboard playing.
   useEffect(() => {
@@ -224,6 +249,9 @@ export function App() {
           voice={voice}
           voiceStatus={voiceStatus}
           onVoice={setVoice}
+          packId={packId}
+          packs={packs}
+          onPack={setPackId}
           volume={volume}
           reverb={reverb}
           spelling={spelling}

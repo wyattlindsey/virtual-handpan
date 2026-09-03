@@ -7,8 +7,9 @@
  */
 import { midiFromPitch } from '../model/pitch';
 import type { FieldRole } from './instrument';
+import type { ZoneSource } from './lazyPack';
 import { packFromZones } from './packLoader';
-import type { SamplePack, Zone } from './samplePack';
+import type { Zone } from './samplePack';
 import { SynthHandpan } from './synthHandpan';
 
 export const STARTER_LAYERS = [
@@ -86,7 +87,7 @@ export async function renderStarterPack(
   sampleRate: number,
   notes: StarterNote[],
   onProgress?: (p: RenderProgress) => void,
-): Promise<SamplePack> {
+): Promise<ZoneSource> {
   const zones: Zone[] = [];
   let done = 0;
   onProgress?.({ done, total: notes.length, pitch: notes[0]?.pitch ?? '' });

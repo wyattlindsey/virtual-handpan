@@ -7,7 +7,8 @@
 import { midiFromPitch } from '../model/pitch';
 import type { AudioEngine } from './engine';
 import type { FieldRole, Instrument, VoiceHandle } from './instrument';
-import { RoundRobin, type SamplePack, layerWeights, rateForShift, selectZone } from './samplePack';
+import type { ZoneSource } from './lazyPack';
+import { RoundRobin, layerWeights, rateForShift, selectZone } from './samplePack';
 
 export interface SampledInstrumentOptions {
   /** Plays pitches the pack cannot reach. Without one those strikes are silent. */
@@ -78,7 +79,8 @@ export class SampledInstrument implements Instrument {
   private readonly fallback: Instrument | undefined;
   private readonly velocityCurve: number;
 
-  constructor(private readonly engine: AudioEngine, readonly pack: SamplePack, opts: SampledInstrumentOptions = {}) {
+  /** The pack may be lazy: its zones can grow and shrink while the instrument lives. */
+  constructor(private readonly engine: AudioEngine, readonly pack: ZoneSource, opts: SampledInstrumentOptions = {}) {
     this.name = pack.name;
     this.fallback = opts.fallback;
     this.rr = new RoundRobin(opts.roundRobin ?? 'cycle');

@@ -190,7 +190,6 @@ export function App() {
 
   const stop = useCallback(() => sequencer.stop(), [sequencer]);
 
-  // Each Play re-humanizes: the same notes, but never quite the same timing twice.
   const playCount = useRef(0);
   const play = useCallback(async () => {
     await ensureAudio();
@@ -418,7 +417,12 @@ export function App() {
           params={params}
           onChange={(patch) => setParams((p) => ({ ...p, ...patch }))}
           playing={playing}
-          onPlay={() => { void play(); }}
+          onPlay={() => {
+            // Every press of Play is a new phrase; the phrase change restarts playback once it lands.
+            if (params.mode === 'scale') { void play(); return; }
+            setPlaying(true);
+            setParams((p) => ({ ...p, seed: (p.seed * 1103515245 + 12345) >>> 0 }));
+          }}
           onStop={stop}
           onReseed={() => setParams((p) => ({ ...p, seed: (p.seed * 1103515245 + 12345) >>> 0 }))}
           onFeedback={feedback}

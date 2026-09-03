@@ -32,7 +32,7 @@ export interface GeneratorParams {
 
 export const DEFAULT_GENERATOR_PARAMS: GeneratorParams = {
   mode: 'melodic',
-  bars: 4,
+  bars: 8,
   bpm: 84,
   jitterMs: 10,
   velocity: 0.72,

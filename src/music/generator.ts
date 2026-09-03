@@ -64,7 +64,7 @@ export const DEFAULT_GENERATOR_PARAMS: GeneratorParams = {
   swing: 0,
   dyads: 0.12,
   groove: 0.5,
-  taks: 0.5,
+  taks: 0.2,
   flamMs: 18,
   lean: 0.15,
   drift: 0.2,

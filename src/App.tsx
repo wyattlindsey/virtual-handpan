@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { engine } from './audio/engine';
 import type { Instrument } from './audio/instrument';
+import type { LazyPack } from './audio/lazyPack';
 import { type PackEntry, fetchPackIndex, manifestUrl } from './audio/packIndex';
-import { loadSamplePack } from './audio/packLoader';
+import { clearSampleCache, openLazyPack } from './audio/packLoader';
 import { SampledInstrument } from './audio/sampledInstrument';
 import { renderStarterPack } from './audio/starterPack';
 import { SynthHandpan } from './audio/synthHandpan';
@@ -42,6 +43,8 @@ export function App() {
   const [voiceStatus, setVoiceStatus] = useState('');
   const [packId, setPackId] = useState(STARTER_PACK_ID);
   const [packs, setPacks] = useState<PackEntry[]>([]);
+  /** The open lazy pack and the instrument playing it, kept across layout changes. */
+  const lazyRef = useRef<{ id: string; pack: LazyPack; instrument: SampledInstrument } | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -122,49 +125,75 @@ export function App() {
   useEffect(() => {
     let cancelled = false;
     const previous = instrumentRef.current;
+    const retire = (keep: Instrument | null) => {
+      if (previous instanceof SampledInstrument && previous !== keep) previous.dispose();
+    };
     if (voice === 'synth') {
       instrumentRef.current = ensureSynth();
-      if (previous instanceof SampledInstrument) previous.dispose();
+      retire(null);
+      if (lazyRef.current) { lazyRef.current.pack.prune([]); lazyRef.current = null; }
       setVoiceStatus('');
       return;
     }
+    const notes = allFieldPositions(layout).map((f) => ({ pitch: f.pitch, role: f.side }));
     const entry = packs.find((p) => p.id === packId);
-    const loading = packId === STARTER_PACK_ID || !entry
-      ? (() => {
-          const notes = allFieldPositions(layout).map((f) => ({ pitch: f.pitch, role: f.side }));
-          setVoiceStatus('Rendering starter samples…');
-          return renderStarterPack(engine.context.sampleRate, notes, (p) => {
-            if (!cancelled) setVoiceStatus(`Rendering starter samples ${p.done}/${p.total}`);
-          });
-        })()
-      : (() => {
-          setVoiceStatus(`Loading ${entry.name}…`);
-          return loadSamplePack(engine.context, manifestUrl(import.meta.env.BASE_URL, entry), (p) => {
-            if (!cancelled) setVoiceStatus(`Loading ${entry.name} ${p.loaded}/${p.total}`);
-          });
-        })();
-    loading
-      .then((pack) => {
-        if (cancelled) return;
-        const sampled = new SampledInstrument(engine, pack, { fallback: ensureSynth() });
-        const old = instrumentRef.current;
-        instrumentRef.current = sampled;
-        if (old instanceof SampledInstrument) old.dispose();
-        const layers = Math.max(...pack.zones.map((z) => z.layers.length));
-        const takes = Math.max(...pack.zones.flatMap((z) => z.layers.map((l) => l.takes.length)));
-        const uncovered = allFieldPositions(layout).filter((f) => !sampled.covers(f.pitch, f.side)).length;
-        setVoiceStatus(
-          `${pack.name}: ${pack.zones.length} zones · ${layers} velocity layers · ${takes} round robins` +
-          (uncovered ? ` · ${uncovered} notes on synth` : ''),
-        );
+    const fail = (err: unknown) => {
+      if (cancelled) return;
+      setVoiceStatus(`Could not load samples: ${err instanceof Error ? err.message : String(err)}. Uncovered notes use the synth.`);
+    };
+
+    if (packId === STARTER_PACK_ID || !entry) {
+      setVoiceStatus('Rendering starter samples…');
+      renderStarterPack(engine.context.sampleRate, notes, (p) => {
+        if (!cancelled) setVoiceStatus(`Rendering starter samples ${p.done}/${p.total}`);
       })
-      .catch((err: unknown) => {
+        .then((pack) => {
+          if (cancelled) return;
+          const sampled = new SampledInstrument(engine, pack, { fallback: ensureSynth() });
+          instrumentRef.current = sampled;
+          retire(sampled);
+          if (lazyRef.current) { lazyRef.current.pack.prune([]); lazyRef.current = null; }
+          const layers = Math.max(...pack.zones.map((z) => z.layers.length));
+          const takes = Math.max(...pack.zones.flatMap((z) => z.layers.map((l) => l.takes.length)));
+          setVoiceStatus(`${pack.name}: ${pack.zones.length} zones · ${layers} velocity layers · ${takes} round robins`);
+        })
+        .catch(fail);
+      return () => { cancelled = true; };
+    }
+
+    (async () => {
+      let session = lazyRef.current;
+      if (!session || session.id !== packId) {
+        setVoiceStatus(`Opening ${entry.name}…`);
+        const pack = await openLazyPack(engine.context, manifestUrl(import.meta.env.BASE_URL, entry));
         if (cancelled) return;
-        instrumentRef.current = ensureSynth();
-        setVoiceStatus(`Could not load samples, using synth: ${err instanceof Error ? err.message : String(err)}`);
+        const instrument = new SampledInstrument(engine, pack, { fallback: ensureSynth() });
+        const old = lazyRef.current;
+        lazyRef.current = session = { id: packId, pack, instrument };
+        if (old) { old.instrument.dispose(); old.pack.prune([]); }
+      }
+      // Playable at once: notes still loading fall back to the synth until their zone lands.
+      instrumentRef.current = session.instrument;
+      retire(session.instrument);
+      session.pack.prune(notes);
+      await session.pack.ensure(notes, (p) => {
+        if (!cancelled && p.total > 0) setVoiceStatus(`${entry.name}: loading ${p.loaded}/${p.total} files…`);
       });
+      if (cancelled) return;
+      const stats = session.pack.stats();
+      const uncovered = notes.filter((n) => !session!.instrument.covers(n.pitch, n.role)).length;
+      setVoiceStatus(
+        `${entry.name}: ${stats.loadedZones} of ${stats.totalZones} zones loaded · ${stats.loadedFiles} files · ` +
+        `${(stats.bytes / 1048576).toFixed(0)} MB decoded` + (uncovered ? ` · ${uncovered} notes on synth` : ''),
+      );
+    })().catch(fail);
     return () => { cancelled = true; };
   }, [voice, packId, packs, layout, ensureSynth]);
+
+  const clearCache = async () => {
+    const ok = await clearSampleCache();
+    setVoiceStatus(ok ? 'Cached sample files removed from this device.' : 'No sample cache to clear.');
+  };
 
   // Keyboard playing.
   useEffect(() => {
@@ -255,6 +284,7 @@ export function App() {
           packId={packId}
           packs={packs}
           onPack={setPackId}
+          onClearCache={() => { void clearCache(); }}
           volume={volume}
           reverb={reverb}
           spelling={spelling}

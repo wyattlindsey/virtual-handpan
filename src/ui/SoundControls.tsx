@@ -13,6 +13,7 @@ interface Props {
   packId: string;
   packs: PackEntry[];
   onPack: (id: string) => void;
+  onClearCache: () => void;
   volume: number;
   reverb: number;
   spelling: Spelling;
@@ -30,7 +31,8 @@ const VOICES: { value: VoiceKind; label: string; hint: string }[] = [
 ];
 
 export function SoundControls({
-  voice, voiceStatus, packId, packs, onPack, volume, reverb, spelling, showUnderside, onVoice, onVolume, onReverb, onSpelling, onToggleUnderside,
+  voice, voiceStatus, packId, packs, onPack, onClearCache, volume, reverb, spelling, showUnderside, onVoice, onVolume, onReverb,
+  onSpelling, onToggleUnderside,
 }: Props) {
   return (
     <section className="panel">
@@ -62,6 +64,11 @@ export function SoundControls({
         </label>
       )}
       {voiceStatus && <div className="muted small mono">{voiceStatus}</div>}
+      {voice === 'sampled' && packId !== STARTER_PACK_ID && (
+        <button type="button" className="mini" onClick={onClearCache} title="Delete sample files cached on this device">
+          Clear cached samples
+        </button>
+      )}
       <Slider label="Volume" value={volume} min={0} max={1} step={0.02} format={(v) => `${Math.round(v * 100)}%`} onChange={onVolume} />
       <Slider label="Room" value={reverb} min={0} max={0.8} step={0.02} format={(v) => `${Math.round(v * 100)}%`} onChange={onReverb} />
       <div className="row space-between">

@@ -64,9 +64,9 @@ describe('surfaces', () => {
     const faceUp = (s: typeof shell.top) => {
       const [a, b, c] = [s.indices[0]!, s.indices[1]!, s.indices[2]!];
       const p = (i: number) => [s.positions[i * 3]!, s.positions[i * 3 + 1]!, s.positions[i * 3 + 2]!] as const;
-      const [ax, ay, az] = p(a), [bx, by, bz] = p(b), [cx, cy, cz] = p(c);
-      const ux = bx - ax, uy = by - ay, uz = bz - az;
-      const vx = cx - ax, vy = cy - ay, vz = cz - az;
+      const [ax, , az] = p(a), [bx, , bz] = p(b), [cx, , cz] = p(c);
+      const ux = bx - ax, uz = bz - az;
+      const vx = cx - ax, vz = cz - az;
       // y component of the cross product: counter-clockwise faces have it positive.
       return uz * vx - ux * vz;
     };

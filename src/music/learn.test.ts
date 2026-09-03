@@ -35,6 +35,18 @@ describe('Recorder', () => {
     expect(phrase[0]!.accent).toBeCloseTo(0.08);
     expect(phrase[1]!.duration).toBeCloseTo(0.375);
   });
+
+  it('keeps strokes as unpitched kinds and out of the model', () => {
+    const r = new Recorder();
+    r.start();
+    r.add('D3', 0.7, 1);
+    r.add('#tak', 0.5, 1.5);
+    r.add('A3', 0.7, 2);
+    const rec = r.stop(120, ['D3', 'A3'], 't')!;
+    const phrase = recordingToPhrase(rec);
+    expect(phrase[1]).toMatchObject({ pitch: '', kind: 'tak', role: 'groove' });
+    expect(trainModel([rec]).noteCount).toBe(1);
+  });
 });
 
 describe('trainModel and generateFromModel', () => {

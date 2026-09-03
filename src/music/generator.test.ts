@@ -15,7 +15,7 @@ const withBottom = layoutFromNotes('x', [
   { pitch: 'D3' }, { pitch: 'A3' }, { pitch: 'C4' }, { pitch: 'F5', bottom: true },
 ]);
 
-const P: GeneratorParams = { ...DEFAULT_GENERATOR_PARAMS, dyads: 0, groove: 0, drift: 0, lean: 0 };
+const P: GeneratorParams = { ...DEFAULT_GENERATOR_PARAMS, dyads: 0, groove: 0, taks: 0, drift: 0, lean: 0 };
 
 describe('Rng', () => {
   it('is deterministic for a seed and roughly uniform', () => {
@@ -43,6 +43,7 @@ describe('feels', () => {
       for (const cell of f.cells) expect(cell.reduce((a, b) => a + b, 0)).toBeCloseTo(f.slots / 2, 9);
       expect(f.grooveSlots[0]).toBe(0);
       expect(f.accents[0]).toBeGreaterThan(0);
+      for (const t of f.takSlots) { expect(t).toBeGreaterThan(0); expect(t).toBeLessThan(f.slots); }
     }
   });
 });
@@ -157,8 +158,24 @@ describe('generatePhrase', () => {
     expect(same / pairs).toBeLessThan(0.42);
   });
 
+  it('puts taks on the backbeat with a free hand', () => {
+    const bars = 8;
+    const notes = generatePhrase(kurd, { ...P, taks: 1, groove: 1, dyads: 0.5, bars, seed: 7 });
+    const taks = notes.filter((n) => n.kind === 'tak');
+    expect(taks.length).toBeGreaterThan(bars * 1.2);
+    for (const t of taks) {
+      expect(t.pitch).toBe('');
+      expect([1, 3]).toContain(t.beat % 4);
+      for (const other of notes) if (other !== t && other.beat === t.beat) expect(other.hand).not.toBe(t.hand);
+    }
+    expect(generatePhrase(kurd, { ...P, taks: 0 }).some((n) => n.kind)).toBe(false);
+    expect(phraseKey({ ...P, taks: 1 })).not.toBe(phraseKey(P));
+    const lilt = generatePhrase(kurd, { ...P, taks: 1, feel: 'lilt', bars: 4, seed: 2 }).filter((n) => n.kind === 'tak');
+    for (const t of lilt) expect(t.beat % 3).toBe(1.5);
+  });
+
   it('keeps every simultaneous pair on two different hands and never asks for three', () => {
-    const notes = generatePhrase(kurd, { ...P, dyads: 1, groove: 1, bars: 16, seed: 6 });
+    const notes = generatePhrase(kurd, { ...P, dyads: 1, groove: 1, taks: 1, bars: 16, seed: 6 });
     const byBeat = new Map<number, typeof notes>();
     for (const n of notes) byBeat.set(n.beat, [...(byBeat.get(n.beat) ?? []), n]);
     const hands = handMap(kurd, generatorPitches(kurd));
@@ -182,6 +199,7 @@ describe('generatePhrase', () => {
     const lastByHand: Record<string, { pos: { x: number; y: number }; beat: number }> = {};
     let moves = 0, rushed = 0;
     for (const n of notes) {
+      if (n.kind) continue;
       const hand = n.hand!;
       const pos = positions[pitches.indexOf(n.pitch)]!;
       const prev = lastByHand[hand];

@@ -18,6 +18,8 @@ export interface Feel {
   cells: number[][];
   /** Slots where the grooving hand plays, first one on the ding. */
   grooveSlots: number[];
+  /** Backbeat slots where a tak (shoulder click) naturally sits. */
+  takSlots: number[];
 }
 
 export const FEELS: Feel[] = [
@@ -39,6 +41,7 @@ export const FEELS: Feel[] = [
       [2, 1, 1],
     ],
     grooveSlots: [0, 4],
+    takSlots: [2, 6],
   },
   {
     id: 'halftime',
@@ -56,6 +59,7 @@ export const FEELS: Feel[] = [
       [3, 1],
     ],
     grooveSlots: [0, 4],
+    takSlots: [4],
   },
   {
     id: 'lilt',
@@ -72,6 +76,7 @@ export const FEELS: Feel[] = [
       [1, 0.5, 0.5, 0.5, 0.5],
     ],
     grooveSlots: [0, 3],
+    takSlots: [3],
   },
   {
     id: 'waltz',
@@ -88,6 +93,7 @@ export const FEELS: Feel[] = [
       [1, 2],
     ],
     grooveSlots: [0, 2, 4],
+    takSlots: [2],
   },
   {
     id: 'seven',
@@ -104,6 +110,7 @@ export const FEELS: Feel[] = [
       [2, 1.5],
     ],
     grooveSlots: [0, 4],
+    takSlots: [4],
   },
 ];
 

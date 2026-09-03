@@ -81,7 +81,8 @@ export class Sequencer {
         const velocity = peeked.velocity;
         // Never hand the audio graph a bad number; drop the note instead.
         if (!Number.isFinite(at) || !Number.isFinite(velocity)) { next++; peeked = null; continue; }
-        this.instrument()?.noteOn(n.pitch, velocity, at, this.roleFor(n.pitch));
+        if (n.kind) this.instrument()?.hit(n.kind, velocity, at);
+        else this.instrument()?.noteOn(n.pitch, velocity, at, this.roleFor(n.pitch));
         if (callbacks.onNote) {
           const idx = next;
           const timer = setTimeout(() => { this.visualTimers.delete(timer); callbacks.onNote?.(n, idx, velocity); }, Math.max(0, (at - now) * 1000));

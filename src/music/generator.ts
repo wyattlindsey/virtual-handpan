@@ -7,6 +7,7 @@
  * without regenerating it. Velocity follows the meter through the feel's
  * accents, so sampled layers respond to musical position.
  */
+import type { PercussionKind } from '../audio/instrument';
 import { type Layout, allFieldPositions, fieldXY, topFieldPositions } from '../model/layout';
 import { comparePitches, midiFromPitch } from '../model/pitch';
 import { type Feel, type FeelId, accentAt, barBeats, getFeel } from './feels';
@@ -38,6 +39,8 @@ export interface GeneratorParams {
   dyads: number;
   /** Density of the grooving hand's ostinato on the ding and low fields, 0..1. */
   groove: number;
+  /** How often a tak lands on the feel's backbeat slots, 0..1. */
+  taks: number;
   /** Delay of the trailing note of a dyad, in milliseconds. */
   flamMs: number;
   /** Offbeats late (positive) or early (negative), -1..1. */
@@ -61,6 +64,7 @@ export const DEFAULT_GENERATOR_PARAMS: GeneratorParams = {
   swing: 0,
   dyads: 0.12,
   groove: 0.5,
+  taks: 0.5,
   flamMs: 18,
   lean: 0.15,
   drift: 0.2,
@@ -80,6 +84,8 @@ export interface GeneratedNote {
   /** The trailing note of a dyad; humanize delays it by the flam. */
   partner?: boolean;
   role?: 'melody' | 'groove';
+  /** An unpitched stroke; pitch is empty for these. */
+  kind?: PercussionKind;
 }
 
 /** The parameters the humanize layer reads; they may change while a phrase plays. */
@@ -87,7 +93,7 @@ export type HumanizeParams = Pick<GeneratorParams, 'bpm' | 'jitterMs' | 'velocit
 
 /** Parameters that change what a phrase contains, as opposed to how it is played. */
 export function phraseKey(p: GeneratorParams): string {
-  return [p.mode, p.feel, p.bars, p.restDensity, p.dyads, p.groove, p.seed, p.tasteVersion].join('|');
+  return [p.mode, p.feel, p.bars, p.restDensity, p.dyads, p.groove, p.taks, p.seed, p.tasteVersion].join('|');
 }
 
 /** Pitches available to the generator: the ding first, then everything else ascending. */
@@ -372,6 +378,18 @@ function melodicPhrase(layout: Layout, pitches: string[], feel: Feel, params: Ge
       if (melodyHere.some((x) => x.pitch === pitch || x.hand === 'L')) continue;
       notes.push({ beat, pitch, accent: accentAt(feel, beatInBar) - 0.12 + arc, duration: 0.5, hand: 'L', role: 'groove' });
       place('L', idx, beat);
+    }
+
+    // Taks on the backbeat: a fingertip on the shoulder from whichever hand is free.
+    for (const slot of feel.takSlots) {
+      if (!rng.chance(params.taks)) continue;
+      const beatInBar = slot / 2;
+      const beat = bar * beatsPerBar + beatInBar;
+      const here = notes.filter((x) => x.beat === beat);
+      if (here.length >= 2) continue;
+      const busy = here[0]?.hand;
+      const hand: Hand = busy === 'L' ? 'R' : busy === 'R' ? 'L' : prevHand === 'L' ? 'R' : 'L';
+      notes.push({ beat, pitch: '', kind: 'tak', accent: -0.1 + arc, duration: 0.25, hand, role: 'groove' });
     }
   }
 

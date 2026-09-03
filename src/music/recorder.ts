@@ -10,8 +10,14 @@ import { DEFAULT_GENERATOR_PARAMS } from './generator';
 export interface RecordedNote {
   /** Seconds from the first strike. */
   time: number;
+  /** A pitch name, or "#tak" / "#slap" for an unpitched stroke. */
   pitch: string;
   velocity: number;
+}
+
+/** How a percussion stroke is written in a recording. */
+export function percussionPitch(kind: 'tak' | 'slap'): string {
+  return `#${kind}`;
 }
 
 export interface Recording {
@@ -72,12 +78,14 @@ export function recordingToPhrase(r: Recording): GeneratedNote[] {
   const bps = r.bpm / 60;
   return r.notes.map((n, i) => {
     const next = r.notes[i + 1];
+    const stroke = n.pitch === '#tak' || n.pitch === '#slap' ? n.pitch.slice(1) as 'tak' | 'slap' : undefined;
     return {
       beat: n.time * bps,
-      pitch: n.pitch,
+      pitch: stroke ? '' : n.pitch,
       accent: n.velocity - DEFAULT_GENERATOR_PARAMS.velocity,
       duration: next ? Math.max(0.25, (next.time - n.time) * bps) : 1,
-      role: 'melody',
+      role: stroke ? 'groove' : 'melody',
+      ...(stroke ? { kind: stroke } : {}),
     };
   });
 }

@@ -1,10 +1,12 @@
 /**
  * Owns the AudioContext and the master chain:
  *
- *   instruments -> input -> dry ------------------\
- *                        \-> convolver -> wet ----+-> limiter -> master -> destination
+ *   instruments -> input -> dry ---------------------------\
+ *                        \-> high-pass -> convolver -> wet --+-> bass shelf -> rumble cut -> limiter -> master -> out
  *
- * The context is created lazily and resumed on the first user gesture.
+ * The reverb send is high-passed so the room never carries bass, and a
+ * low shelf on the sum lets the listener trim low-mid weight for their
+ * speakers. The context is created lazily and resumed on the first gesture.
  */
 
 export class AudioEngine {
@@ -13,8 +15,10 @@ export class AudioEngine {
   private dry!: GainNode;
   private wet!: GainNode;
   private master!: GainNode;
+  private shelf!: BiquadFilterNode;
   private volume = 0.8;
   private reverbMix = 0.22;
+  private bassDb = -3;
 
   get context(): AudioContext {
     if (!this.ctx) this.build();
@@ -60,6 +64,16 @@ export class AudioEngine {
     return this.reverbMix;
   }
 
+  /** Low shelf below about 220 Hz, in dB. Negative values thin out low-mid weight. */
+  setBass(db: number): void {
+    this.bassDb = Math.min(6, Math.max(-18, db));
+    if (this.ctx) this.shelf.gain.setTargetAtTime(this.bassDb, this.ctx.currentTime, 0.02);
+  }
+
+  getBass(): number {
+    return this.bassDb;
+  }
+
   private build(): void {
     const ctx = new AudioContext({ latencyHint: 'interactive' });
     this.ctx = ctx;
@@ -72,6 +86,22 @@ export class AudioEngine {
     const convolver = ctx.createConvolver();
     convolver.buffer = makeImpulseResponse(ctx, 2.6, 2.8);
 
+    // Keep bass out of the room: it only muddies the sustain.
+    const sendFilter = ctx.createBiquadFilter();
+    sendFilter.type = 'highpass';
+    sendFilter.frequency.value = 280;
+    sendFilter.Q.value = 0.7;
+
+    this.shelf = ctx.createBiquadFilter();
+    this.shelf.type = 'lowshelf';
+    this.shelf.frequency.value = 220;
+    this.shelf.gain.value = this.bassDb;
+
+    const rumble = ctx.createBiquadFilter();
+    rumble.type = 'highpass';
+    rumble.frequency.value = 50;
+    rumble.Q.value = 0.7;
+
     const limiter = ctx.createDynamicsCompressor();
     limiter.threshold.value = -8;
     limiter.knee.value = 8;
@@ -80,10 +110,13 @@ export class AudioEngine {
     limiter.release.value = 0.12;
 
     this.inputNode.connect(this.dry);
-    this.inputNode.connect(convolver);
+    this.inputNode.connect(sendFilter);
+    sendFilter.connect(convolver);
     convolver.connect(this.wet);
-    this.dry.connect(limiter);
-    this.wet.connect(limiter);
+    this.dry.connect(this.shelf);
+    this.wet.connect(this.shelf);
+    this.shelf.connect(rumble);
+    rumble.connect(limiter);
     limiter.connect(this.master);
     this.master.connect(ctx.destination);
     this.applyReverb();
@@ -108,13 +141,16 @@ export function makeImpulseResponse(ctx: BaseAudioContext, seconds: number, deca
   for (let ch = 0; ch < 2; ch++) {
     const data = buffer.getChannelData(ch);
     let lp = 0;
+    let dc = 0;
     for (let i = 0; i < length; i++) {
       const t = i / length;
       const env = Math.pow(1 - t, decay);
       // Filter coefficient drifts from bright to dull along the tail.
       const alpha = 0.35 - 0.3 * t;
       lp += alpha * ((Math.random() * 2 - 1) - lp);
-      data[i] = lp * env;
+      // Remove the slow drift so the tail carries no rumble.
+      dc += 0.002 * (lp - dc);
+      data[i] = (lp - dc) * env;
     }
   }
   return buffer;

@@ -105,38 +105,42 @@ off. Each step keeps the split we have now: a generator that decides
 seconds, so the sample engine's velocity layers respond to musical
 intent rather than noise.
 
-### 1. Musicianship rules (no model needed)
+### 1. Musicianship rules (done)
 
-- **Accent templates per feel.** Velocity already follows the meter
-  (downbeat loudest, half-bar next, offbeats softer). Make that a named
-  template per feel: straight 4/4, 6/8 lilt, 3/4, 7/8, half-time, with the
-  sample engine's layers picking up the difference automatically.
-- **Dyads.** Two fields struck together, always a pair for us: ding with a
-  ring note, octaves, thirds and fifths inside the scale. A flam offset of
-  8 to 35 ms between the two hands, the leading hand slightly louder, both
-  amounts on the humanize controls.
-- **Two-hand model.** A left-hand ostinato on the ding and low fields with
-  the melody above it, alternating hands like drum sticking, and reach
-  limits so a phrase never asks one hand to jump across the pan.
-- **Phrase shape.** Dynamics rise and fall over four to eight bars, a
-  breath at phrase ends, motifs that repeat with variation (moved a scale
-  step, displaced by a beat, inverted), and cadences that land on the ding
-  or its fifth.
-- **Time feel.** Swing already exists; add slight tempo drift and a
-  push-pull that leans into downbeats.
+- **Accent templates per feel** (`src/music/feels.ts`): straight 4/4,
+  half-time, 6/8 lilt, waltz and 7/8, each with accents per eighth slot,
+  rhythmic cells and groove slots. Velocity follows the meter, so sampled
+  layers respond to musical position.
+- **Dyads.** A melody note gets a consonant partner (ding, octave, fifth,
+  fourth, third, sixth) with a probability on the Dyads slider; the partner
+  trails by the Flam amount and sits a little softer.
+- **Two-hand model.** Fields on the left and right of the ring belong to a
+  hand; fast runs alternate hands. A grooving hand keeps an ostinato on the
+  ding and lowest ring note at the feel's groove slots (Groove hand slider).
+- **Phrase shape.** Dynamics arc over four-bar phrases, phrase ends use
+  sparser cells and take a breath, resolutions land on the ding or its
+  neighbour, and the last two bars of a phrase's first half come back
+  shifted a scale step.
+- **Time feel.** Lean pushes or lays back offbeats; Drift is a slow push
+  and pull against the grid; swing and jitter as before. All of it applies
+  live while a phrase plays.
 
-### 2. Learn from real playing
+Still to do: reach limits beyond hand alternation, inversion and beat
+displacement of motifs, cadence choice by scale degree.
 
-- **Capture performances in the app.** Every strike already has pitch,
-  velocity and time; a record button turns a played session into a phrase
-  file. Recording the Isthmus pan through the sample session doubles as
-  training data.
-- **Transcribe audio.** Onset and pitch detection on recordings of real
-  players, mapped onto a known layout, gives a corpus of handpan phrases.
-- **Small in-browser models.** Start with n-gram or Markov models over
-  interval, rhythm and accent, trained on that corpus and running in the
-  page. Graduate to a small sequence model exported to ONNX or TF.js once
-  there is enough material.
+### 2. Learn from real playing (started)
+
+- **Capture performances** (done): Record under "Your playing" logs every
+  strike with time, pitch and velocity; takes play back without the human
+  layer and are kept on the device.
+- **Small in-browser models** (done, first version): a bigram model over
+  scale-step intervals and eighth-quantised durations trained on the
+  recordings drives the Learned mode, sampling phrases in the player's own
+  style with the feel's accents on top.
+- **Transcribe audio** (to do): onset and pitch detection on recordings of
+  real players, mapped onto a known layout, to grow the corpus.
+- **Bigger models** (to do): a small sequence model exported to ONNX or
+  TF.js once there is enough material, plus dyad and groove statistics.
 
 ### 3. Composition with a language model
 
@@ -147,10 +151,11 @@ intent rather than noise.
 - Pages is static, so this needs a small proxy (a serverless function
   holding the key) or a bring-your-own-key field stored locally.
 
-### 4. Taste feedback
+### 4. Taste feedback (done, first version)
 
-- Thumbs up and down on phrases adjusts template weights per user, and
-  builds the dataset for step 2 at the same time.
+- Thumbs up and down on a phrase nudge the weights of the rhythmic cells
+  it used and the dyad bias, per device. A disliked phrase is replaced at
+  once; a liked one stays.
 
 ## Architecture decisions
 

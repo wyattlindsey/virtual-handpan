@@ -43,10 +43,14 @@ Then open http://localhost:5173. `npm test` runs the unit tests,
 - **Nitrided steel look.** A drawn skin modelled on Isthmus Instruments'
   heat-tinted cobalt finish, with an underside picture-in-picture.
 - **Generated phrases.** Scale up and down, uniform random draws like the
-  Isthmus tool, or melodic step-biased phrases with rests and metric
-  accents. Human feel controls (timing jitter, swing, velocity, spread) and
-  tempo apply live while a phrase plays; changing the phrase itself
-  restarts it.
+  Isthmus tool, melodic two-hand phrases (feel-based accents, dyads with a
+  flam, a grooving hand, phrase arcs and returning motifs), or a learned
+  mode in the style of your own recordings. Human feel controls (tempo,
+  jitter, swing, lean, drift, flam, velocity, spread) apply live while a
+  phrase plays; changing the phrase itself restarts it. Thumbs up and down
+  tune the generator to your taste.
+- **Record yourself.** Every strike can be captured as a take, played back,
+  and used to train the learned mode.
 
 ## Layout
 

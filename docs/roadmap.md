@@ -83,6 +83,61 @@ Next:
 - Record and export generated phrases as audio.
 - Mutant and shoulder tones, cross-talk between fields.
 
+## Musicality roadmap
+
+How the generated playing gets more musical, in the order the pieces pay
+off. Each step keeps the split we have now: a generator that decides
+*what* is played in beats, and a humanize layer that decides *how* in
+seconds, so the sample engine's velocity layers respond to musical
+intent rather than noise.
+
+### 1. Musicianship rules (no model needed)
+
+- **Accent templates per feel.** Velocity already follows the meter
+  (downbeat loudest, half-bar next, offbeats softer). Make that a named
+  template per feel: straight 4/4, 6/8 lilt, 3/4, 7/8, half-time, with the
+  sample engine's layers picking up the difference automatically.
+- **Dyads.** Two fields struck together, always a pair for us: ding with a
+  ring note, octaves, thirds and fifths inside the scale. A flam offset of
+  8 to 35 ms between the two hands, the leading hand slightly louder, both
+  amounts on the humanize controls.
+- **Two-hand model.** A left-hand ostinato on the ding and low fields with
+  the melody above it, alternating hands like drum sticking, and reach
+  limits so a phrase never asks one hand to jump across the pan.
+- **Phrase shape.** Dynamics rise and fall over four to eight bars, a
+  breath at phrase ends, motifs that repeat with variation (moved a scale
+  step, displaced by a beat, inverted), and cadences that land on the ding
+  or its fifth.
+- **Time feel.** Swing already exists; add slight tempo drift and a
+  push-pull that leans into downbeats.
+
+### 2. Learn from real playing
+
+- **Capture performances in the app.** Every strike already has pitch,
+  velocity and time; a record button turns a played session into a phrase
+  file. Recording the Isthmus pan through the sample session doubles as
+  training data.
+- **Transcribe audio.** Onset and pitch detection on recordings of real
+  players, mapped onto a known layout, gives a corpus of handpan phrases.
+- **Small in-browser models.** Start with n-gram or Markov models over
+  interval, rhythm and accent, trained on that corpus and running in the
+  page. Graduate to a small sequence model exported to ONNX or TF.js once
+  there is enough material.
+
+### 3. Composition with a language model
+
+- Ask Claude for a phrase as structured JSON (events in beats, hand,
+  accent role, dyad pairs), given the layout, feel and a style prompt such
+  as "slow, sparse, resolves often". The humanize layer stays
+  deterministic so the result still sounds like a person.
+- Pages is static, so this needs a small proxy (a serverless function
+  holding the key) or a bring-your-own-key field stored locally.
+
+### 4. Taste feedback
+
+- Thumbs up and down on phrases adjusts template weights per user, and
+  builds the dataset for step 2 at the same time.
+
 ## Architecture decisions
 
 - **`Instrument` is the seam between UI and sound.** Everything above it

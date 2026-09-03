@@ -29,10 +29,15 @@ Then open http://localhost:5173. `npm test` runs the unit tests,
   zigzag and sized by pitch. Click a field (harder toward the centre) or use
   the keyboard: home row for the ring, space for the ding, bottom row for
   underside notes. The underside shows as a picture-in-picture.
-- **Synthesized handpan voice.** Additive partials at 1:2:3 with a
-  detuned shimmer, pitch- and velocity-dependent decay, a noise strike and
-  a light room. It sits behind an `Instrument` interface that a sampled
-  engine will implement later.
+- **Two voices.** A synthesized handpan (additive partials at 1:2:3 with a
+  detuned shimmer, pitch- and velocity-dependent decay, a noise strike) and
+  a sample engine with velocity layers, equal-power crossfades and round
+  robin. Both sit behind one `Instrument` interface. Until real recordings
+  exist the sample engine plays a starter pack rendered from the synth;
+  [docs/sample-packs.md](docs/sample-packs.md) covers the pack format and
+  how to record a real pan.
+- **Nitrided steel look.** A drawn skin modelled on Isthmus Instruments'
+  heat-tinted cobalt finish, with an underside picture-in-picture.
 - **Generated phrases.** Scale up and down, uniform random draws like the
   Isthmus tool, or melodic step-biased phrases with rests. Human feel
   controls: timing jitter, swing, velocity and velocity spread.
@@ -41,13 +46,21 @@ Then open http://localhost:5173. `npm test` runs the unit tests,
 
 ```
 src/model    pitch names, layouts, scale library
-src/audio    engine, Instrument interface, synth voice
+src/audio    engine, Instrument interface, synth voice, sample engine and pack loader
 src/music    generator, humanization, sequencer, RNG
 src/ui       React components (pan views, editors, transport)
 data         reference sheet export and the converted scales.json
-scripts      convert_scales.py regenerates data/scales.json
-docs         roadmap and notes on the Isthmus reference tool
+public/packs sample packs (pack.json manifests plus audio) and index.json
+scripts      convert_scales.py regenerates data/scales.json; build_manifest.py builds a pack manifest
+docs         roadmap, sample pack format and recording guide, notes on the Isthmus reference tool
 ```
+
+## Deploying
+
+`.github/workflows/pages.yml` builds, tests and publishes `dist/` to GitHub
+Pages on every push to `main`, with the base path set to
+`/virtual-handpan/`. Pages needs the repository to be public (or a paid
+plan) and Pages enabled with the "GitHub Actions" source.
 
 ## Reference
 

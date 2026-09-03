@@ -26,7 +26,7 @@ like a Kontakt or Native Instruments style sampled instrument:
 
 ## Phases
 
-### v0.1: playable synth pan (current)
+### v0.1: playable synth pan (done)
 
 - Vite + React + TypeScript, no backend.
 - Pitch, scale, and layout models. Layout = ding + ordered top fields +
@@ -40,20 +40,35 @@ like a Kontakt or Native Instruments style sampled instrument:
 - Phrase generator with humanize controls, lookahead sequencer, field
   highlighting as notes play.
 
-### v0.2: sample engine
+### v0.2: sample engine (in progress)
 
-- Sample pack format: a JSON manifest mapping pitch and velocity ranges to
-  audio files, with round-robin groups per zone.
-- `SampledInstrument` implementing the same `Instrument` interface:
-  velocity layer selection with crossfade, round-robin cycling, pitch
-  shifting for pitches between sampled notes, release and hand damping.
-- Loading, decoding and caching of packs; a bundled starter pack.
+Done:
 
-### v0.3: realistic rendering
+- Sample pack format (`docs/sample-packs.md`): a JSON manifest mapping
+  pitches and velocity ranges to audio files with round-robin takes per
+  layer, plus a script that builds one from a folder of named recordings.
+- `SampledInstrument` behind the `Instrument` interface: nearest zone with
+  pitch shifting, equal-power velocity crossfade, round robin, damping,
+  synth fallback for uncovered notes.
+- Loading, decoding and caching of packs, a pack picker, and a starter pack
+  rendered from the synth so the engine runs before real recordings exist.
 
-- Photorealistic overhead and underside renders (pre-rendered bitmaps with
-  per-field highlight masks, or a WebGL shell with lighting).
-- Field sizing by pitch (lower notes are larger), strike animation.
+Next:
+
+- Record the Isthmus pan (see the recording guide) and ship it as the
+  first real pack.
+- Release and hand-damp samples, strike-position zones (dimple, shoulder,
+  rim), and a matching room impulse response.
+- Optional per-note tuning offsets and sample start trimming in the
+  manifest.
+
+### v0.3: realistic rendering (started)
+
+- Done: an SVG skin modelled on Isthmus nitrided steel, cobalt with violet
+  heat-tint blotches, raised fields with concave dimples, a lit gu on the
+  underside.
+- Next: photo-derived textures or a WebGL shell with real lighting,
+  reflections that follow the cursor, strike animation on the dimple.
 
 ### v0.4: builder-grade configuration
 

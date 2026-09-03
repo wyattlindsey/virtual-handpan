@@ -261,7 +261,8 @@ export function PanView3D({ layout, spelling, flashes, keyHints, onStrike }: Pro
       colorMap.dispose();
       roughnessMap.dispose();
       renderer.dispose();
-      host.replaceChildren();
+      renderer.domElement.remove();
+      labelRenderer.domElement.remove();
     };
     return () => { state.dispose(); stateRef.current = null; };
   }, []);

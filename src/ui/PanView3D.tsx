@@ -165,17 +165,15 @@ export function PanView3D({ layout, spelling, flashes, keyHints, onStrike }: Pro
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enablePan = false;
+    controls.enableZoom = false;
     controls.enableDamping = true;
     controls.dampingFactor = 0.08;
-    controls.minDistance = 2.6;
-    controls.maxDistance = 4.8;
     controls.minPolarAngle = 0.02;
     controls.maxPolarAngle = 1.15;
     // A small swing only: the lowest note stays toward the player.
     controls.minAzimuthAngle = -0.2;
     controls.maxAzimuthAngle = 0.2;
     controls.rotateSpeed = 0.6;
-    controls.zoomSpeed = 0.6;
 
     const state: SceneState = {
       renderer, labelRenderer, scene, camera, controls, pan, material, bottomMaterial, top, bottom, fields: [], raf: 0, flipTarget: 0,
@@ -235,20 +233,12 @@ export function PanView3D({ layout, spelling, flashes, keyHints, onStrike }: Pro
     const cancelHoming = () => { state.homing = false; };
     controls.addEventListener('start', cancelHoming);
 
-    // Once the zoom is at its limit, wheel scrolling belongs to the page again.
-    const onWheelCapture = (e: WheelEvent) => {
-      const dist = camera.position.distanceTo(controls.target);
-      const atMax = dist >= controls.maxDistance - 1e-3;
-      const atMin = dist <= controls.minDistance + 1e-3;
-      if ((e.deltaY > 0 && atMax) || (e.deltaY < 0 && atMin)) e.stopPropagation();
-    };
-    host.addEventListener('wheel', onWheelCapture, { capture: true, passive: true });
-
-    // On narrow screens one finger scrolls the page (touch-action: pan-y in CSS); two fingers orbit and zoom.
+    // No zoom: the wheel scrolls the page. On narrow screens one finger scrolls
+    // too (touch-action: pan-y in CSS) and two fingers tilt.
     const narrow = window.matchMedia('(max-width: 1000px)');
     const applyTouch = () => {
       controls.touches.ONE = narrow.matches ? THREE.TOUCH.PAN : THREE.TOUCH.ROTATE;
-      controls.touches.TWO = narrow.matches ? THREE.TOUCH.DOLLY_ROTATE : THREE.TOUCH.DOLLY_PAN;
+      controls.touches.TWO = THREE.TOUCH.ROTATE;
     };
     applyTouch();
     narrow.addEventListener('change', applyTouch);
@@ -290,7 +280,6 @@ export function PanView3D({ layout, spelling, flashes, keyHints, onStrike }: Pro
       ro.disconnect();
       renderer.domElement.removeEventListener('pointerdown', onPointerDown);
       controls.removeEventListener('start', cancelHoming);
-      host.removeEventListener('wheel', onWheelCapture, { capture: true });
       narrow.removeEventListener('change', applyTouch);
       controls.dispose();
       for (const f of state.fields) { f.ring.geometry.dispose(); f.ring.material.dispose(); }
